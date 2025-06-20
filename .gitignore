@@ -192,3 +192,13 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+data
+
+prompts.md
+
+# Private configurations (API keys, etc.)
+configs/private/
+*.private.yaml
+*.private.yml
+.env.local

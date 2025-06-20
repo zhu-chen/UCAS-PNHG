@@ -1,0 +1,31 @@
+# 基于提示工程的个性化新闻标题生成 - 依赖包
+
+# 核心依赖
+pandas>=1.5.0                 # 数据处理
+numpy>=1.21.0                 # 数值计算
+pyyaml>=6.0                   # YAML配置文件解析
+
+# 异步HTTP客户端
+aiohttp>=3.8.0                # 异步HTTP请求
+asyncio                       # 异步编程 (Python内置)
+
+# 机器学习和评估
+scikit-learn>=1.0.0           # 机器学习工具包
+nltk>=3.7                     # 自然语言处理
+rouge-score>=0.1.2            # ROUGE评估指标
+bert-score>=0.3.12            # BERTScore评估指标
+
+# 可选依赖 - 用于更好的评估
+# transformers>=4.20.0        # Transformer模型库
+# torch>=1.12.0               # PyTorch (如果需要本地模型)
+
+# 开发和测试依赖
+pytest>=7.0.0                 # 测试框架
+pytest-asyncio>=0.21.0        # 异步测试支持
+
+# 日志和调试
+colorama>=0.4.4               # 彩色终端输出
+
+# 数据可视化 (可选)
+matplotlib>=3.5.0             # 绘图
+seaborn>=0.11.0               # 统计可视化
