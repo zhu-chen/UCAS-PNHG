@@ -1,0 +1,24 @@
+{
+  "summary": {
+    "total_strategies": 2,
+    "avg_success_rate": 1.0,
+    "avg_generation_time": 39.75652718544006,
+    "best_strategy": "basic",
+    "worst_strategy": "chain_of_thought"
+  },
+  "performance_ranking": [
+    {
+      "strategy": "basic",
+      "success_rate": 1.0,
+      "avg_time": 15.369517962137857,
+      "total_samples": 3
+    },
+    {
+      "strategy": "chain_of_thought",
+      "success_rate": 1.0,
+      "avg_time": 64.14353640874226,
+      "total_samples": 3
+    }
+  ],
+  "detailed_analysis": {}
+}
