@@ -5,7 +5,7 @@ model:
   # 模型配置
   default_model: "deepseek-ai/DeepSeek-R1-0528-Qwen3-8B"
   temperature: 0.7
-  max_tokens: 1024
+  max_tokens: 2048  # 增加到2048以支持思维链策略的完整输出
   top_p: 0.9
   
 # API提供商配置 (API密钥在private配置中)

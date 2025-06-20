@@ -168,21 +168,59 @@ class PersonalizedTitleGenerator:
             if "choices" in response and len(response["choices"]) > 0:
                 content = response["choices"][0]["message"]["content"]
                 
-                # 对于思维链策略，可能需要提取最后的标题
-                if "步骤3" in content or "标题：" in content:
-                    lines = content.split('\n')
-                    for line in reversed(lines):
-                        line = line.strip()
-                        if line and not line.startswith('步骤') and not line.startswith('#'):
-                            # 移除可能的前缀
-                            prefixes = ["标题：", "生成标题：", "个性化标题：", "最终标题："]
-                            for prefix in prefixes:
-                                if line.startswith(prefix):
-                                    line = line[len(prefix):].strip()
-                            if line:
-                                return line
+                # 对于思维链策略，查找"3. 个性化标题："后的内容
+                if "3. 个性化标题：" in content:
+                    # 找到"3. 个性化标题："的位置
+                    title_start = content.find("3. 个性化标题：")
+                    if title_start != -1:
+                        # 提取该行的内容
+                        title_line = content[title_start:].split('\n')[0]
+                        # 移除前缀"3. 个性化标题："
+                        title = title_line.replace("3. 个性化标题：", "").strip()
+                        if title and len(title) <= 100:
+                            return title
                 
-                return content.strip()
+                # 通用标题提取逻辑 - 查找常见的标题标记
+                title_patterns = [
+                    "标题：",
+                    "生成标题：", 
+                    "个性化标题：",
+                    "最终标题："
+                ]
+                
+                for pattern in title_patterns:
+                    if pattern in content:
+                        # 找到模式后提取标题
+                        pattern_start = content.find(pattern)
+                        title_line = content[pattern_start:].split('\n')[0]
+                        title = title_line.replace(pattern, "").strip()
+                        if title and 5 <= len(title) <= 100:
+                            return title
+                
+                # 如果没有找到明确标记，尝试提取合理的单行内容
+                lines = [line.strip() for line in content.split('\n') if line.strip()]
+                
+                # 优先选择中等长度的行作为标题
+                for line in lines:
+                    # 排除明显的分析文字和格式标记
+                    if (10 <= len(line) <= 80 and 
+                        not any(word in line for word in ["分析", "要点", "偏好", "步骤", "##", "**", "根据", "基于"]) and
+                        not line.endswith("：") and
+                        not line.startswith("1.") and
+                        not line.startswith("2.") and
+                        not line.startswith("3.")):
+                        return line
+                
+                # 最后的备选：返回第一行（如果合理）
+                if lines and 5 <= len(lines[0]) <= 100:
+                    return lines[0]
+                
+                # 如果所有方法都失败，返回清理后的内容（截断）
+                cleaned_content = content.strip()
+                if len(cleaned_content) > 100:
+                    cleaned_content = cleaned_content[:100]
+                
+                return cleaned_content
             else:
                 raise ValueError("API响应格式异常")
                 

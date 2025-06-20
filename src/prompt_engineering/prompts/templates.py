@@ -103,13 +103,14 @@ class ChainOfThoughtPromptTemplate(BasePromptTemplate):
         history_titles = user_history[:max_history] if len(user_history) > max_history else user_history
         history_text = "\n".join([f"{i+1}. {title}" for i, title in enumerate(history_titles)])
         
-        system_prompt = """你是一个专业的个性化新闻标题生成助手。请按照以下步骤进行思考和分析：
+        system_prompt = """你是一个专业的个性化新闻标题生成助手。请使用思维链方法进行分析，但要保持输出简洁高效。
 
-1. 首先分析用户的历史阅读偏好
-2. 然后分析新闻内容的核心要点
-3. 最后结合用户偏好生成个性化标题
+输出格式要求：
+1. 用户偏好分析：[1-2句话概括]
+2. 新闻要点：[1-2句话概括]  
+3. 个性化标题：[仅输出标题，不超过50字]
 
-请按照这个思维过程逐步分析，最后输出标题。"""
+重要：第3点必须只输出标题本身，不要任何额外说明或解释。"""
 
         user_prompt = f"""用户历史点击标题：
 {history_text}
@@ -117,22 +118,11 @@ class ChainOfThoughtPromptTemplate(BasePromptTemplate):
 新闻内容：
 {news_content}
 
-请按照以下步骤分析：
+请按照格式要求进行分析并生成个性化标题：
 
-步骤1：分析用户偏好
-请分析用户历史点击标题，总结用户的阅读偏好，包括：
-- 感兴趣的主题类型
-- 偏好的标题风格
-- 关注的关键词类型
-
-步骤2：分析新闻内容
-请分析新闻内容的核心要点：
-- 主要事件或话题
-- 关键信息点
-- 新闻价值
-
-步骤3：生成个性化标题
-基于用户偏好和新闻内容，生成一个个性化标题（50字以内）："""
+1. 用户偏好分析：
+2. 新闻要点：
+3. 个性化标题："""
 
         return [
             {"role": "system", "content": system_prompt},
