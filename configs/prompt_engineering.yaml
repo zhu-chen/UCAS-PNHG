@@ -5,7 +5,7 @@ model:
   # 模型配置
   default_model: "deepseek-ai/DeepSeek-R1-0528-Qwen3-8B"
   temperature: 0.7
-  max_tokens: 512
+  max_tokens: 1024
   top_p: 0.9
   
 # API提供商配置 (API密钥在private配置中)

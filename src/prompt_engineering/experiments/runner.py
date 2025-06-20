@@ -399,6 +399,7 @@ class ExperimentRunner:
         """
         logger.info(f"开始快速测试，样本数: {num_samples}")
         
+        generator = None
         try:
             # 获取测试样本
             samples = self.data_sampler.sample_for_experiment("test", num_samples)
@@ -433,7 +434,8 @@ class ExperimentRunner:
             logger.error(f"快速测试失败: {e}")
             raise
         finally:
-            await generator.close()
+            if generator:
+                await generator.close()
 
 
 async def main():

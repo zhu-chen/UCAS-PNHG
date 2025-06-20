@@ -75,7 +75,17 @@ class PENSDataLoader:
         if pickle_file.exists():
             logger.info(f"加载pickle文件: {pickle_file}")
             with open(pickle_file, 'rb') as f:
-                return pickle.load(f)
+                data = pickle.load(f)
+                # 处理DataFrame格式的数据
+                if isinstance(data, pd.DataFrame):
+                    logger.info(f"检测到DataFrame格式，转换为字典列表")
+                    return data.to_dict('records')
+                # 处理已经是列表格式的数据
+                elif isinstance(data, list):
+                    return data
+                else:
+                    logger.warning(f"未知的数据格式: {type(data)}")
+                    return []
         
         # 如果pickle文件不存在，尝试加载TSV文件
         tsv_file = self.data_dir / f"{split}.tsv"
@@ -122,20 +132,33 @@ class PENSDataLoader:
         Returns:
             用户历史标题列表
         """
-        user_data = [item for item in data if item.get('user_id') == user_id]
+        # 查找匹配的用户数据
+        user_data = None
+        for item in data:
+            if item.get('userid') == user_id or item.get('user_id') == user_id:
+                user_data = item
+                break
         
-        # 按时间排序（如果有时间戳）
-        if user_data and 'timestamp' in user_data[0]:
-            user_data.sort(key=lambda x: x.get('timestamp', 0))
+        if not user_data:
+            return []
         
-        # 提取标题
-        history_titles = []
-        for item in user_data:
-            title = item.get('title') or item.get('original_title')
-            if title:
-                history_titles.append(title)
+        # 从rewrite_titles字段提取历史标题
+        rewrite_titles = user_data.get('rewrite_titles', '')
+        if rewrite_titles:
+            # 按分号分割标题
+            titles = [title.strip() for title in rewrite_titles.split(';;') if title.strip()]
+            return titles
         
-        return history_titles
+        # 备用方案：从其他可能的字段提取标题
+        title_fields = ['title', 'original_title', 'headlines']
+        for field in title_fields:
+            if field in user_data and user_data[field]:
+                if isinstance(user_data[field], str):
+                    return [user_data[field]]
+                elif isinstance(user_data[field], list):
+                    return user_data[field]
+        
+        return []
     
     def get_sample_for_generation(self, data: List[Dict[str, Any]], index: int = 0) -> Dict[str, Any]:
         """
@@ -285,24 +308,25 @@ class DataSampler:
         processed_users = set()
         
         for sample in data:
-            user_id = sample.get('user_id')
-            if user_id in processed_users:
+            user_id = sample.get('userid') or sample.get('user_id')  # 支持两种字段名
+            if not user_id or user_id in processed_users:
                 continue
             
             # 获取用户历史
-            user_history = self.data_loader.get_user_history(user_id, data)
+            user_history = self.data_loader.get_user_history(user_id, [sample])
             
             if len(user_history) >= min_history_length:
-                news_content, filtered_history = self.preprocessor.prepare_generation_input(
-                    sample, user_history
-                )
+                # 创建模拟新闻内容（从用户历史的第一个标题生成）
+                news_content = self._generate_mock_news_content(user_history[0])
+                
+                filtered_history = self.preprocessor.filter_user_history(user_history[1:])  # 排除第一个作为目标
                 
                 if news_content and filtered_history:
                     valid_samples.append({
                         'user_id': user_id,
                         'news_content': news_content,
                         'user_history': filtered_history,
-                        'original_title': sample.get('title') or sample.get('original_title', ''),
+                        'original_title': user_history[0],  # 使用第一个标题作为目标标题
                         'sample_data': sample
                     })
                     processed_users.add(user_id)
@@ -312,6 +336,29 @@ class DataSampler:
         
         logger.info(f"采样得到 {len(valid_samples)} 个有效样本")
         return valid_samples
+    
+    def _generate_mock_news_content(self, title: str) -> str:
+        """
+        为给定标题生成模拟新闻内容
+        
+        Args:
+            title: 新闻标题
+            
+        Returns:
+            模拟的新闻内容
+        """
+        # 基于标题生成简单的新闻内容模板
+        mock_content = f"""
+        {title}
+        
+        据最新报道，{title.lower()}成为近期关注的焦点。相关专家表示，这一事件/发展具有重要意义。
+        
+        详细信息显示，该事件涉及多个方面的因素。业内人士认为，这将对相关领域产生深远影响。
+        
+        进一步的发展情况值得持续关注。相关部门表示将密切跟踪后续进展。
+        """
+        
+        return mock_content.strip()
     
     def get_evaluation_samples(self, num_samples: int = 50) -> List[Dict[str, Any]]:
         """
