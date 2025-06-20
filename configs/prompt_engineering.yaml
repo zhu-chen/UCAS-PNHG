@@ -1,0 +1,94 @@
+# 提示工程配置文件
+model:
+  # 主要使用的API提供商
+  primary_provider: "siliconflow"
+  # 模型配置
+  default_model: "deepseek-ai/DeepSeek-R1-0528-Qwen3-8B"
+  temperature: 0.7
+  max_tokens: 512
+  top_p: 0.9
+  
+# API提供商配置 (API密钥在private配置中)
+providers:
+  siliconflow:
+    base_url: "https://api.siliconflow.cn/v1"
+    models:
+      - "deepseek-ai/DeepSeek-R1-0528-Qwen3-8B"
+
+# 以下仅为示例
+#  openai:
+#    base_url: "https://api.openai.com/v1"
+#    models:
+#      - "gpt-4o"
+#      - "gpt-4o-mini"
+#      - "gpt-3.5-turbo"
+#  
+#  zhipu:
+#    base_url: "https://open.bigmodel.cn/api/paas/v4"
+#    models:
+#      - "glm-4-plus"
+#      - "glm-4-0520"
+
+# 提示工程策略配置
+prompt_strategies:
+  # 基础提示策略
+  basic:
+    name: "基础个性化提示"
+    description: "基于用户历史标题直接生成个性化标题"
+    
+  # 思维链提示策略  
+  chain_of_thought:
+    name: "思维链推理"
+    description: "通过逐步分析用户偏好生成标题"
+    
+  # 角色扮演策略
+  role_playing:
+    name: "角色扮演"
+    description: "让模型扮演新闻编辑角色"
+    
+  # 少样本学习策略
+  few_shot:
+    name: "少样本学习"
+    description: "提供示例来指导生成"
+
+# 数据处理配置
+data:
+  # 用户历史标题的最大数量
+  max_history_titles: 20
+  # 新闻正文的最大长度
+  max_content_length: 1000
+  # 生成标题的最大长度
+  max_title_length: 50
+
+# 实验配置
+experiment:
+  # 批处理大小
+  batch_size: 10
+  # 并发请求数
+  max_concurrent_requests: 5
+  # 请求重试次数
+  max_retries: 3
+  # 请求超时时间(秒)
+  timeout: 60
+  
+# 评估配置
+evaluation:
+  # 自动评估指标
+  metrics:
+    - "bleu"
+    - "rouge"
+    - "meteor"
+    - "bertscore"
+  
+  # 人工评估维度
+  human_eval_dimensions:
+    - "relevance"      # 相关性
+    - "personalization" # 个性化程度
+    - "fluency"        # 流畅性
+    - "attractiveness" # 吸引力
+
+# 日志配置
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/prompt_engineering.log"
