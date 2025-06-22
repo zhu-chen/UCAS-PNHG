@@ -1,31 +1,69 @@
-# 基于提示工程的个性化新闻标题生成 - 依赖包
+# 个性化新闻标题生成项目 - 完整依赖包
 
-# 核心依赖
-pandas>=1.5.0                 # 数据处理
+# ========== 核心深度学习框架 ==========
+torch>=2.0.0                  # PyTorch深度学习框架
+torchvision>=0.15.0           # PyTorch视觉工具
+torchaudio>=2.0.0             # PyTorch音频工具
+transformers>=4.30.0          # Hugging Face Transformers库
+
+# ========== 数据处理 ==========
+pandas>=1.5.0                 # 数据处理和分析
 numpy>=1.21.0                 # 数值计算
-pyyaml>=6.0                   # YAML配置文件解析
+scipy>=1.9.0                  # 科学计算
 
-# 异步HTTP客户端
-aiohttp>=3.8.0                # 异步HTTP请求
-asyncio                       # 异步编程 (Python内置)
+# ========== 自然语言处理 ==========
+nltk>=3.7                     # 自然语言处理工具包
+spacy>=3.4.0                  # 高级NLP库
+tokenizers>=0.13.0            # 快速分词器
 
-# 机器学习和评估
-scikit-learn>=1.0.0           # 机器学习工具包
-nltk>=3.7                     # 自然语言处理
+# ========== 评估指标 ==========
 rouge-score>=0.1.2            # ROUGE评估指标
+sacrebleu>=2.3.0              # BLEU评估指标
 bert-score>=0.3.12            # BERTScore评估指标
 
-# 可选依赖 - 用于更好的评估
-# transformers>=4.20.0        # Transformer模型库
-# torch>=1.12.0               # PyTorch (如果需要本地模型)
+# ========== 机器学习工具 ==========
+scikit-learn>=1.0.0           # 机器学习工具包
+sentence-transformers>=2.2.0  # 句子嵌入模型
 
-# 开发和测试依赖
-pytest>=7.0.0                 # 测试框架
-pytest-asyncio>=0.21.0        # 异步测试支持
+# ========== 配置和序列化 ==========
+pyyaml>=6.0                   # YAML配置文件解析
+toml>=0.10.2                  # TOML配置文件解析
+json5>=0.9.0                  # JSON5配置文件解析
 
-# 日志和调试
+# ========== 异步HTTP客户端 (提示工程) ==========
+aiohttp>=3.8.0                # 异步HTTP请求
+requests>=2.28.0              # 同步HTTP请求
+
+# ========== 进度条和日志 ==========
+tqdm>=4.64.0                  # 进度条显示
 colorama>=0.4.4               # 彩色终端输出
+loguru>=0.6.0                 # 高级日志库
 
-# 数据可视化 (可选)
+# ========== 数据可视化 ==========
 matplotlib>=3.5.0             # 绘图
 seaborn>=0.11.0               # 统计可视化
+plotly>=5.10.0                # 交互式可视化
+
+# ========== 开发和测试 ==========
+pytest>=7.0.0                 # 测试框架
+pytest-asyncio>=0.21.0        # 异步测试支持
+pytest-cov>=4.0.0             # 测试覆盖率
+black>=22.0.0                 # 代码格式化
+isort>=5.10.0                 # 导入排序
+flake8>=5.0.0                 # 代码检查
+
+# ========== 内存和性能优化 ==========
+psutil>=5.9.0                 # 系统和进程监控
+memory-profiler>=0.60.0       # 内存使用分析
+
+# ========== 可选：预训练模型下载 ==========
+gdown>=4.5.0                  # Google Drive文件下载
+wget>=3.2                     # 文件下载工具
+
+# ========== Jupyter支持 (可选) ==========
+jupyter>=1.0.0                # Jupyter Notebook
+ipykernel>=6.15.0             # Jupyter内核
+ipywidgets>=8.0.0             # Jupyter小部件
+
+# 注意：以下模块是Python内置模块，无需安装：
+# pathlib, argparse, datetime, typing, collections, re, os, sys, math, random

@@ -1,0 +1,43 @@
+# PENS基线方法配置 - NAML+F2专用
+
+# NAML用户编码器配置
+user_encoder:
+  embedding_dim: 300
+  hidden_dim: 256
+  max_history_length: 50
+  num_filters: 100
+  num_categories: 15
+  dropout: 0.1
+
+# Transformer编码器配置
+transformer:
+  d_model: 512
+  num_heads: 8
+  num_layers: 6
+  d_ff: 2048
+  max_seq_length: 500
+  max_sentence_length: 50
+  d_sentence: 100
+  dropout: 0.1
+
+# 指针网络解码器配置
+decoder:
+  embedding_dim: 300
+  hidden_dim: 512
+  num_layers: 2
+  dropout: 0.1
+  max_decode_length: 30
+
+# 词嵌入配置
+word_embedding:
+  dim: 300
+  pretrained_path: "data/embeddings/glove.6B.300d.txt"
+  freeze: false
+
+# 数据配置
+data:
+  max_title_length: 30
+  max_body_length: 500
+  max_user_history: 50
+  vocab_size: 50000
+  min_word_freq: 2

@@ -1,0 +1,115 @@
+# PENS基线训练配置 - NAML+F2专用
+
+# 阶段1: NAML用户编码器预训练（新闻推荐任务）
+naml_pretrain:
+  epochs: 10
+  batch_size: 32  # 减小batch size
+  learning_rate: 5e-5  # 降低学习率
+  weight_decay: 1e-5
+  optimizer: adam
+  scheduler: cosine
+  warmup_steps: 1000
+  
+  # 目标性能指标
+  target_metrics:
+    auc: 66.18
+    mrr: 25.51
+    ndcg_5: 27.56
+    ndcg_10: 35.17
+
+# 阶段2: 标题生成器预训练（监督学习）
+generator_pretrain:
+  epochs: 5
+  batch_size: 16  # 减小batch size
+  learning_rate: 1e-4  # 降低学习率
+  weight_decay: 1e-5
+  optimizer: adam
+  scheduler: linear
+  warmup_steps: 500
+  
+  # 冻结用户编码器
+  freeze_user_encoder: true
+
+# 阶段3: 强化学习微调（F2注入策略）
+reinforcement_learning:
+  epochs: 2
+  batch_size: 8  # 减小batch size
+  learning_rate: 5e-5  # 降低学习率
+  monte_carlo_samples: 16
+  
+  # 奖励函数权重
+  reward_weights:
+    personalization: 0.4
+    fluency: 0.3
+    factual_consistency: 0.3
+  
+  # 策略梯度配置
+  policy_gradient:
+    gamma: 0.95
+    baseline_decay: 0.9
+  
+  # 目标性能指标（论文最佳结果）
+  target_metrics:
+    rouge_1: 28.01
+    rouge_2: 10.72
+    rouge_l: 22.24
+
+# 通用训练设置
+training:
+  # 基本训练参数
+  epochs: 10
+  batch_size: 8  # 进一步减小批次大小
+  accumulation_steps: 4  # 梯度累积步数
+  
+  # 优化器配置
+  optimizer:
+    name: "adamw"
+    lr: 1e-5  # 进一步降低学习率
+    weight_decay: 0.01
+    betas: [0.9, 0.98]  # 更稳定的beta参数
+    eps: 1e-8
+  
+  # 学习率调度
+  scheduler:
+    name: "cosine_warmup"
+    warmup_steps: 200  # 增加warmup步数
+    total_steps: 2000
+    min_lr: 1e-7  # 设置最小学习率
+  
+  # 梯度处理
+  gradient_clipping:
+    max_norm: 0.1  # 进一步降低梯度裁剪阈值
+    norm_type: 2.0
+  
+  # 正则化
+  label_smoothing: 0.0  # 关闭标签平滑
+  dropout: 0.1
+  
+  # 早停配置
+  early_stopping:
+    patience: 5
+    min_delta: 1e-6  # 更小的最小改进
+    restore_best_weights: true
+  
+  # 验证配置
+  validation:
+    eval_steps: 100  # 减少验证频率
+    save_best_model: true
+    metric: "combined"  # rouge + bleu组合指标
+  
+  # 数值稳定性
+  numerical_stability:
+    use_amp: false  # 关闭混合精度训练
+    loss_scale: "dynamic"
+    grad_norm_threshold: 10.0  # 梯度范数阈值
+    
+  # 模型初始化
+  initialization:
+    method: "xavier_uniform"  # 使用Xavier均匀初始化
+    gain: 1.0
+    
+  # 检查点配置
+  checkpoint:
+    save_steps: 200
+    keep_best_n: 3
+    save_optimizer: true
