@@ -193,6 +193,7 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 
+# local data
 data
 
 prompts.md
@@ -202,3 +203,6 @@ configs/private/
 *.private.yaml
 *.private.yml
 .env.local
+
+# baseline paper
+src/baseline/papers

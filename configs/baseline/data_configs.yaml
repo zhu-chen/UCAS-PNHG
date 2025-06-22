@@ -1,0 +1,78 @@
+# PENS数据集配置
+
+# 数据路径
+paths:
+  raw_data: "data/raw"
+  processed_data: "data/processed"
+  embeddings: "data/embeddings"
+  results: "results/baseline"
+
+# 数据预处理配置
+preprocessing:
+  # 分词配置
+  tokenization:
+    tokenizer: "basic"  # basic, spacy, bert
+    lowercase: true
+    remove_punctuation: false
+    
+  # 序列长度配置
+  sequence_lengths:
+    max_title_length: 30
+    max_body_length: 500
+    max_sentence_length: 50
+    max_user_history: 50
+  
+  # 词汇表配置
+  vocabulary:
+    vocab_size: 50000
+    min_word_freq: 2
+    special_tokens:
+      - "<PAD>"
+      - "<UNK>"
+      - "<SOS>"
+      - "<EOS>"
+      - "<COPY>"
+  
+  # 数据分割配置
+  data_split:
+    train_ratio: 0.8
+    valid_ratio: 0.1
+    test_ratio: 0.1
+    random_seed: 42
+
+  # 数据采样配置（用于减少内存使用）
+  data_sample_ratio: 0.01  # 只使用1%的原始数据
+  max_samples_per_split: 5000  # 每个split最多处理5千条样本
+  max_pos_samples_per_user: 2  # 每个用户最多2个正样本
+  max_neg_samples_per_user: 1  # 每个用户最多1个负样本
+  negative_sample_ratio: 0.005  # 负样本采样比例0.5%
+  
+  # 文本长度限制
+  max_body_length: 200  # 进一步限制body长度
+  max_user_history: 3   # 进一步限制用户历史长度
+
+# 数据加载配置
+data_loader:
+  batch_size: 32
+  shuffle: true
+  num_workers: 4
+  pin_memory: true
+  drop_last: false
+
+# 新闻类别配置
+news_categories:
+  - "entertainment"
+  - "news"
+  - "sports"
+  - "finance"
+  - "lifestyle"
+  - "travel"
+  - "foodanddrink"
+  - "health"
+  - "kids"
+  - "movies"
+  - "music"
+  - "tv"
+  - "video"
+  - "weather"
+  - "autos"
