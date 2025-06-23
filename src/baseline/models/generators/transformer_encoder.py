@@ -148,15 +148,21 @@ class TransformerEncoder(nn.Module):
         self._init_weights()
     
     def _init_weights(self):
-        """初始化权重"""
-        nn.init.xavier_uniform_(self.word_embedding.weight)
+        """初始化权重 - 改进数值稳定性"""
+        # 使用更保守的权重初始化
+        nn.init.xavier_uniform_(self.word_embedding.weight, gain=0.1)
         self.word_embedding.weight.data[0].fill_(0)  # padding token
         
-        # PyTorch的MultiheadAttention会自动初始化权重，无需手动初始化
+        # 为投影层使用更小的初始化
+        nn.init.xavier_uniform_(self.input_projection.weight, gain=0.1)
+        if self.input_projection.bias is not None:
+            nn.init.constant_(self.input_projection.bias, 0)
+        
+        # 为Transformer层使用更保守的初始化
         for layer in self.layers:
             for module in layer.feed_forward.modules():
                 if isinstance(module, nn.Linear):
-                    nn.init.xavier_uniform_(module.weight)
+                    nn.init.xavier_uniform_(module.weight, gain=0.1)
                     if module.bias is not None:
                         nn.init.constant_(module.bias, 0)
     

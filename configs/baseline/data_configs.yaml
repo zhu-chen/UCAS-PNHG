@@ -40,22 +40,26 @@ preprocessing:
     test_ratio: 0.1
     random_seed: 42
 
-  # 数据采样配置（用于减少内存使用）
-  data_sample_ratio: 0.01  # 只使用1%的原始数据
-  max_samples_per_split: 5000  # 每个split最多处理5千条样本
-  max_pos_samples_per_user: 2  # 每个用户最多2个正样本
-  max_neg_samples_per_user: 1  # 每个用户最多1个负样本
-  negative_sample_ratio: 0.005  # 负样本采样比例0.5%
+  # 数据采样配置（使用采样数据以节省存储空间）
+  data_sample_ratio: 0.1  # 使用10%的原始数据
+  max_samples_per_split: null  # 移除样本数量限制
+  max_pos_samples_per_user: 3  # 减少每个用户的正样本数
+  max_neg_samples_per_user: 2  # 减少每个用户的负样本数
+  negative_sample_ratio: 0.05  # 减少负样本采样比例到5%
   
   # 文本长度限制
-  max_body_length: 200  # 进一步限制body长度
-  max_user_history: 3   # 进一步限制用户历史长度
+  max_body_length: 500  # 恢复完整的body长度
+  max_user_history: 50   # 恢复完整的用户历史长度
+
+  # 分块处理配置（降低内存占用）
+  chunk_size: 5000  # 每块处理5000条记录
+  save_frequency: 3  # 每处理3块保存一次中间结果
 
 # 数据加载配置
 data_loader:
-  batch_size: 32
+  batch_size: 128  # 增大batch size以配合全量数据
   shuffle: true
-  num_workers: 4
+  num_workers: 8  # 增加worker数量
   pin_memory: true
   drop_last: false
 
