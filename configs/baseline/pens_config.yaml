@@ -26,12 +26,12 @@ preprocessing:
   
   # 文本长度限制
   max_title_length: 20   # 减少标题长度
-  max_body_length: 100   # 大幅减少正文长度
-  max_user_history: 2    # 进一步减少用户历史长度
+  max_body_length: 500   # 大幅减少正文长度
+  max_user_history: 5    # 进一步减少用户历史长度
   
   # 词汇表配置
-  vocab_size: 5000       # 进一步减少词汇表大小
-  min_word_freq: 3       # 提高最小词频
+  vocab_size: 15000      
+  min_word_freq: 2       # 提高最小词频
 
 # 模型配置
 model:
@@ -44,6 +44,25 @@ model:
     num_categories: 15
     dropout: 0.3
   
+  # 添加缺失的transformer配置
+  transformer:
+    d_model: 128        # transformer模型维度
+    num_heads: 4        # 注意力头数 (自定义TransformerEncoder使用的参数名)
+    num_layers: 2       # transformer层数
+    d_ff: 256           # 前馈网络维度 (自定义TransformerEncoder使用的参数名)
+    dropout: 0.1
+    max_seq_length: 512
+    max_sentence_length: 50
+    d_sentence: 100
+  
+  # 添加缺失的decoder配置
+  decoder:
+    embedding_dim: 64
+    hidden_dim: 128
+    num_layers: 1
+    dropout: 0.3
+    max_decode_length: 15
+  
   # 极简生成器配置
   generator:
     embedding_dim: 64
@@ -54,7 +73,7 @@ model:
   
   # 词嵌入配置
   word_embedding:
-    dim: 64            # 大幅减少嵌入维度
+    dim: 128            
     pretrained: false
 
 # 训练配置
@@ -62,16 +81,16 @@ training:
   # 简化的训练策略
   mode: "simple"  # 简化模式，不使用复杂的强化学习
   epochs: 3          # 减少训练轮数
-  batch_size: 8          # 进一步减少批次大小
-  learning_rate: 1e-3
-  weight_decay: 1e-4
+  batch_size: 8      # 进一步减少批次大小
+  learning_rate: 0.0001  # 大幅降低学习率，防止梯度爆炸
+  weight_decay: 0.00001   # 降低权重衰减
   optimizer: "adam"
   
   # 设备配置
-  device: "cpu"  # 使用CPU避免GPU内存问题
+  device: "cuda"  
   num_workers: 0         # 使用单线程
   pin_memory: false
-  gradient_clip: 1.0
+  gradient_clip: 0.5     # 降低梯度裁剪阈值
   
   # 评估配置
   eval_every: 100
@@ -84,25 +103,25 @@ training:
 
 # 训练器需要的配置项
 num_epochs: 3          # 减少训练轮数
-batch_size: 16         # GPU可以处理更大的批次
+batch_size: 8          # 统一批次大小，防止冲突
 device: "cuda"         # 使用GPU
-num_workers: 2         # GPU可以使用更多工作线程
-vocab_size: 5000       # 进一步减少词汇表大小
-min_word_freq: 3       # 提高最小词频
+num_workers: 0         # 统一工作线程数
+vocab_size: 15000      # 统一词汇表大小
+min_word_freq: 2       # 提高最小词频
 max_title_length: 20   # 减少标题长度
 max_body_length: 100   # 大幅减少正文长度
 max_user_history: 2    # 进一步减少用户历史长度
-grad_clip: 1.0
+grad_clip: 0.5         # 统一梯度裁剪值
 patience: 3
 save_every: 5
 teacher_forcing_ratio: 1.0
 
 # 优化器配置
 optimizer:
-  lr: 0.001
-  user_encoder_lr: 0.0001
-  weight_decay: 0.0001
-  eps: 0.00000001
+  lr: 0.0001             # 大幅降低学习率
+  user_encoder_lr: 0.0001  # 用户编码器使用更小的学习率
+  weight_decay: 0.00001     # 降低权重衰减
+  eps: 0.0000001             # 改善数值稳定性
 
 # 学习率调度器配置
 scheduler:

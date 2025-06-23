@@ -3,8 +3,8 @@
 # 阶段1: NAML用户编码器预训练（新闻推荐任务）
 naml_pretrain:
   epochs: 10
-  batch_size: 32  # 减小batch size
-  learning_rate: 5e-5  # 降低学习率
+  batch_size: 256  # 增大batch size
+  learning_rate: 5e-5  # 提高学习率
   weight_decay: 1e-5
   optimizer: adam
   scheduler: cosine
@@ -20,8 +20,8 @@ naml_pretrain:
 # 阶段2: 标题生成器预训练（监督学习）
 generator_pretrain:
   epochs: 5
-  batch_size: 16  # 减小batch size
-  learning_rate: 1e-4  # 降低学习率
+  batch_size: 128  # 增大batch size
+  learning_rate: 2e-4  # 提高学习率
   weight_decay: 1e-5
   optimizer: adam
   scheduler: linear
@@ -33,8 +33,8 @@ generator_pretrain:
 # 阶段3: 强化学习微调（F2注入策略）
 reinforcement_learning:
   epochs: 2
-  batch_size: 8  # 减小batch size
-  learning_rate: 5e-5  # 降低学习率
+  batch_size: 64  # 增大batch size
+  learning_rate: 1e-4  # 提高学习率
   monte_carlo_samples: 16
   
   # 奖励函数权重
@@ -58,13 +58,13 @@ reinforcement_learning:
 training:
   # 基本训练参数
   epochs: 10
-  batch_size: 8  # 进一步减小批次大小
-  accumulation_steps: 4  # 梯度累积步数
+  batch_size: 64  # 增大batch size
+  accumulation_steps: 1  # 取消梯度累积
   
   # 优化器配置
   optimizer:
     name: "adamw"
-    lr: 1e-5  # 进一步降低学习率
+    lr: 2e-4  # 提高学习率
     weight_decay: 0.01
     betas: [0.9, 0.98]  # 更稳定的beta参数
     eps: 1e-8
@@ -72,8 +72,8 @@ training:
   # 学习率调度
   scheduler:
     name: "cosine_warmup"
-    warmup_steps: 200  # 增加warmup步数
-    total_steps: 2000
+    warmup_steps: 500  # 增加warmup步数
+    total_steps: 10000  # 增加总步数
     min_lr: 1e-7  # 设置最小学习率
   
   # 梯度处理
@@ -99,7 +99,7 @@ training:
   
   # 数值稳定性
   numerical_stability:
-    use_amp: false  # 关闭混合精度训练
+    use_amp: true  # 启用混合精度训练
     loss_scale: "dynamic"
     grad_norm_threshold: 10.0  # 梯度范数阈值
     
