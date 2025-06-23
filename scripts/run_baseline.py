@@ -19,9 +19,15 @@ sys.path.insert(0, str(project_root))
 from src.baseline.models.personalized_generator import PersonalizedHeadlineGenerator
 from src.baseline.data.dataset import PENSDataset
 from src.baseline.data.preprocessor import PENSPreprocessor
-from src.baseline.training.stable_trainer import StableTrainer
-from src.baseline.utils.config import load_config
+from src.baseline.training.trainer import PENSTrainer
+from src.baseline.utils.config import Config  # 修复导入
 from src.baseline.utils.logger import setup_logger
+
+
+def load_config(config_path: str):
+    """简单的配置加载函数"""
+    with open(config_path, 'r', encoding='utf-8') as f:
+        return yaml.safe_load(f)
 
 
 def main():
@@ -46,7 +52,7 @@ def main():
     config = load_config(args.config)
     
     # 设置日志
-    logger = setup_logger('trainer', 'logs/training.log')
+    logger = setup_logger('trainer', logging.INFO, 'logs/training.log')
     logger.info(f"开始训练，配置文件: {args.config}")
     logger.info(f"使用设备: {device}")
     
@@ -58,11 +64,13 @@ def main():
         # 加载和预处理数据
         logger.info("加载数据...")
         preprocessor = PENSPreprocessor(config['data'])
-        
+        logger.info("预处理数据...")
         # 加载训练数据
         train_data = preprocessor.load_processed_data('data/processed/train_processed.pkl')
+        logger.info(f"训练数据加载完成，包含 {len(train_data)} 条记录")
         val_data = preprocessor.load_processed_data('data/processed/valid_processed.pkl')
-        
+        logger.info(f"验证数据加载完成，包含 {len(val_data)} 条记录")
+
         # 创建数据集
         train_dataset = PENSDataset(train_data, preprocessor.vocab, mode='train')
         val_dataset = PENSDataset(val_data, preprocessor.vocab, mode='val')
@@ -101,17 +109,14 @@ def main():
             model.load_state_dict(checkpoint['model_state_dict'])
             start_epoch = checkpoint.get('epoch', 0)
         
-        # 创建稳定训练器
+        # 创建训练器
         logger.info("初始化训练器...")
-        trainer = StableTrainer(
-            model=model,
-            train_dataset=train_dataset,
-            val_dataset=val_dataset,
-            config=config,
-            device=device
-        )
+        # PENSTrainer只接受config参数，模型会在内部创建
+        trainer = PENSTrainer(config)
         
         if args.mode == 'train':
+            # 设置训练环境
+            trainer.setup()
             # 开始训练
             logger.info("开始训练...")
             trainer.train()

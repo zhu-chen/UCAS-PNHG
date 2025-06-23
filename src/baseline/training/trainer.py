@@ -37,6 +37,21 @@ class PENSTrainer:
         self.config = config
         self.device = torch.device(config.get('device', 'cuda' if torch.cuda.is_available() else 'cpu'))
         
+        # 增加详细日志
+        logger.info(f"=== 初始化PENSTrainer ===")
+        logger.info(f"使用设备: {self.device}")
+        logger.info(f"PyTorch版本: {torch.__version__}")
+        logger.info(f"CUDA可用: {torch.cuda.is_available()}")
+        if torch.cuda.is_available():
+            logger.info(f"当前GPU: {torch.cuda.current_device()}")
+            logger.info(f"GPU内存: {torch.cuda.get_device_properties(0).total_memory / 1024**3:.1f}GB")
+        
+        logger.info(f"配置参数概要:")
+        logger.info(f"  批次大小: {config.get('batch_size', 32)}")
+        logger.info(f"  训练轮数: {config.get('num_epochs', 10)}")
+        logger.info(f"  学习率: {config.get('optimizer', {}).get('lr', 1e-4)}")
+        logger.info(f"  数据路径: {config.get('data', {})}")
+        
         # 初始化组件
         self.model = None
         self.optimizer = None
@@ -63,34 +78,71 @@ class PENSTrainer:
             'rouge_scores': [],
             'bleu_scores': []
         }
+        
+        logger.info("PENSTrainer初始化完成")
     
     def setup(self):
         """初始化训练环境"""
+        logger.info("=== 开始设置训练环境 ===")
+        
         # 设置随机种子
+        logger.info("步骤 1/6: 设置随机种子")
         self._set_seed(self.config.get('seed', 42))
+        logger.info("随机种子设置完成")
         
         # 设置日志
+        logger.info("步骤 2/6: 设置日志系统")
         setup_logger(self.config.get('log_level', 'INFO'))
+        logger.info("日志系统设置完成")
         
         # 构建词汇表
-        vocab = self._build_or_load_vocab()
+        logger.info("步骤 3/6: 构建或加载词汇表")
+        try:
+            vocab = self._build_or_load_vocab()
+            logger.info(f"词汇表处理完成，词汇表大小: {len(vocab)}")
+        except Exception as e:
+            logger.error(f"构建词汇表时出错: {str(e)}")
+            raise e
         
         # 创建数据加载器
-        self._create_data_loaders(vocab)
+        logger.info("步骤 4/6: 创建数据加载器")
+        try:
+            self._create_data_loaders(vocab)
+            logger.info("数据加载器创建完成")
+        except Exception as e:
+            logger.error(f"创建数据加载器时出错: {str(e)}")
+            raise e
         
         # 创建模型
-        self._create_model(vocab)
+        logger.info("步骤 5/6: 创建模型")
+        try:
+            self._create_model(vocab)
+            logger.info("模型创建完成")
+        except Exception as e:
+            logger.error(f"创建模型时出错: {str(e)}")
+            raise e
         
         # 创建优化器和调度器
-        self._create_optimizer()
+        logger.info("步骤 6/6: 创建优化器和调度器")
+        try:
+            self._create_optimizer()
+            logger.info("优化器和调度器创建完成")
+        except Exception as e:
+            logger.error(f"创建优化器时出错: {str(e)}")
+            raise e
         
-        # 创建评估器
-        self._create_evaluator(vocab)
+        # 创建评估器和检查点管理器（简化版本，避免依赖问题）
+        logger.info("创建评估器和检查点管理器...")
+        try:
+            self._create_evaluator(vocab)
+            self._create_checkpoint_manager()
+            logger.info("评估器和检查点管理器创建完成")
+        except Exception as e:
+            logger.warning(f"创建评估器或检查点管理器时出错: {str(e)}，将使用简化版本")
+            self.evaluator = None
+            self.checkpoint_manager = None
         
-        # 创建检查点管理器
-        self._create_checkpoint_manager()
-        
-        logger.info(f"训练环境初始化完成，使用设备: {self.device}")
+        logger.info(f"=== 训练环境初始化完成，使用设备: {self.device} ===")
     
     def _set_seed(self, seed: int):
         """设置随机种子"""
@@ -102,48 +154,145 @@ class PENSTrainer:
     
     def _build_or_load_vocab(self) -> Dict[str, int]:
         """构建或加载词汇表"""
+        logger.info("开始处理词汇表...")
         vocab_path = self.config.get('vocab_path')
+        logger.info(f"词汇表路径配置: {vocab_path}")
         
         if vocab_path and Path(vocab_path).exists():
-            logger.info(f"从 {vocab_path} 加载词汇表")
-            with open(vocab_path, 'r', encoding='utf-8') as f:
-                vocab = json.load(f)
+            logger.info(f"发现已存在的词汇表文件: {vocab_path}")
+            try:
+                with open(vocab_path, 'r', encoding='utf-8') as f:
+                    vocab = json.load(f)
+                logger.info(f"成功从文件加载词汇表，词汇数量: {len(vocab)}")
+                return vocab
+            except Exception as e:
+                logger.error(f"加载词汇表文件失败: {str(e)}")
+                raise e
         else:
-            logger.info("构建新词汇表")
-            data_paths = [
-                self.config['data']['train_path'],
-                self.config['data']['valid_path']
-            ]
-            vocab = build_vocab(
-                data_paths=data_paths,
-                vocab_size=self.config.get('vocab_size', 50000),
-                min_freq=self.config.get('min_word_freq', 2)
-            )
-            
-            # 保存词汇表
-            if vocab_path:
-                os.makedirs(Path(vocab_path).parent, exist_ok=True)
-                with open(vocab_path, 'w', encoding='utf-8') as f:
-                    json.dump(vocab, f, ensure_ascii=False, indent=2)
-        
-        return vocab
+            logger.info("未找到已存在的词汇表，开始构建新词汇表")
+            try:
+                data_paths = [
+                    self.config['data']['train_path'],
+                    self.config['data']['valid_path']
+                ]
+                logger.info(f"将从以下数据文件构建词汇表: {data_paths}")
+                
+                # 检查数据文件是否存在
+                for path in data_paths:
+                    if not Path(path).exists():
+                        logger.error(f"数据文件不存在: {path}")
+                        raise FileNotFoundError(f"数据文件不存在: {path}")
+                    else:
+                        logger.info(f"确认数据文件存在: {path}")
+                
+                logger.info("开始调用build_vocab函数...")
+                vocab = build_vocab(
+                    data_paths=data_paths,
+                    vocab_size=self.config.get('vocab_size', 50000),
+                    min_freq=self.config.get('min_word_freq', 2)
+                )
+                logger.info(f"词汇表构建完成，词汇数量: {len(vocab)}")
+                
+                # 保存词汇表
+                if vocab_path:
+                    logger.info(f"保存词汇表到: {vocab_path}")
+                    os.makedirs(Path(vocab_path).parent, exist_ok=True)
+                    with open(vocab_path, 'w', encoding='utf-8') as f:
+                        json.dump(vocab, f, ensure_ascii=False, indent=2)
+                    logger.info("词汇表保存完成")
+                
+                return vocab
+            except Exception as e:
+                logger.error(f"构建词汇表过程中出错: {str(e)}")
+                raise e
     
     def _create_data_loaders(self, vocab: Dict[str, int]):
         """创建数据加载器"""
-        self.train_loader, self.valid_loader, self.test_loader = create_data_loaders(
-            train_path=self.config['data']['train_path'],
-            valid_path=self.config['data']['valid_path'],
-            test_path=self.config['data']['test_path'],
-            vocab=vocab,
-            batch_size=self.config.get('batch_size', 32),
-            num_workers=self.config.get('num_workers', 4),
-            max_title_length=self.config.get('max_title_length', 30),
-            max_body_length=self.config.get('max_body_length', 500),
-            max_user_history=self.config.get('max_user_history', 50)
-        )
+        logger.info("=== 开始创建数据加载器 ===")
         
-        logger.info(f"数据加载器创建完成 - 训练: {len(self.train_loader)}, "
-                   f"验证: {len(self.valid_loader)}, 测试: {len(self.test_loader)}")
+        # 记录配置信息
+        train_path = self.config['data']['train_path']
+        valid_path = self.config['data']['valid_path'] 
+        test_path = self.config['data']['test_path']
+        batch_size = self.config.get('batch_size', 32)
+        num_workers = self.config.get('num_workers', 4)
+        
+        logger.info(f"数据路径配置:")
+        logger.info(f"  训练集: {train_path}")
+        logger.info(f"  验证集: {valid_path}")
+        logger.info(f"  测试集: {test_path}")
+        logger.info(f"批次大小: {batch_size}")
+        logger.info(f"工作进程数: {num_workers}")
+        logger.info(f"词汇表大小: {len(vocab)}")
+        
+        # 检查数据文件是否存在
+        logger.info("检查数据文件存在性...")
+        for name, path in [("训练集", train_path), ("验证集", valid_path), ("测试集", test_path)]:
+            if not Path(path).exists():
+                logger.error(f"{name}文件不存在: {path}")
+                raise FileNotFoundError(f"{name}文件不存在: {path}")
+            else:
+                # 获取文件大小信息
+                file_size = Path(path).stat().st_size / (1024 * 1024)  # MB
+                logger.info(f"  ✓ {name}文件存在: {path} (大小: {file_size:.1f} MB)")
+        
+        # 检查数据加载函数是否存在
+        logger.info("检查create_data_loaders函数...")
+        try:
+            from ..data.dataset import create_data_loaders
+            logger.info("create_data_loaders函数导入成功")
+        except ImportError as e:
+            logger.error(f"无法导入create_data_loaders函数: {str(e)}")
+            raise e
+        
+        try:
+            logger.info("开始调用create_data_loaders函数...")
+            start_time = time.time()
+            
+            # 尝试加载一小批数据先测试
+            logger.info("创建数据加载器实例...")
+            self.train_loader, self.valid_loader, self.test_loader = create_data_loaders(
+                train_path=train_path,
+                valid_path=valid_path,
+                test_path=test_path,
+                vocab=vocab,
+                batch_size=batch_size,
+                num_workers=num_workers,
+                max_title_length=self.config.get('max_title_length', 30),
+                max_body_length=self.config.get('max_body_length', 500),
+                max_user_history=self.config.get('max_user_history', 50)
+            )
+            
+            end_time = time.time()
+            logger.info(f"数据加载器创建完成，耗时: {end_time - start_time:.2f}秒")
+            
+            logger.info(f"数据加载器信息:")
+            logger.info(f"  训练集批次数: {len(self.train_loader)}")
+            logger.info(f"  验证集批次数: {len(self.valid_loader)}")
+            logger.info(f"  测试集批次数: {len(self.test_loader)}")
+            
+            # 测试加载第一个批次
+            logger.info("测试加载第一个训练批次...")
+            try:
+                first_batch = next(iter(self.train_loader))
+                logger.info(f"第一个批次键: {list(first_batch.keys())}")
+                for key, value in first_batch.items():
+                    if isinstance(value, torch.Tensor):
+                        logger.info(f"  {key}: {value.shape} ({value.dtype})")
+                    else:
+                        logger.info(f"  {key}: {type(value)}")
+                logger.info("第一个批次加载测试成功")
+            except Exception as e:
+                logger.error(f"第一个批次加载测试失败: {str(e)}")
+                import traceback
+                logger.error(f"错误堆栈: {traceback.format_exc()}")
+                raise e
+            
+        except Exception as e:
+            logger.error(f"创建数据加载器失败: {str(e)}")
+            import traceback
+            logger.error(f"错误堆栈: {traceback.format_exc()}")
+            raise e
     
     def _create_model(self, vocab: Dict[str, int]):
         """创建模型"""
@@ -227,7 +376,6 @@ class PENSTrainer:
     def _create_evaluator(self, vocab: Dict[str, int]):
         """创建评估器"""
         self.evaluator = PENSEvaluator(vocab)
-    
     def _create_checkpoint_manager(self):
         """创建检查点管理器"""
         checkpoint_config = self.config.get('checkpoint', {})
