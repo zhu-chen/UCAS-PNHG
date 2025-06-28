@@ -90,9 +90,18 @@ class CheckpointManager:
             return None
         
         try:
-            checkpoint = torch.load(checkpoint_path, map_location='cpu')
-            logger.info(f"检查点加载成功: {checkpoint_path}")
-            return checkpoint
+            # 首先尝试安全加载
+            try:
+                checkpoint = torch.load(checkpoint_path, map_location='cpu', weights_only=True)
+                logger.info(f"检查点加载成功(安全模式): {checkpoint_path}")
+                return checkpoint
+            except Exception as safe_load_error:
+                logger.warning(f"安全模式加载失败，尝试兼容模式: {safe_load_error}")
+                # 如果安全加载失败，使用兼容模式
+                checkpoint = torch.load(checkpoint_path, map_location='cpu', weights_only=False)
+                logger.info(f"检查点加载成功(兼容模式): {checkpoint_path}")
+                return checkpoint
+                
         except Exception as e:
             logger.error(f"检查点加载失败: {e}")
             return None
