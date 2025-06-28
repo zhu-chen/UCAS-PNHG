@@ -1,0 +1,252 @@
+[
+  {
+    "case_id": 1,
+    "user_id": "NT1",
+    "news_id": "N24110",
+    "original_title": "High-stakes legal fight looms over Trump pollution rule",
+    "personalized_title": "Legal battle looms over Trump EPA s rule change of Obama s Clean Power Plan rule",
+    "news_body_preview": "Democratic state attorney generals and environmental groups are gearing up for what is expected to be a precedent-setting legal battle with the Trump administration over its rollback of an Obama-era p...",
+    "category": "news",
+    "user_recent_history": [
+      "Dolphins Player Loses Arm In Car Crash",
+      "Double Homicide in Yuba City"
+    ],
+    "analysis": {
+      "original_title_length": 8,
+      "personalized_title_length": 16,
+      "body_length_chars": 5436,
+      "user_history_count": 2,
+      "title_difference": {
+        "common_words_count": 5,
+        "unique_to_original_count": 3,
+        "unique_to_personalized_count": 9,
+        "similarity_ratio": 0.35714285714285715
+      }
+    }
+  },
+  {
+    "case_id": 2,
+    "user_id": "NT1",
+    "news_id": "N62769",
+    "original_title": "The One Thing That Immediately Makes Your House Look Dated",
+    "personalized_title": "Wise choices for stylish updating of old homes",
+    "news_body_preview": "We love old houses. Their architectural styles tell stories of the past, and their classic character feels familiar and welcoming. A house with a history behind it is a major draw for many potential b...",
+    "category": "lifestyle",
+    "user_recent_history": [
+      "Dolphins Player Loses Arm In Car Crash",
+      "Double Homicide in Yuba City"
+    ],
+    "analysis": {
+      "original_title_length": 10,
+      "personalized_title_length": 8,
+      "body_length_chars": 1868,
+      "user_history_count": 2,
+      "title_difference": {
+        "common_words_count": 0,
+        "unique_to_original_count": 10,
+        "unique_to_personalized_count": 8,
+        "similarity_ratio": 0.0
+      }
+    }
+  },
+  {
+    "case_id": 3,
+    "user_id": "NT1",
+    "news_id": "N36186",
+    "original_title": "Justin Verlander got chewed out by MLB before All-Star Game",
+    "personalized_title": "Verlander may be reconsidering his stance on MLBs juicing balls",
+    "news_body_preview": "Justin Verlander made headlines earlier in the week when he openly accused Major League Baseball of lying about juicing balls, and he had to have known league officials would not appreciate the remark...",
+    "category": "sports",
+    "user_recent_history": [
+      "Dolphins Player Loses Arm In Car Crash",
+      "Double Homicide in Yuba City"
+    ],
+    "analysis": {
+      "original_title_length": 10,
+      "personalized_title_length": 10,
+      "body_length_chars": 2299,
+      "user_history_count": 2,
+      "title_difference": {
+        "common_words_count": 1,
+        "unique_to_original_count": 9,
+        "unique_to_personalized_count": 9,
+        "similarity_ratio": 0.1
+      }
+    }
+  },
+  {
+    "case_id": 4,
+    "user_id": "NT1",
+    "news_id": "N101669",
+    "original_title": "OJ Simpson on Twitter: I got a little gettin even to do",
+    "personalized_title": "Infamous o.j. Simpson launching official Twitter account",
+    "news_body_preview": "LOS ANGELES O.J. Simpson launched a Twitter account with a video post in which the former football star said he s got a little gettin even to do. Simpson confirmed the new account to The Associated Pr...",
+    "category": "tv",
+    "user_recent_history": [
+      "Dolphins Player Loses Arm In Car Crash",
+      "Double Homicide in Yuba City"
+    ],
+    "analysis": {
+      "original_title_length": 12,
+      "personalized_title_length": 7,
+      "body_length_chars": 2093,
+      "user_history_count": 2,
+      "title_difference": {
+        "common_words_count": 1,
+        "unique_to_original_count": 11,
+        "unique_to_personalized_count": 6,
+        "similarity_ratio": 0.08333333333333333
+      }
+    }
+  },
+  {
+    "case_id": 5,
+    "user_id": "NT1",
+    "news_id": "N19241",
+    "original_title": "Gauff, just 15, shocks 5-time champ Venus, 39, at Wimbledon",
+    "personalized_title": "15 year old cori gauff beats Venus Williams at Wimbledon",
+    "news_body_preview": "WIMBLEDON, England (AP) Coco Gauff grew up admiring the Williams sisters. Picked up a tennis racket as a little girl because of them. And on Monday at Wimbledon, still just 15, Gauff beat one of them....",
+    "category": "sports",
+    "user_recent_history": [
+      "Dolphins Player Loses Arm In Car Crash",
+      "Double Homicide in Yuba City"
+    ],
+    "analysis": {
+      "original_title_length": 10,
+      "personalized_title_length": 10,
+      "body_length_chars": 2573,
+      "user_history_count": 2,
+      "title_difference": {
+        "common_words_count": 2,
+        "unique_to_original_count": 8,
+        "unique_to_personalized_count": 8,
+        "similarity_ratio": 0.2
+      }
+    }
+  },
+  {
+    "case_id": 6,
+    "user_id": "NT1",
+    "news_id": "N72921",
+    "original_title": "Most and Least Literate States",
+    "personalized_title": "Still much room for improvement in many us states",
+    "news_body_preview": "On September 8, 2018, countries around the world will celebrate International Literacy Day. On September 8, 2018, countries around the world will celebrate International Literacy Day. The event shines...",
+    "category": "news",
+    "user_recent_history": [
+      "Dolphins Player Loses Arm In Car Crash",
+      "Double Homicide in Yuba City"
+    ],
+    "analysis": {
+      "original_title_length": 5,
+      "personalized_title_length": 9,
+      "body_length_chars": 14070,
+      "user_history_count": 2,
+      "title_difference": {
+        "common_words_count": 1,
+        "unique_to_original_count": 4,
+        "unique_to_personalized_count": 8,
+        "similarity_ratio": 0.1111111111111111
+      }
+    }
+  },
+  {
+    "case_id": 7,
+    "user_id": "NT1",
+    "news_id": "N26561",
+    "original_title": "Carson Wentz assessment, Eagles front office changes, figuring out the cornerback depth chart, and more",
+    "personalized_title": "Eagles still have plenty of news despite NFL dead zone",
+    "news_body_preview": "BGN Radio Episode 59! The NFL dead zone has officially begun. It s going to be a slow grind until the first Philadelphia Eagles training camp practice begins on July 25. The good news is that we still...",
+    "category": "sports",
+    "user_recent_history": [
+      "Dolphins Player Loses Arm In Car Crash",
+      "Double Homicide in Yuba City"
+    ],
+    "analysis": {
+      "original_title_length": 15,
+      "personalized_title_length": 10,
+      "body_length_chars": 2186,
+      "user_history_count": 2,
+      "title_difference": {
+        "common_words_count": 1,
+        "unique_to_original_count": 14,
+        "unique_to_personalized_count": 9,
+        "similarity_ratio": 0.06666666666666667
+      }
+    }
+  },
+  {
+    "case_id": 8,
+    "user_id": "NT1",
+    "news_id": "N48356",
+    "original_title": "27 smart moves retirees should make with their money now",
+    "personalized_title": "Smart moves retirees should make",
+    "news_body_preview": "Learn how best to spend and save your money in retirement. Smart moves retirees should make with their money now Retiring isn t the end of your financial journey. Though you might be done planning for...",
+    "category": "finance",
+    "user_recent_history": [
+      "Dolphins Player Loses Arm In Car Crash",
+      "Double Homicide in Yuba City"
+    ],
+    "analysis": {
+      "original_title_length": 10,
+      "personalized_title_length": 5,
+      "body_length_chars": 13471,
+      "user_history_count": 2,
+      "title_difference": {
+        "common_words_count": 5,
+        "unique_to_original_count": 5,
+        "unique_to_personalized_count": 0,
+        "similarity_ratio": 0.5
+      }
+    }
+  },
+  {
+    "case_id": 9,
+    "user_id": "NT1",
+    "news_id": "N65285",
+    "original_title": "Universal Orlando: Is an Express pass worth the cost? Commentary",
+    "personalized_title": "Is the express pass in Universal Orlando worth the cost?",
+    "news_body_preview": "How much is your time worth? How about when you know you could be stuck in line for hours under the intense Florida sun, waiting your turn to hop aboard the latest, greatest theme park ride? On the fi...",
+    "category": "travel",
+    "user_recent_history": [
+      "Dolphins Player Loses Arm In Car Crash",
+      "Double Homicide in Yuba City"
+    ],
+    "analysis": {
+      "original_title_length": 10,
+      "personalized_title_length": 10,
+      "body_length_chars": 7749,
+      "user_history_count": 2,
+      "title_difference": {
+        "common_words_count": 7,
+        "unique_to_original_count": 3,
+        "unique_to_personalized_count": 2,
+        "similarity_ratio": 0.7
+      }
+    }
+  },
+  {
+    "case_id": 10,
+    "user_id": "NT1",
+    "news_id": "N33126",
+    "original_title": "Angie Miles: It s been absolutely wonderful being here both times",
+    "personalized_title": "CBS news anchor Angie Miles says goodbye",
+    "news_body_preview": "RICHMOND, Va. Veteran broadcaster and CBS 6 News anchor Angie Miles is leaving the South s First Television Station for a second time. Angie, who rejoined the station in November of 2015 after a 15 ye...",
+    "category": "tv",
+    "user_recent_history": [
+      "Dolphins Player Loses Arm In Car Crash",
+      "Double Homicide in Yuba City"
+    ],
+    "analysis": {
+      "original_title_length": 11,
+      "personalized_title_length": 7,
+      "body_length_chars": 1836,
+      "user_history_count": 2,
+      "title_difference": {
+        "common_words_count": 1,
+        "unique_to_original_count": 10,
+        "unique_to_personalized_count": 6,
+        "similarity_ratio": 0.09090909090909091
+      }
+    }
+  }
+]

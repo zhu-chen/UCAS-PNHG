@@ -12,6 +12,7 @@ import logging
 from pathlib import Path
 import pickle
 import json
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +22,7 @@ class PENSDataset(Dataset):
     
     def __init__(
         self,
-        data_source,  # 可以是文件路径或DataFrame
+        data_path: str,
         vocab: Dict[str, int],
         max_title_length: int = 30,
         max_body_length: int = 500,
@@ -31,7 +32,7 @@ class PENSDataset(Dataset):
     ):
         """
         Args:
-            data_source: 数据文件路径或已加载的DataFrame
+            data_path: 数据文件路径
             vocab: 词汇表
             max_title_length: 最大标题长度
             max_body_length: 最大正文长度
@@ -40,20 +41,23 @@ class PENSDataset(Dataset):
             mode: 数据模式 ("train", "valid", "test")
         """
         self.vocab = vocab
+        self.mode = mode
+        
+        # 设置长度限制参数
         self.max_title_length = max_title_length
         self.max_body_length = max_body_length
         self.max_sentence_length = max_sentence_length
         self.max_user_history = max_user_history
-        self.mode = mode
         
-        # 判断输入类型
-        if isinstance(data_source, (str, Path)):
-            self.data_path = Path(data_source)
-            self.df = None
+        # 检查输入类型：如果是DataFrame直接使用，如果是路径则加载
+        if isinstance(data_path, (str, os.PathLike)):
+            self.data_path = Path(data_path)
+            # 加载数据的逻辑
+            self.data = self._load_data()
         else:
-            # 假设是DataFrame
+            # 假设传入的是DataFrame
+            self.data = data_path
             self.data_path = None
-            self.df = data_source
         
         # 特殊token
         self.pad_token = "<PAD>"
@@ -66,24 +70,21 @@ class PENSDataset(Dataset):
         self.sos_id = vocab.get(self.sos_token, 2)
         self.eos_id = vocab.get(self.eos_token, 3)
         
-        # 加载数据
-        self.data = self._load_data()
         logger.info(f"加载了 {len(self.data)} 条 {mode} 数据")
     
     def _load_data(self) -> List[Dict[str, Any]]:
-        """加载数据"""
-        if self.df is not None:
-            # 直接使用已加载的DataFrame
-            df = self.df
+        """从文件加载数据"""
+        if self.data_path is None:
+            raise ValueError("No data path provided")
+        
+        # 根据文件扩展名选择加载方法
+        if self.data_path.suffix == '.pkl':
+            with open(self.data_path, 'rb') as f:
+                df = pickle.load(f)
+        elif self.data_path.suffix == '.tsv':
+            df = pd.read_csv(self.data_path, sep='\t')
         else:
-            # 从文件加载
-            if self.data_path.suffix == '.pkl':
-                with open(self.data_path, 'rb') as f:
-                    df = pickle.load(f)
-            elif self.data_path.suffix == '.tsv':
-                df = pd.read_csv(self.data_path, sep='\t')
-            else:
-                raise ValueError(f"不支持的文件格式: {self.data_path.suffix}")
+            raise ValueError(f"不支持的文件格式: {self.data_path.suffix}")
         
         data = []
         for _, row in df.iterrows():
@@ -231,12 +232,6 @@ class PENSDataset(Dataset):
             'user_id': item['user_id'],
             'news_id': item['news_id']
         }
-    
-    def collate_fn(self, batch):
-        """批处理函数"""
-        # 简单的默认批处理，直接使用PyTorch的默认collate
-        from torch.utils.data.dataloader import default_collate
-        return default_collate(batch)
 
 
 def build_vocab(data_paths: List[str], vocab_size: int = 50000, min_freq: int = 2) -> Dict[str, int]:

@@ -1,20 +1,25 @@
 """
-PENS个性化新闻标题生成器
-实现最佳方法组合：NAML用户编码器 + F2个性化注入策略
+个性化新闻标题生成器 - 与原作者实现完全一致
+整合NAML用户编码器 + Transformer编码器 + 指针网络解码器
 """
 
 import torch
 import torch.nn as nn
-from typing import Dict, Any, Optional
+import torch.nn.functional as F
+from typing import Dict, Optional, Any, Tuple
+import logging
+
 from .naml_encoder import NAMLEncoder
 from .generators.transformer_encoder import TransformerEncoder
 from .generators.pointer_decoder import PointerDecoder
 
+logger = logging.getLogger(__name__)
+
 
 class PersonalizedHeadlineGenerator(nn.Module):
     """
-    PENS个性化新闻标题生成器
-    专门实现论文中表现最佳的NAML+F2组合
+    个性化新闻标题生成器 - PENS最佳组合
+    NAML + F2 + Transformer + Pointer-Generator
     """
     
     def __init__(
@@ -32,32 +37,30 @@ class PersonalizedHeadlineGenerator(nn.Module):
         if user_encoder_config is None:
             user_encoder_config = {
                 "embedding_dim": 300,
-                "hidden_dim": 256,
+                "hidden_dim": 400,
                 "max_history_length": 50,
-                "num_filters": 100,
                 "num_categories": 15,
-                "dropout": 0.1
+                "dropout": 0.2
             }
         
         if transformer_config is None:
             transformer_config = {
-                "d_model": 512,
-                "num_heads": 8,
-                "num_layers": 6,
-                "d_ff": 2048,
-                "max_seq_length": 500,
-                "max_sentence_length": 50,
-                "d_sentence": 100,
-                "dropout": 0.1
+                "embedding_dim": 300,
+                "d_model": 300,
+                "sentence_pos_dim": 100,
+                "dropout": 0.2,
+                "max_length": 500
             }
         
         if decoder_config is None:
             decoder_config = {
                 "embedding_dim": 300,
-                "hidden_dim": 512,
+                "hidden_dim": 400,  # 匹配Transformer输出：300+100=400
                 "num_layers": 2,
-                "dropout": 0.1,
-                "max_decode_length": 30
+                "dropout": 0.2,
+                "max_decode_length": 30,
+                "decoder_type": 2,  # F2策略
+                "user_size": 64  # NAML输出维度
             }
         
         # 初始化NAML用户编码器
@@ -67,220 +70,225 @@ class PersonalizedHeadlineGenerator(nn.Module):
         self.transformer_encoder = TransformerEncoder(vocab_size=vocab_size, **transformer_config)
         
         # 初始化指针网络解码器（支持F2注入）
-        self.pointer_decoder = PointerDecoder(vocab_size=vocab_size, **decoder_config)
+        self.decoder = PointerDecoder(vocab_size=vocab_size, **decoder_config)
         
-        # 用户嵌入到解码器隐层维度的投影层
-        user_dim = user_encoder_config["hidden_dim"]
-        decoder_dim = decoder_config["hidden_dim"]
+        # 损失函数
+        self.criterion = nn.CrossEntropyLoss(ignore_index=0)  # 忽略padding
         
-        if user_dim != decoder_dim:
-            self.user_projection = nn.Linear(user_dim, decoder_dim)
-        else:
-            self.user_projection = nn.Identity()
-    
-    def encode_user(
-        self, 
-        user_history: torch.Tensor,
-        history_mask: Optional[torch.Tensor] = None,
-        history_categories: Optional[torch.Tensor] = None
-    ) -> torch.Tensor:
-        """
-        编码用户历史获得用户表示
-        
-        Args:
-            user_history: [batch_size, max_history_length, max_title_length]
-            history_mask: [batch_size, max_history_length]
-            history_categories: [batch_size, max_history_length]
-        
-        Returns:
-            user_embedding: [batch_size, decoder_hidden_dim]
-        """
-        user_embedding = self.user_encoder(user_history, history_mask, history_categories)
-        user_embedding = self.user_projection(user_embedding)
-        return user_embedding
-    
-    def encode_news_body(
-        self,
-        input_ids: torch.Tensor,
-        sentence_positions: torch.Tensor,
-        attention_mask: Optional[torch.Tensor] = None
-    ) -> torch.Tensor:
-        """
-        编码新闻正文
-        
-        Args:
-            input_ids: [batch_size, seq_len]
-            sentence_positions: [batch_size, seq_len]
-            attention_mask: [batch_size, seq_len]
-        
-        Returns:
-            encoder_outputs: [batch_size, seq_len, d_model]
-        """
-        return self.transformer_encoder(input_ids, sentence_positions, attention_mask)
-    
-    def generate_headline(
-        self,
-        encoder_outputs: torch.Tensor,
-        encoder_input_ids: torch.Tensor,
-        user_embedding: torch.Tensor,
-        target_ids: Optional[torch.Tensor] = None,
-        encoder_mask: Optional[torch.Tensor] = None,
-        teacher_forcing_ratio: float = 1.0
-    ) -> Dict[str, torch.Tensor]:
-        """
-        使用F2策略生成个性化标题
-        
-        Args:
-            encoder_outputs: [batch_size, src_len, d_model]
-            encoder_input_ids: [batch_size, src_len]
-            user_embedding: [batch_size, hidden_dim]
-            target_ids: [batch_size, tgt_len] 目标序列（训练时）
-            encoder_mask: [batch_size, src_len]
-            teacher_forcing_ratio: 教师强制比率
-        
-        Returns:
-            decoder_outputs: 解码器输出字典
-        """
-        return self.pointer_decoder(
-            encoder_outputs=encoder_outputs,
-            encoder_input_ids=encoder_input_ids,
-            target_ids=target_ids,
-            encoder_mask=encoder_mask,
-            user_embedding=user_embedding,
-            injection_method="f2",  # 固定使用F2策略
-            teacher_forcing_ratio=teacher_forcing_ratio
-        )
+        logger.info(f"初始化个性化标题生成器，词汇表大小: {vocab_size}")
     
     def forward(
         self,
-        # 用户历史输入
         user_history: torch.Tensor,
-        # 新闻正文输入
         news_input_ids: torch.Tensor,
-        news_sentence_positions: torch.Tensor,
-        # 可选参数（有默认值）
+        target_ids: Optional[torch.Tensor] = None,
         history_mask: Optional[torch.Tensor] = None,
         history_categories: Optional[torch.Tensor] = None,
         news_attention_mask: Optional[torch.Tensor] = None,
-        target_ids: Optional[torch.Tensor] = None,
+        news_sentence_positions: Optional[torch.Tensor] = None,
+        injection_method: str = "f2",
         teacher_forcing_ratio: float = 1.0
     ) -> Dict[str, torch.Tensor]:
         """
-        完整的前向传播
+        前向传播
         
         Args:
-            user_history: [batch_size, max_history_length, max_title_length]
-            news_input_ids: [batch_size, seq_len]
-            news_sentence_positions: [batch_size, seq_len]
-            history_mask: [batch_size, max_history_length]
-            history_categories: [batch_size, max_history_length]
-            news_attention_mask: [batch_size, seq_len]
-            target_ids: [batch_size, tgt_len]
-            teacher_forcing_ratio: 教师强制比率
-        
-        Returns:
-            outputs: 包含所有输出的字典
+            user_history: [batch_size, max_history_length, max_title_length] 用户历史
+            news_input_ids: [batch_size, max_body_length] 新闻正文
+            target_ids: [batch_size, max_title_length] 目标标题
+            history_mask: [batch_size, max_history_length] 历史掩码
+            history_categories: [batch_size, max_history_length] 历史类别
+            news_attention_mask: [batch_size, max_body_length] 新闻掩码
+            news_sentence_positions: [batch_size, max_body_length] 句子位置
+            injection_method: 个性化注入方式 ("f1", "f2", "f3")
+            teacher_forcing_ratio: 教师强制比例
         """
-        # 1. 编码用户（NAML）
-        user_embedding = self.encode_user(user_history, history_mask, history_categories)
         
-        # 2. 编码新闻正文（Transformer）
-        encoder_outputs = self.encode_news_body(
-            news_input_ids, news_sentence_positions, news_attention_mask
-        )
+        # 1. 用户编码
+        user_embedding = self.user_encoder.encode_user_history(
+            user_history, history_mask, history_categories
+        )  # [batch_size, 64]
         
-        # 3. 生成个性化标题（F2策略）
-        decoder_outputs = self.generate_headline(
+        # 2. 新闻编码
+        encoder_outputs = self.transformer_encoder(
+            input_ids=news_input_ids,
+            attention_mask=news_attention_mask,
+            sentence_positions=news_sentence_positions
+        )  # [batch_size, max_body_length, 400]
+        
+        # 3. 个性化解码
+        decoder_outputs = self.decoder(
             encoder_outputs=encoder_outputs,
             encoder_input_ids=news_input_ids,
-            user_embedding=user_embedding,
             target_ids=target_ids,
             encoder_mask=news_attention_mask,
+            user_embedding=user_embedding,
+            injection_method=injection_method,
             teacher_forcing_ratio=teacher_forcing_ratio
         )
         
-        # 整合所有输出
-        outputs = {
+        # 4. 计算损失（如果有目标序列）
+        loss = None
+        if target_ids is not None and "logits" in decoder_outputs:
+            # 目标序列去掉SOS token，logits对应预测下一个token
+            target_shifted = target_ids[:, 1:]  # 去掉SOS
+            logits = decoder_outputs["logits"]
+            
+            # 确保维度匹配
+            min_len = min(target_shifted.size(1), logits.size(1))
+            target_shifted = target_shifted[:, :min_len]
+            logits = logits[:, :min_len, :]
+            
+            # 计算损失
+            loss = self.criterion(
+                logits.contiguous().view(-1, self.vocab_size),
+                target_shifted.contiguous().view(-1)
+            )
+        
+        return {
+            "loss": loss,
             "user_embedding": user_embedding,
             "encoder_outputs": encoder_outputs,
             **decoder_outputs
         }
-        
-        return outputs
     
-    def predict_click(
+    def generate(
         self,
         user_history: torch.Tensor,
-        news_titles: torch.Tensor,
+        news_input_ids: torch.Tensor,
         history_mask: Optional[torch.Tensor] = None,
         history_categories: Optional[torch.Tensor] = None,
-        news_categories: Optional[torch.Tensor] = None
-    ) -> torch.Tensor:
+        news_attention_mask: Optional[torch.Tensor] = None,
+        news_sentence_positions: Optional[torch.Tensor] = None,
+        injection_method: str = "f2",
+        max_length: int = 30,
+        num_beams: int = 1,
+        temperature: float = 1.0
+    ) -> Dict[str, torch.Tensor]:
         """
-        预测点击概率（用于NAML预训练）
-        
-        Args:
-            user_history: [batch_size, max_history_length, max_title_length]
-            news_titles: [batch_size, max_title_length]
-            history_mask: [batch_size, max_history_length]
-            history_categories: [batch_size, max_history_length]
-            news_categories: [batch_size]
-        
-        Returns:
-            click_probs: [batch_size] 点击概率
+        生成个性化标题
         """
-        # 编码用户
-        user_repr = self.user_encoder(user_history, history_mask, history_categories)
+        self.eval()
         
-        # 编码候选新闻
-        title_mask = (news_titles != 0)
-        news_repr = self.user_encoder.encode_news(news_titles, news_categories, title_mask)
+        with torch.no_grad():
+            # 编码用户和新闻
+            user_embedding = self.user_encoder.encode_user_history(
+                user_history, history_mask, history_categories
+            )
+            
+            encoder_outputs = self.transformer_encoder(
+                input_ids=news_input_ids,
+                attention_mask=news_attention_mask,
+                sentence_positions=news_sentence_positions
+            )
+            
+            # 生成序列
+            if num_beams == 1:
+                # 贪心解码
+                outputs = self.decoder(
+                    encoder_outputs=encoder_outputs,
+                    encoder_input_ids=news_input_ids,
+                    target_ids=None,
+                    encoder_mask=news_attention_mask,
+                    user_embedding=user_embedding,
+                    injection_method=injection_method,
+                    teacher_forcing_ratio=0.0
+                )
+                
+                generated_ids = torch.argmax(outputs["final_dists"], dim=-1)
+                
+            else:
+                # Beam search (简化实现)
+                batch_size = user_history.size(0)
+                device = user_history.device
+                
+                # 扩展beam维度
+                user_embedding = user_embedding.unsqueeze(1).repeat(1, num_beams, 1).view(-1, user_embedding.size(-1))
+                encoder_outputs = encoder_outputs.unsqueeze(1).repeat(1, num_beams, 1, 1).view(-1, encoder_outputs.size(1), encoder_outputs.size(2))
+                news_input_ids = news_input_ids.unsqueeze(1).repeat(1, num_beams, 1).view(-1, news_input_ids.size(1))
+                
+                if news_attention_mask is not None:
+                    news_attention_mask = news_attention_mask.unsqueeze(1).repeat(1, num_beams, 1).view(-1, news_attention_mask.size(1))
+                
+                outputs = self.decoder(
+                    encoder_outputs=encoder_outputs,
+                    encoder_input_ids=news_input_ids,
+                    target_ids=None,
+                    encoder_mask=news_attention_mask,
+                    user_embedding=user_embedding,
+                    injection_method=injection_method,
+                    teacher_forcing_ratio=0.0
+                )
+                
+                generated_ids = torch.argmax(outputs["final_dists"], dim=-1)
+                generated_ids = generated_ids.view(batch_size, num_beams, -1)[:, 0, :]  # 取第一个beam
         
-        # 预测点击概率
-        click_probs = self.user_encoder.predict_click(user_repr, news_repr)
-        
-        return click_probs
+        return {
+            "generated_ids": generated_ids,
+            "attention_weights": outputs.get("attention_weights"),
+            "user_embedding": user_embedding
+        }
     
     def load_pretrained_embeddings(self, embeddings: torch.Tensor):
         """加载预训练词嵌入到所有组件"""
+        # 加载到用户编码器
         self.user_encoder.load_pretrained_embeddings(embeddings)
-        self.transformer_encoder.load_pretrained_embeddings(embeddings)
         
-        # 为指针解码器加载嵌入
-        if embeddings.size() == self.pointer_decoder.embedding.weight.size():
-            self.pointer_decoder.embedding.weight.data.copy_(embeddings)
+        # 加载到Transformer编码器
+        if embeddings.size() == self.transformer_encoder.embeddings.weight.size():
+            self.transformer_encoder.embeddings.weight.data.copy_(embeddings)
+            logger.info("已加载预训练词嵌入到Transformer编码器")
+        
+        # 加载到解码器
+        if embeddings.size() == self.decoder.embeddings.weight.size():
+            self.decoder.embeddings.weight.data.copy_(embeddings)
+            logger.info("已加载预训练词嵌入到解码器")
     
-    def freeze_user_encoder(self):
-        """冻结用户编码器参数（用于标题生成训练）"""
-        for param in self.user_encoder.parameters():
-            param.requires_grad = False
-    
-    def unfreeze_user_encoder(self):
-        """解冻用户编码器参数"""
-        for param in self.user_encoder.parameters():
-            param.requires_grad = True
+    def get_model_size(self) -> Dict[str, int]:
+        """获取模型参数统计"""
+        total_params = sum(p.numel() for p in self.parameters())
+        trainable_params = sum(p.numel() for p in self.parameters() if p.requires_grad)
+        
+        user_encoder_params = sum(p.numel() for p in self.user_encoder.parameters())
+        transformer_params = sum(p.numel() for p in self.transformer_encoder.parameters())
+        decoder_params = sum(p.numel() for p in self.decoder.parameters())
+        
+        return {
+            "total_params": total_params,
+            "trainable_params": trainable_params,
+            "user_encoder_params": user_encoder_params,
+            "transformer_params": transformer_params,
+            "decoder_params": decoder_params
+        }
 
 
-def create_naml_f2_generator(
-    vocab_size: int,
-    config: Optional[Dict[str, Any]] = None
-) -> PersonalizedHeadlineGenerator:
+def create_naml_f2_generator(vocab_size: int, config: Dict[str, Any] = None) -> PersonalizedHeadlineGenerator:
     """
-    工厂函数：创建NAML+F2个性化标题生成器
+    创建NAML+F2个性化新闻标题生成器
     
     Args:
         vocab_size: 词汇表大小
         config: 模型配置
-    
+        
     Returns:
-        NAML+F2个性化标题生成器实例
+        个性化标题生成器实例
     """
     if config is None:
         config = {}
     
-    return PersonalizedHeadlineGenerator(
+    # 提取各组件配置
+    user_encoder_config = config.get('user_encoder', {})
+    transformer_config = config.get('transformer', {})
+    decoder_config = config.get('decoder', {})
+    
+    # 确保F2策略
+    decoder_config['decoder_type'] = 2
+    
+    model = PersonalizedHeadlineGenerator(
         vocab_size=vocab_size,
-        user_encoder_config=config.get("user_encoder", None),
-        transformer_config=config.get("transformer", None),
-        decoder_config=config.get("decoder", None)
+        user_encoder_config=user_encoder_config,
+        transformer_config=transformer_config,
+        decoder_config=decoder_config
     )
+    
+    return model

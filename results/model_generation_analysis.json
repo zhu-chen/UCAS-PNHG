@@ -1,0 +1,233 @@
+{
+  "overall_metrics": {
+    "vs_original": {
+      "rouge_1": 0.04857142857142857,
+      "rouge_2": 0.0,
+      "rouge_l": 0.040920716112531966,
+      "bleu_1": 0.03538461538461539,
+      "bleu_2": 0.0,
+      "bleu_3": 0.0,
+      "bleu_4": 0.0,
+      "meteor": 0.05576923076923077,
+      "avg_pred_length": 6.8,
+      "avg_ref_length": 9.6,
+      "distinct_1": 0.4411764705882353,
+      "distinct_2": 0.8275862068965517,
+      "rouge": 0.040920716112531966,
+      "bleu": 0.0
+    },
+    "vs_personalized": {
+      "rouge_1": 0.11190476190476191,
+      "rouge_2": 0.02857142857142857,
+      "rouge_l": 0.12088888888888889,
+      "bleu_1": 0.17076923076923076,
+      "bleu_2": 0.02222222222222222,
+      "bleu_3": 0.0,
+      "bleu_4": 0.0,
+      "meteor": 0.14864612511671335,
+      "avg_pred_length": 6.8,
+      "avg_ref_length": 9.2,
+      "distinct_1": 0.4411764705882353,
+      "distinct_2": 0.8275862068965517,
+      "rouge": 0.12088888888888889,
+      "bleu": 0.0
+    }
+  },
+  "case_studies": [
+    {
+      "case_id": 1,
+      "case_name": "news - NT19",
+      "user_id": "NT19",
+      "news_id": "N75098",
+      "category": "news",
+      "news_body_preview": "In the House of Representatives the apparently frustrated Democratic congresswoman Alexandra Ocasio-Cortez, had one question for the leadership of her party: when would they impeach Donald Trump? The ...",
+      "user_history": [
+        "New England Patriots linebacker alleges police harassment",
+        "Kevin Durant had surgery to repair ruptured Achilles"
+      ],
+      "original_title": "Democrats divided as pressure to impeach builds: What are you waiting for?",
+      "personalized_title": "Pressure to impeach has democrats divided",
+      "model_generated_title": "the all in former",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 4,
+        "original_length": 12,
+        "personalized_length": 6,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 2,
+      "case_name": "autos - NT5",
+      "user_id": "NT5",
+      "news_id": "N87938",
+      "category": "autos",
+      "news_body_preview": "This immaculate 1967 Ford Mustang Fastback is estimated to sell at British auction for 95K. Even with shipping costs, that s cheaper than the examples available stateside! It s hard not to whisper Ste...",
+      "user_history": [
+        "Chael Sonnen explains retirement after Bellator 222: I feel like I used all of my toughness up",
+        "Hang Up! The US Marshal s Office Will Never Call You For Money"
+      ],
+      "original_title": "Is It Cheaper To Buy A 1967 Ford Mustang Fastback From Britain?",
+      "personalized_title": "Can You Buy A Classic American Car Cheaper in Britian? The Answer is Yes.",
+      "model_generated_title": "the all in the",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.14285714285714285,
+          "rouge_2": 0.0,
+          "rouge_l": 0.22222222222222224,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 4,
+        "original_length": 12,
+        "personalized_length": 14,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.13333333333333333
+      }
+    },
+    {
+      "case_id": 3,
+      "case_name": "health - NT46",
+      "user_id": "NT46",
+      "news_id": "N112394",
+      "category": "health",
+      "news_body_preview": "Whether you re thinking of where to retire or just wondering why seniors are so happy and healthy or unhappy and unhealthy right where you are, these annual health rankings probably hold the answer. L...",
+      "user_history": [
+        "Dodgers starter Rich Hill expected to miss more than a month with forearm strain",
+        "Judge approves PSL settlement; Rams owe up to 24M"
+      ],
+      "original_title": "America s Healthiest States for Seniors, Ranked",
+      "personalized_title": "Seniors Health Impacted by Retirement Planning",
+      "model_generated_title": "the all happy",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 3,
+        "original_length": 7,
+        "personalized_length": 6,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 4,
+      "case_name": "sports - NT41",
+      "user_id": "NT41",
+      "news_id": "N16617",
+      "category": "sports",
+      "news_body_preview": "It s quite clear that the relationship between Kyrie Irving and the Boston Celtics went sour over the course of the last season, but there are a lot of potential explanations as to why. According to E...",
+      "user_history": [
+        "Meet The Richest Person In Massachusetts",
+        "This Video Proves, Between You and Your Dog, Your Dog is the Better American Ninja Warrior"
+      ],
+      "original_title": "Kyrie Irving reportedly didn t like Boston",
+      "personalized_title": "Multiple fallouts caused Irving to sour on Celtics",
+      "model_generated_title": "irving and irving chicken of irving for irving to irving",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.14285714285714285,
+          "rouge_2": 0.0,
+          "rouge_l": 0.11764705882352941,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.25,
+          "rouge_2": 0.14285714285714285,
+          "rouge_l": 0.22222222222222224,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 10,
+        "original_length": 7,
+        "personalized_length": 8,
+        "word_overlap_original": 0.08333333333333333,
+        "word_overlap_personalized": 0.16666666666666666
+      }
+    },
+    {
+      "case_id": 5,
+      "case_name": "finance - NT37",
+      "user_id": "NT37",
+      "news_id": "N55553",
+      "category": "finance",
+      "news_body_preview": "MPLX (NYSE: MPLX) has been an excellent income stock to own over the years. The master limited partnership (MLP) has raised its cash distribution to investors in each of the last 25 straight quarters....",
+      "user_history": [
+        "Is It Kawhi Leonard or Bust for Lakers?",
+        "Skip Bayless falls for fake Twitter report, Chris Paul saying James Harden has manboobs"
+      ],
+      "original_title": "1 Top-Tier, High-Yield Dividend Stock to Consider Buying This June",
+      "personalized_title": "Exxon securing natural gaz projects, and high yeild dividend stocks to consider.",
+      "model_generated_title": "an and an and an to income income to master master to driving",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.1,
+          "rouge_2": 0.0,
+          "rouge_l": 0.08695652173913043,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.16666666666666666,
+          "rouge_2": 0.0,
+          "rouge_l": 0.16,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 13,
+        "original_length": 10,
+        "personalized_length": 12,
+        "word_overlap_original": 0.06666666666666667,
+        "word_overlap_personalized": 0.125
+      }
+    }
+  ],
+  "summary": {
+    "total_cases": 5,
+    "avg_rouge_l_original": 0.040920716112531966,
+    "avg_rouge_l_personalized": 0.12088888888888889,
+    "avg_bleu_4_original": 0.0,
+    "avg_bleu_4_personalized": 0.0,
+    "avg_generated_length": 6.8,
+    "category_distribution": {
+      "news": 1,
+      "autos": 1,
+      "health": 1,
+      "sports": 1,
+      "finance": 1
+    }
+  }
+}

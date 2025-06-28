@@ -546,34 +546,64 @@ class PENSTrainer:
         return total_loss / len(self.valid_loader), metrics
     
     def _calculate_loss(self, outputs: Dict[str, torch.Tensor], batch: Dict[str, torch.Tensor]) -> torch.Tensor:
-        """计算损失"""
-        final_dists = outputs['final_dists']  # [batch_size, seq_len, vocab_size]
-        target_ids = batch['target_ids'][:, 1:]  # 去掉SOS token
-        target_mask = batch.get('target_mask', None)
-        if target_mask is not None:
-            target_mask = target_mask[:, 1:]  # 对应的掩码
+        import torch.nn.functional as F
         
-        batch_size, seq_len, vocab_size = final_dists.size()
-        target_batch_size, target_seq_len = target_ids.size()
+        if 'loss' in outputs and outputs['loss'] is not None:
+            # 如果模型已经计算了损失，直接使用
+            return outputs['loss']
         
-        # 确保序列长度匹配
-        min_seq_len = min(seq_len, target_seq_len)
-        final_dists = final_dists[:, :min_seq_len, :]  # 截取到最小长度
-        target_ids = target_ids[:, :min_seq_len]       # 截取到最小长度
+        # 否则从logits计算损失
+        if 'logits' in outputs:
+            logits = outputs['logits']  # [batch_size, seq_len, vocab_size]
+            target_ids = batch['target_ids'][:, 1:]  # 去掉SOS token
+            
+            batch_size, seq_len, vocab_size = logits.size()
+            target_batch_size, target_seq_len = target_ids.size()
+            
+            # 确保序列长度匹配
+            min_seq_len = min(seq_len, target_seq_len)
+            logits = logits[:, :min_seq_len, :]  # 截取到最小长度
+            target_ids = target_ids[:, :min_seq_len]       # 截取到最小长度
+            
+            # 重塑张量以适应CrossEntropyLoss
+            logits = logits.contiguous().view(-1, vocab_size)
+            target_ids = target_ids.contiguous().view(-1)
+            
+            loss = self.criterion(logits, target_ids)
+            return loss
         
-        # 重塑张量以适应CrossEntropyLoss
-        final_dists = final_dists.contiguous().view(-1, vocab_size)
-        target_ids = target_ids.contiguous().view(-1)
+        # 如果都没有，使用final_dists
+        elif 'final_dists' in outputs:
+            final_dists = outputs['final_dists']  # [batch_size, seq_len, vocab_size]
+            target_ids = batch['target_ids'][:, 1:]  # 去掉SOS token
+            
+            batch_size, seq_len, vocab_size = final_dists.size()
+            target_batch_size, target_seq_len = target_ids.size()
+            
+            # 确保序列长度匹配
+            min_seq_len = min(seq_len, target_seq_len)
+            final_dists = final_dists[:, :min_seq_len, :]  # 截取到最小长度
+            target_ids = target_ids[:, :min_seq_len]       # 截取到最小长度
+            
+            # 重塑张量以适应CrossEntropyLoss
+            final_dists = final_dists.contiguous().view(-1, vocab_size)
+            target_ids = target_ids.contiguous().view(-1)
+            
+            # 对于概率分布，需要先取log
+            log_probs = torch.log(final_dists + 1e-8)  # 避免log(0)
+            loss = F.nll_loss(log_probs, target_ids, ignore_index=0)
+            return loss
         
-        loss = self.criterion(final_dists, target_ids)
-        
-        return loss
-    
+        else:
+            raise ValueError("模型输出中没有找到损失计算所需的数据")
+
     def _decode_predictions(self, final_dists: torch.Tensor) -> List[str]:
-        """解码预测结果"""
-        batch_size, seq_len, vocab_size = final_dists.size()
+        """解码预测结果 - 使用评估器的解码功能"""
+        if self.evaluator is not None:
+            return self.evaluator.decode_batch_ids_to_text(torch.argmax(final_dists, dim=-1))
         
-        # 获取预测的token ID
+        # 简化版本解码
+        batch_size, seq_len, vocab_size = final_dists.size()
         pred_ids = torch.argmax(final_dists, dim=-1)  # [batch_size, seq_len]
         
         predictions = []
@@ -584,7 +614,6 @@ class PENSTrainer:
                 if token_id == 3:  # EOS token
                     break
                 elif token_id > 3:  # 跳过特殊token
-                    # 这里需要ID到词的映射，简化处理
                     pred_tokens.append(str(token_id))
             
             predictions.append(' '.join(pred_tokens))
@@ -592,7 +621,11 @@ class PENSTrainer:
         return predictions
     
     def _decode_references(self, target_ids: torch.Tensor) -> List[str]:
-        """解码参考答案"""
+        """解码参考答案 - 使用评估器的解码功能"""
+        if self.evaluator is not None:
+            return self.evaluator.decode_batch_ids_to_text(target_ids)
+        
+        # 简化版本解码
         batch_size, seq_len = target_ids.size()
         
         references = []
@@ -608,7 +641,37 @@ class PENSTrainer:
             references.append(' '.join(ref_tokens))
         
         return references
-    
+
+    def validate(self) -> Dict[str, float]:
+        """公共验证方法，用于评估模式"""
+        logger.info("开始验证模型...")
+        
+        # 确保模型和数据已经准备好
+        if self.model is None or self.valid_loader is None:
+            logger.info("模型或数据未准备，先进行设置...")
+            self.setup()
+        
+        # 加载最佳模型（如果存在）
+        if self.checkpoint_manager is not None:
+            best_checkpoint = self.checkpoint_manager.load_best_checkpoint()
+            if best_checkpoint:
+                self.model.load_state_dict(best_checkpoint['model_state_dict'])
+                logger.info("已加载最佳模型权重")
+        
+        # 执行验证
+        valid_loss, valid_metrics = self._validate()
+        
+        # 记录结果
+        logger.info(f"验证损失: {valid_loss:.4f}")
+        for metric, score in valid_metrics.items():
+            logger.info(f"{metric}: {score:.4f}")
+        
+        # 返回包含损失和指标的完整结果
+        result = {'loss': valid_loss}
+        result.update(valid_metrics)
+        
+        return result
+
     def test(self):
         """测试模型"""
         logger.info("开始测试模型")
