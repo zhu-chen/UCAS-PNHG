@@ -207,3 +207,5 @@ configs/private/
 # baseline paper
 src/baseline/papers
 src/ref
+
+*.pth
