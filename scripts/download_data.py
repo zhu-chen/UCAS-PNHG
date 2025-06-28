@@ -1,432 +1,237 @@
+from datasets import load_dataset
 import os
-import torch
 import pandas as pd
-import numpy as np
-from datasets import Dataset, load_metric
-from transformers import (
-    BartForConditionalGeneration, 
-    BartTokenizer, 
-    TrainingArguments, 
-    Trainer,
-    DataCollatorForSeq2Seq,
-    EarlyStoppingCallback
-)
-from sklearn.model_selection import train_test_split
-import logging
-from tqdm import tqdm
-import random
+from huggingface_hub import hf_hub_download
+import json
+import pickle
 from collections import defaultdict
+import logging
 
 # 设置日志
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-class PersonalizedTitleGenerator:
-    def __init__(self, model_name="facebook/bart-large-cnn", max_length=512, output_dir="results/bart_personalized_title"):
-        """初始化个性化标题生成器"""
-        self.model_name = model_name
-        self.max_length = max_length
-        self.output_dir = output_dir
-        
-        # 加载预训练模型和分词器
-        self.tokenizer = BartTokenizer.from_pretrained(model_name)
-        self.model = BartForConditionalGeneration.from_pretrained(model_name)
-        
-        # 设置特殊标记
-        self.user_token = "<user>"  # 用户偏好标记
-        self.tokenizer.add_tokens([self.user_token])
-        self.model.resize_token_embeddings(len(self.tokenizer))
-        
-        # 评估指标
-        self.rouge_metric = load_metric("rouge")
-        
-        # 创建输出目录
-        os.makedirs(output_dir, exist_ok=True)
+def download_pens_dataset():
+    """下载PENS数据集并正确处理新闻内容"""
+    print("正在下载PENS数据集...")
     
-    def load_data(self, news_path="data/raw/news_corpus.pkl", train_path="data/raw/train.pkl", 
-                  val_path="data/raw/validation.pkl", test_path="data/raw/test.pkl"):
-        """加载PENS数据集"""
-        logger.info("加载新闻语料库和用户行为数据...")
-        
-        # 加载新闻内容
-        self.news_df = pd.read_pickle(news_path)
-        
-        # 加载用户行为数据
-        self.train_df = pd.read_pickle(train_path)
-        self.val_df = pd.read_pickle(val_path)
-        self.test_df = pd.read_pickle(test_path)
-        
-        # 构建新闻ID到内容的映射
-        self.news_id_to_content = self.news_df.set_index('news_id')[['title', 'body', 'category']].to_dict(orient='index')
-        
-        logger.info(f"数据加载完成: {len(self.news_df)} 篇新闻，{len(self.train_df)} 条训练样本")
-        
-        return self
+    # 创建数据目录
+    os.makedirs("data/raw", exist_ok=True)
     
-    def create_user_profiles(self):
-        """创建用户兴趣画像"""
-        logger.info("构建用户兴趣画像...")
-        
-        # 为每个用户收集点击过的新闻类别
-        self.user_profiles = defaultdict(lambda: defaultdict(int))
-        
-        # 从训练集构建用户画像
-        for _, row in tqdm(self.train_df.iterrows(), total=len(self.train_df), desc="构建用户画像"):
-            user_id = row.get('UserID')
-            if pd.notna(user_id):
-                clicked_news_ids = str(row.get('ClicknewsID', '')).split(' ')
-                for news_id in clicked_news_ids:
-                    if news_id and news_id in self.news_id_to_content:
-                        category = self.news_id_to_content[news_id]['category']
-                        self.user_profiles[user_id][category] += 1
-        
-        # 将计数转换为百分比
-        for user_id, profile in self.user_profiles.items():
-            total = sum(profile.values())
-            if total > 0:
-                self.user_profiles[user_id] = {cat: cnt/total for cat, cnt in profile.items()}
-        
-        logger.info(f"用户画像构建完成，共 {len(self.user_profiles)} 个用户")
-        return self
+    # 检查文件是否已存在
+    required_files = ['train.tsv', 'valid.tsv', 'personalized_test.tsv', 'news.tsv']
+    missing_files = []
     
-    def prepare_datasets(self, sample_size=None):
-        """准备训练、验证和测试数据集"""
-        logger.info("准备数据集...")
-        
-        # 构建训练样本
-        train_samples = []
-        for _, row in tqdm(self.train_df.iterrows(), total=len(self.train_df), desc="准备训练数据"):
-            user_id = row.get('UserID')
-            if pd.notna(user_id):
-                # 获取用户画像
-                user_profile = self.user_profiles.get(user_id, {})
-                
-                # 获取用户点击的新闻
-                clicked_news_ids = str(row.get('ClicknewsID', '')).split(' ')
-                for news_id in clicked_news_ids:
-                    if news_id and news_id in self.news_id_to_content:
-                        news = self.news_id_to_content[news_id]
-                        # 构建输入文本：用户偏好 + 新闻正文
-                        user_pref_text = self._build_user_preference_text(user_profile)
-                        input_text = f"{user_pref_text} {self.user_token} {news['body']}"
-                        
-                        # 目标文本：原始标题
-                        target_text = news['title']
-                        
-                        train_samples.append({
-                            'user_id': user_id,
-                            'news_id': news_id,
-                            'input_text': input_text,
-                            'target_text': target_text
-                        })
-        
-        # 构建验证样本
-        val_samples = []
-        for _, row in tqdm(self.val_df.iterrows(), total=len(self.val_df), desc="准备验证数据"):
-            user_id = row.get('UserID')
-            if pd.notna(user_id):
-                user_profile = self.user_profiles.get(user_id, {})
-                clicked_news_ids = str(row.get('ClicknewsID', '')).split(' ')
-                for news_id in clicked_news_ids:
-                    if news_id and news_id in self.news_id_to_content:
-                        news = self.news_id_to_content[news_id]
-                        user_pref_text = self._build_user_preference_text(user_profile)
-                        input_text = f"{user_pref_text} {self.user_token} {news['body']}"
-                        target_text = news['title']
-                        
-                        val_samples.append({
-                            'user_id': user_id,
-                            'news_id': news_id,
-                            'input_text': input_text,
-                            'target_text': target_text
-                        })
-        
-        # 构建测试样本
-        test_samples = []
-        for _, row in tqdm(self.test_df.iterrows(), total=len(self.test_df), desc="准备测试数据"):
-            user_id = row.get('UserID')
-            if pd.notna(user_id):
-                user_profile = self.user_profiles.get(user_id, {})
-                clicked_news_ids = str(row.get('clicknewsID', '')).split(',')
-                for news_id in clicked_news_ids:
-                    if news_id and news_id in self.news_id_to_content:
-                        news = self.news_id_to_content[news_id]
-                        user_pref_text = self._build_user_preference_text(user_profile)
-                        input_text = f"{user_pref_text} {self.user_token} {news['body']}"
-                        target_text = news['title']
-                        
-                        test_samples.append({
-                            'user_id': user_id,
-                            'news_id': news_id,
-                            'input_text': input_text,
-                            'target_text': target_text
-                        })
-        
-        # 随机采样（如果需要）
-        if sample_size and sample_size < len(train_samples):
-            train_samples = random.sample(train_samples, sample_size)
-        if sample_size and sample_size < len(val_samples):
-            val_samples = random.sample(val_samples, min(sample_size, len(val_samples)))
-        if sample_size and sample_size < len(test_samples):
-            test_samples = random.sample(test_samples, min(sample_size, len(test_samples)))
-        
-        # 转换为Dataset对象
-        self.train_dataset = Dataset.from_list(train_samples)
-        self.val_dataset = Dataset.from_list(val_samples)
-        self.test_dataset = Dataset.from_list(test_samples)
-        
-        logger.info(f"数据集准备完成: 训练集={len(self.train_dataset)}, 验证集={len(self.val_dataset)}, 测试集={len(self.test_dataset)}")
-        return self
+    for file in required_files:
+        if not os.path.exists(f"data/raw/{file}"):
+            missing_files.append(file)
     
-    def _build_user_preference_text(self, user_profile):
-        """构建用户偏好文本表示"""
-        if not user_profile:
-            return "用户兴趣: 无明确偏好"
+    if missing_files:
+        print(f"需要下载缺失的文件: {missing_files}")
         
-        # 按兴趣程度排序
-        sorted_preferences = sorted(user_profile.items(), key=lambda x: x[1], reverse=True)
-        
-        # 取前3个兴趣类别
-        top_preferences = sorted_preferences[:3]
-        
-        # 构建文本表示
-        pref_text = "用户兴趣: "
-        for category, score in top_preferences:
-            pref_text += f"{category}({int(score*100)}%), "
-        
-        return pref_text.rstrip(', ')
+        # 下载缺失的文件
+        for filename in missing_files:
+            try:
+                print(f"下载 {filename}...")
+                hf_hub_download(
+                    repo_id="THEATLAS/PENS",
+                    filename=filename,
+                    repo_type="dataset",
+                    local_dir="data/raw"
+                )
+                print(f"{filename} 下载成功")
+            except Exception as e:
+                print(f"下载 {filename} 失败: {e}")
+    else:
+        print("所有必需文件已存在")
     
-    def preprocess_data(self):
-        """预处理数据集"""
-        logger.info("预处理数据集...")
+    # 加载和处理数据
+    try:
+        print("加载数据文件...")
         
-        def tokenize_function(examples):
-            # 编码输入文本
-            inputs = self.tokenizer(
-                examples["input_text"], 
-                max_length=self.max_length, 
-                truncation=True,
-                padding="max_length"
-            )
-            
-            # 编码目标文本
-            targets = self.tokenizer(
-                examples["target_text"], 
-                max_length=64,  # 标题通常较短
-                truncation=True
-            )
-            
-            inputs["labels"] = targets["input_ids"]
-            return inputs
+        # 加载新闻内容（这是关键）
+        news_df = load_news_content()
         
-        # 对数据集进行预处理
-        self.train_dataset = self.train_dataset.map(tokenize_function, batched=True)
-        self.val_dataset = self.val_dataset.map(tokenize_function, batched=True)
-        self.test_dataset = self.test_dataset.map(tokenize_function, batched=True)
+        # 加载impression数据
+        train_df = pd.read_csv("data/raw/train.tsv", sep='\t')
+        val_df = pd.read_csv("data/raw/valid.tsv", sep='\t')
+        test_df = pd.read_csv("data/raw/personalized_test.tsv", sep='\t')
         
-        # 设置格式以便与PyTorch兼容
-        self.train_dataset.set_format(type='torch', columns=['input_ids', 'attention_mask', 'labels'])
-        self.val_dataset.set_format(type='torch', columns=['input_ids', 'attention_mask', 'labels'])
-        self.test_dataset.set_format(type='torch', columns=['input_ids', 'attention_mask', 'labels'])
+        print(f"数据加载完成:")
+        print(f"  - 新闻库: {len(news_df)} 篇文章")
+        print(f"  - 训练集: {len(train_df)} 条记录")
+        print(f"  - 验证集: {len(val_df)} 条记录")
+        print(f"  - 测试集: {len(test_df)} 条记录")
         
-        logger.info("数据预处理完成")
-        return self
-    
-    def train(self, batch_size=4, num_epochs=3, learning_rate=5e-5):
-        """微调BART模型"""
-        logger.info(f"开始微调BART模型，batch_size={batch_size}, epochs={num_epochs}, lr={learning_rate}")
+        # 检查数据完整性
+        check_data_integrity(news_df, train_df, val_df, test_df)
         
-        # 定义训练参数
-        training_args = TrainingArguments(
-            output_dir=self.output_dir,
-            learning_rate=learning_rate,
-            per_device_train_batch_size=batch_size,
-            per_device_eval_batch_size=batch_size,
-            num_train_epochs=num_epochs,
-            weight_decay=0.01,
-            evaluation_strategy="epoch",
-            save_strategy="epoch",
-            logging_dir=f"{self.output_dir}/logs",
-            save_total_limit=3,
-            load_best_model_at_end=True,
-            metric_for_best_model="rouge1",
-            greater_is_better=True,
-            fp16=torch.cuda.is_available()  # 使用混合精度训练加速
-        )
+        # 保存处理后的数据
+        news_df.to_pickle("data/raw/news_corpus.pkl")
+        train_df.to_pickle("data/raw/train.pkl")
+        val_df.to_pickle("data/raw/validation.pkl")
+        test_df.to_pickle("data/raw/test.pkl")
         
-        # 数据收集器
-        data_collator = DataCollatorForSeq2Seq(self.tokenizer, model=self.model)
+        print("数据处理和保存完成！")
         
-        # 定义评估指标
-        def compute_metrics(eval_pred):
-            predictions, labels = eval_pred
-            # 解码预测结果
-            decoded_preds = self.tokenizer.batch_decode(predictions, skip_special_tokens=True)
-            # 解码目标文本
-            labels = np.where(labels != -100, labels, self.tokenizer.pad_token_id)
-            decoded_labels = self.tokenizer.batch_decode(labels, skip_special_tokens=True)
-            
-            # 计算ROUGE分数
-            result = self.rouge_metric.compute(
-                predictions=decoded_preds, 
-                references=decoded_labels, 
-                use_stemmer=True
-            )
-            
-            # 提取ROUGE-1, ROUGE-2, ROUGE-L的f1分数
-            result = {key: value.mid.fmeasure * 100 for key, value in result.items()}
-            
-            # 添加生成的平均长度
-            prediction_lens = [np.count_nonzero(pred != self.tokenizer.pad_token_id) for pred in predictions]
-            result["gen_len"] = np.mean(prediction_lens)
-            
-            return {k: round(v, 4) for k, v in result.items()}
-        
-        # 创建训练器
-        trainer = Trainer(
-            model=self.model,
-            args=training_args,
-            train_dataset=self.train_dataset,
-            eval_dataset=self.val_dataset,
-            data_collator=data_collator,
-            compute_metrics=compute_metrics,
-            callbacks=[EarlyStoppingCallback(early_stopping_patience=2)]
-        )
-        
-        # 开始训练
-        trainer.train()
-        
-        # 保存最佳模型
-        trainer.save_model(f"{self.output_dir}/best_model")
-        self.tokenizer.save_pretrained(f"{self.output_dir}/best_model")
-        
-        logger.info(f"模型训练完成，已保存至 {self.output_dir}/best_model")
-        return self
-    
-    def generate_personalized_title(self, user_id, news_id, max_length=64):
-        """为特定用户生成个性化新闻标题"""
-        # 获取用户画像
-        user_profile = self.user_profiles.get(user_id, {})
-        
-        # 获取新闻内容
-        if news_id not in self.news_id_to_content:
-            logger.error(f"新闻ID {news_id} 不存在")
-            return None
-        
-        news = self.news_id_to_content[news_id]
-        
-        # 构建输入文本
-        user_pref_text = self._build_user_preference_text(user_profile)
-        input_text = f"{user_pref_text} {self.user_token} {news['body']}"
-        
-        # 编码输入
-        inputs = self.tokenizer(input_text, return_tensors="pt", max_length=self.max_length, truncation=True)
-        
-        # 生成标题
-        with torch.no_grad():
-            outputs = self.model.generate(
-                inputs["input_ids"].to(self.model.device),
-                max_length=max_length,
-                num_beams=5,
-                early_stopping=True,
-                no_repeat_ngram_size=2
-            )
-        
-        # 解码生成的标题
-        generated_title = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-        
-        return {
-            'user_id': user_id,
-            'news_id': news_id,
-            'original_title': news['title'],
-            'generated_title': generated_title,
-            'user_preferences': user_profile
-        }
-    
-    def evaluate(self, sample_size=100):
-        """评估模型性能"""
-        logger.info("开始模型评估...")
-        
-        # 随机选择样本进行评估
-        if sample_size < len(self.test_dataset):
-            indices = random.sample(range(len(self.test_dataset)), sample_size)
-            samples = [self.test_dataset[i] for i in indices]
-        else:
-            samples = self.test_dataset
-        
-        results = []
-        for sample in tqdm(samples, desc="生成评估结果"):
-            user_id = sample['user_id']
-            news_id = sample['news_id']
-            
-            # 生成个性化标题
-            result = self.generate_personalized_title(user_id, news_id)
-            if result:
-                results.append(result)
-        
-        # 计算评估指标
-        references = [result['original_title'] for result in results]
-        predictions = [result['generated_title'] for result in results]
-        
-        # 计算ROUGE分数
-        rouge_scores = self.rouge_metric.compute(
-            predictions=predictions, 
-            references=references, 
-            use_stemmer=True
-        )
-        
-        # 提取ROUGE-1, ROUGE-2, ROUGE-L的f1分数
-        rouge_scores = {key: value.mid.fmeasure * 100 for key, value in rouge_scores.items()}
-        
-        logger.info(f"评估完成: ROUGE-1={rouge_scores['rouge1']:.2f}, ROUGE-2={rouge_scores['rouge2']:.2f}, ROUGE-L={rouge_scores['rougeL']:.2f}")
-        
-        # 保存一些示例结果
-        with open(f"{self.output_dir}/sample_results.txt", "w", encoding="utf-8") as f:
-            f.write("个性化新闻标题生成示例:\n\n")
-            for i, result in enumerate(results[:10]):
-                f.write(f"示例 {i+1}:\n")
-                f.write(f"用户ID: {result['user_id']}\n")
-                f.write(f"用户偏好: {result['user_preferences']}\n")
-                f.write(f"原始标题: {result['original_title']}\n")
-                f.write(f"生成标题: {result['generated_title']}\n")
-                f.write("-" * 50 + "\n\n")
-        
-        return {
-            'rouge_scores': rouge_scores,
-            'sample_results': results[:10]
-        }
+    except Exception as e:
+        print(f"数据处理失败: {e}")
+        raise
 
-# 主函数
+def load_news_content():
+    """加载新闻内容文件 - 优化内存使用"""
+    print("加载新闻内容文件...")
+    
+    try:
+        # 先检查文件大小
+        file_size = os.path.getsize("data/raw/news.tsv") / (1024 * 1024 * 1024)  # GB
+        print(f"新闻文件大小: {file_size:.2f} GB")
+        
+        # 分块读取大文件
+        chunk_size = 10000  # 每次读取10000行
+        chunks = []
+        
+        print("开始分块读取新闻文件...")
+        chunk_count = 0
+        
+        # 使用chunksize参数分块读取
+        for chunk in pd.read_csv(
+            "data/raw/news.tsv", 
+            sep='\t',
+            encoding='utf-8',
+            dtype=str,
+            na_values=[''],
+            keep_default_na=False,
+            chunksize=chunk_size
+        ):
+            chunk_count += 1
+            print(f"处理第 {chunk_count} 块，包含 {len(chunk)} 行")
+            
+            # 重命名列
+            column_mapping = {
+                'News ID': 'news_id',
+                'Category': 'category', 
+                'Topic': 'topic',
+                'Headline': 'title',
+                'News body': 'body',
+                'Title entity': 'title_entities',
+                'Entity content': 'entity_content'
+            }
+            
+            for old_col, new_col in column_mapping.items():
+                if old_col in chunk.columns:
+                    chunk = chunk.rename(columns={old_col: new_col})
+            
+            # 基本清理
+            if 'title' in chunk.columns:
+                chunk['title'] = chunk['title'].fillna('')
+                # 只保留有标题的行
+                chunk = chunk[chunk['title'].str.len() > 0]
+            
+            if 'body' in chunk.columns:
+                chunk['body'] = chunk['body'].fillna('')
+            
+            if 'category' in chunk.columns:
+                chunk['category'] = chunk['category'].fillna('unknown')
+            
+            # 只保留需要的列，减少内存使用
+            required_columns = ['news_id', 'title', 'body', 'category']
+            available_columns = [col for col in required_columns if col in chunk.columns]
+            chunk = chunk[available_columns]
+            
+            chunks.append(chunk)
+            
+            # 定期合并chunks，避免内存积累
+            if len(chunks) >= 10:  # 每10个chunk合并一次
+                print(f"合并前 {len(chunks)} 个块...")
+                combined_chunk = pd.concat(chunks, ignore_index=True)
+                chunks = [combined_chunk]
+                print(f"合并后内存使用: {combined_chunk.memory_usage(deep=True).sum() / 1024 / 1024:.2f} MB")
+        
+        # 最终合并所有chunks
+        print("最终合并所有数据块...")
+        news_df = pd.concat(chunks, ignore_index=True)
+        
+        # 删除重复项
+        if 'news_id' in news_df.columns:
+            original_len = len(news_df)
+            news_df = news_df.drop_duplicates(subset=['news_id'])
+            print(f"删除重复新闻: {original_len - len(news_df)} 条")
+        
+        print(f"新闻内容加载完成，共 {len(news_df)} 篇文章")
+        print(f"最终内存使用: {news_df.memory_usage(deep=True).sum() / 1024 / 1024:.2f} MB")
+        print(f"新闻文件列: {list(news_df.columns)}")
+        
+        return news_df
+        
+    except Exception as e:
+        print(f"加载新闻内容失败: {e}")
+        raise
+
+def clean_news_data(news_df):
+    """清理新闻数据 - 简化版本"""
+    print("清理新闻数据...")
+    
+    # 基本清理已在load_news_content中完成
+    print(f"数据清理完成，剩余 {len(news_df)} 篇文章")
+    return news_df
+
+def check_data_integrity(news_df, train_df, val_df, test_df):
+    """检查数据完整性 - 优化内存使用"""
+    print("检查数据完整性...")
+    
+    # 收集所有被引用的新闻ID - 使用集合减少内存
+    referenced_news_ids = set()
+    
+    # 定义一个辅助函数来处理ID字符串
+    def extract_ids(id_string, separator=' '):
+        if pd.notna(id_string) and str(id_string).strip():
+            return str(id_string).split(separator)
+        return []
+    
+    print("从训练集收集新闻ID...")
+    for _, row in train_df.iterrows():
+        # 点击的新闻
+        referenced_news_ids.update(extract_ids(row.get('ClicknewsID')))
+        # 正面和负面新闻
+        referenced_news_ids.update(extract_ids(row.get('pos')))
+        referenced_news_ids.update(extract_ids(row.get('neg')))
+    
+    print("从验证集收集新闻ID...")
+    for _, row in val_df.iterrows():
+        referenced_news_ids.update(extract_ids(row.get('ClicknewsID')))
+        referenced_news_ids.update(extract_ids(row.get('pos')))
+        referenced_news_ids.update(extract_ids(row.get('neg')))
+    
+    print("从测试集收集新闻ID...")
+    for _, row in test_df.iterrows():
+        referenced_news_ids.update(extract_ids(row.get('clicknewsID'), ','))
+        referenced_news_ids.update(extract_ids(row.get('posnewID'), ','))
+    
+    # 移除空字符串
+    referenced_news_ids.discard('')
+    
+    # 检查新闻库中的新闻ID
+    available_news_ids = set(news_df['news_id'].astype(str))
+    
+    # 计算覆盖率
+    missing_news_ids = referenced_news_ids - available_news_ids
+    if len(referenced_news_ids) > 0:
+        coverage = (len(referenced_news_ids) - len(missing_news_ids)) / len(referenced_news_ids) * 100
+    else:
+        coverage = 0
+    
+    print(f"数据完整性检查结果:")
+    print(f"  - 被引用的新闻ID总数: {len(referenced_news_ids)}")
+    print(f"  - 新闻库中的新闻ID总数: {len(available_news_ids)}")
+    print(f"  - 缺失的新闻ID数量: {len(missing_news_ids)}")
+    print(f"  - 覆盖率: {coverage:.2f}%")
+    
+    if len(missing_news_ids) > 0:
+        missing_list = list(missing_news_ids)[:10]
+        print(f"  - 前10个缺失的新闻ID: {missing_list}")
+    
+    return coverage
+
 if __name__ == "__main__":
-    # 初始化生成器
-    generator = PersonalizedTitleGenerator()
-    
-    # 加载数据
-    generator.load_data()
-    
-    # 创建用户画像
-    generator.create_user_profiles()
-    
-    # 准备数据集（使用10000个样本进行训练，加速测试）
-    generator.prepare_datasets(sample_size=10000)
-    
-    # 预处理数据
-    generator.preprocess_data()
-    
-    # 训练模型
-    generator.train(batch_size=4, num_epochs=3)
-    
-    # 评估模型
-    evaluation_results = generator.evaluate()
-    
-    # 示例：为特定用户生成个性化标题
-    sample_user_id = generator.test_dataset[0]['user_id']
-    sample_news_id = generator.test_dataset[0]['news_id']
-    
-    personalized_title = generator.generate_personalized_title(sample_user_id, sample_news_id)
-    print("\n个性化标题生成示例:")
-    print(f"用户ID: {personalized_title['user_id']}")
-    print(f"新闻ID: {personalized_title['news_id']}")
-    print(f"原始标题: {personalized_title['original_title']}")
-    print(f"生成标题: {personalized_title['generated_title']}")
-    print(f"用户偏好: {personalized_title['user_preferences']}")    
+    download_pens_dataset()
