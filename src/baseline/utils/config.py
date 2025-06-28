@@ -78,19 +78,6 @@ def load_baseline_configs() -> Dict[str, Config]:
     
     return configs
 
-
-def load_configs(config_dir: str) -> Dict[str, Config]:
-    """加载指定目录的所有配置文件"""
-    config_dir = Path(config_dir)
-    configs = {}
-    
-    for config_file in config_dir.glob("*.yaml"):
-        config_name = config_file.stem
-        configs[config_name] = Config(str(config_file))
-    
-    return configs
-
-
 def merge_configs(*configs: Config) -> Config:
     """合并多个配置"""
     merged = Config()

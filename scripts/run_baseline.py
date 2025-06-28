@@ -72,7 +72,17 @@ def main():
         logger.info(f"验证数据加载完成，包含 {len(val_data)} 条记录")
 
         # 创建数据集
-        train_dataset = PENSDataset(train_data, preprocessor.vocab, mode='train')
+        # 如果train_data是DataFrame，需要先保存为文件或者传递文件路径
+        if hasattr(train_data, 'to_pickle'):  # 检查是否为DataFrame
+            # 创建临时文件路径
+            temp_train_path = "data/temp/train_data.pkl"
+            os.makedirs("data/temp", exist_ok=True)
+            train_data.to_pickle(temp_train_path)
+            train_dataset = PENSDataset(temp_train_path, preprocessor.vocab, mode='train')
+        else:
+            # 如果已经是路径字符串
+            train_dataset = PENSDataset(train_data, preprocessor.vocab, mode='train')
+
         val_dataset = PENSDataset(val_data, preprocessor.vocab, mode='val')
         
         logger.info(f"训练集大小: {len(train_dataset)}")

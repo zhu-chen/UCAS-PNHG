@@ -194,7 +194,7 @@ cython_debug/
 .cursorindexingignore
 
 # local data
-data
+data/
 
 prompts.md
 
@@ -206,3 +206,4 @@ configs/private/
 
 # baseline paper
 src/baseline/papers
+src/ref
