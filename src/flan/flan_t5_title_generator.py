@@ -4,9 +4,9 @@ import pandas as pd
 import numpy as np
 from datasets import Dataset, load_metric
 from transformers import (
-    BartForConditionalGeneration, 
-    BartTokenizer, 
-    TrainingArguments, 
+    T5ForConditionalGeneration,
+    T5Tokenizer,
+    TrainingArguments,
     Trainer,
     DataCollatorForSeq2Seq,
     EarlyStoppingCallback
@@ -21,16 +21,23 @@ from collections import defaultdict
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# 使用清华镜像加速Hugging Face下载
+os.environ['HF_ENDPOINT'] = 'https://hf-mirror.com'
+
 class PersonalizedTitleGenerator:
-    def __init__(self, model_name="facebook/bart-large-cnn", max_length=512, output_dir="results/bart_personalized_title"):
-        """初始化个性化标题生成器"""
+    def __init__(self, model_name="google/flan-t5-base", max_length=512):
+        """初始化基于FLAN-T5的个性化标题生成器"""
         self.model_name = model_name
         self.max_length = max_length
-        self.output_dir = output_dir
+        
+        # UCAS项目目录结构 - FLAN-T5版本
+        self.project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        self.data_dir = os.path.join(self.project_root, "..", "scripts", "data", "raw")
+        self.output_dir = os.path.join(self.project_root, "..", "..", "results", "flan")
         
         # 加载预训练模型和分词器
-        self.tokenizer = BartTokenizer.from_pretrained(model_name)
-        self.model = BartForConditionalGeneration.from_pretrained(model_name)
+        self.tokenizer = T5Tokenizer.from_pretrained(model_name)
+        self.model = T5ForConditionalGeneration.from_pretrained(model_name)
         
         # 设置特殊标记
         self.user_token = "<user>"  # 用户偏好标记
@@ -41,12 +48,17 @@ class PersonalizedTitleGenerator:
         self.rouge_metric = load_metric("rouge")
         
         # 创建输出目录
-        os.makedirs(output_dir, exist_ok=True)
+        os.makedirs(self.output_dir, exist_ok=True)
     
-    def load_data(self, news_path="data/raw/news_corpus.pkl", train_path="data/raw/train.pkl", 
-                  val_path="data/raw/validation.pkl", test_path="data/raw/test.pkl"):
-        """加载PENS数据集"""
-        logger.info("加载新闻语料库和用户行为数据...")
+    def load_data(self):
+        """加载UCAS目录下的PENS数据集"""
+        logger.info(f"从{self.data_dir}加载新闻语料库和用户行为数据...")
+        
+        # 定义UCAS目录下的文件路径
+        news_path = os.path.join(self.data_dir, "news_corpus.pkl")
+        train_path = os.path.join(self.data_dir, "train.pkl")
+        val_path = os.path.join(self.data_dir, "validation.pkl")
+        test_path = os.path.join(self.data_dir, "test.pkl")
         
         # 加载新闻内容
         self.news_df = pd.read_pickle(news_path)
@@ -108,7 +120,7 @@ class PersonalizedTitleGenerator:
                         news = self.news_id_to_content[news_id]
                         # 构建输入文本：用户偏好 + 新闻正文
                         user_pref_text = self._build_user_preference_text(user_profile)
-                        input_text = f"{user_pref_text} {self.user_token} {news['body']}"
+                        input_text = f"生成个性化标题: {user_pref_text} {self.user_token} {news['body']}"
                         
                         # 目标文本：原始标题
                         target_text = news['title']
@@ -131,7 +143,7 @@ class PersonalizedTitleGenerator:
                     if news_id and news_id in self.news_id_to_content:
                         news = self.news_id_to_content[news_id]
                         user_pref_text = self._build_user_preference_text(user_profile)
-                        input_text = f"{user_pref_text} {self.user_token} {news['body']}"
+                        input_text = f"生成个性化标题: {user_pref_text} {self.user_token} {news['body']}"
                         target_text = news['title']
                         
                         val_samples.append({
@@ -152,7 +164,7 @@ class PersonalizedTitleGenerator:
                     if news_id and news_id in self.news_id_to_content:
                         news = self.news_id_to_content[news_id]
                         user_pref_text = self._build_user_preference_text(user_profile)
-                        input_text = f"{user_pref_text} {self.user_token} {news['body']}"
+                        input_text = f"生成个性化标题: {user_pref_text} {self.user_token} {news['body']}"
                         target_text = news['title']
                         
                         test_samples.append({
@@ -233,10 +245,10 @@ class PersonalizedTitleGenerator:
         return self
     
     def train(self, batch_size=4, num_epochs=3, learning_rate=5e-5):
-        """微调BART模型"""
-        logger.info(f"开始微调BART模型，batch_size={batch_size}, epochs={num_epochs}, lr={learning_rate}")
+        """微调FLAN-T5模型，结果保存到UCAS指定目录"""
+        logger.info(f"开始微调FLAN-T5模型，batch_size={batch_size}, epochs={num_epochs}, lr={learning_rate}")
         
-        # 定义训练参数
+        # 定义训练参数，输出到UCAS结果目录
         training_args = TrainingArguments(
             output_dir=self.output_dir,
             learning_rate=learning_rate,
@@ -296,11 +308,12 @@ class PersonalizedTitleGenerator:
         # 开始训练
         trainer.train()
         
-        # 保存最佳模型
-        trainer.save_model(f"{self.output_dir}/best_model")
-        self.tokenizer.save_pretrained(f"{self.output_dir}/best_model")
+        # 保存最佳模型到UCAS结果目录
+        best_model_dir = os.path.join(self.output_dir, "best_model")
+        trainer.save_model(best_model_dir)
+        self.tokenizer.save_pretrained(best_model_dir)
         
-        logger.info(f"模型训练完成，已保存至 {self.output_dir}/best_model")
+        logger.info(f"模型训练完成，已保存至 {best_model_dir}")
         return self
     
     def generate_personalized_title(self, user_id, news_id, max_length=64):
@@ -310,14 +323,14 @@ class PersonalizedTitleGenerator:
         
         # 获取新闻内容
         if news_id not in self.news_id_to_content:
-            logger.error(f"新闻ID {news_id} 不存在")
+            logger.error(f"新闻ID {news_id} 不存在于 {self.data_dir}")
             return None
         
         news = self.news_id_to_content[news_id]
         
         # 构建输入文本
         user_pref_text = self._build_user_preference_text(user_profile)
-        input_text = f"{user_pref_text} {self.user_token} {news['body']}"
+        input_text = f"生成个性化标题: {user_pref_text} {self.user_token} {news['body']}"
         
         # 编码输入
         inputs = self.tokenizer(input_text, return_tensors="pt", max_length=self.max_length, truncation=True)
@@ -344,7 +357,7 @@ class PersonalizedTitleGenerator:
         }
     
     def evaluate(self, sample_size=100):
-        """评估模型性能"""
+        """评估模型性能，结果保存到UCAS目录"""
         logger.info("开始模型评估...")
         
         # 随机选择样本进行评估
@@ -380,8 +393,9 @@ class PersonalizedTitleGenerator:
         
         logger.info(f"评估完成: ROUGE-1={rouge_scores['rouge1']:.2f}, ROUGE-2={rouge_scores['rouge2']:.2f}, ROUGE-L={rouge_scores['rougeL']:.2f}")
         
-        # 保存一些示例结果
-        with open(f"{self.output_dir}/sample_results.txt", "w", encoding="utf-8") as f:
+        # 保存示例结果到UCAS目录
+        sample_results_path = os.path.join(self.output_dir, "sample_results.txt")
+        with open(sample_results_path, "w", encoding="utf-8") as f:
             f.write("个性化新闻标题生成示例:\n\n")
             for i, result in enumerate(results[:10]):
                 f.write(f"示例 {i+1}:\n")
@@ -399,9 +413,10 @@ class PersonalizedTitleGenerator:
 # 主函数
 if __name__ == "__main__":
     # 初始化生成器
-    generator = PersonalizedTitleGenerator()
+    # 可以选择使用不同的FLAN-T5模型：google/flan-t5-small, google/flan-t5-base, google/flan-t5-large
+    generator = PersonalizedTitleGenerator(model_name="google/flan-t5-base")
     
-    # 加载数据
+    # 加载UCAS目录下的数据
     generator.load_data()
     
     # 创建用户画像
@@ -420,13 +435,16 @@ if __name__ == "__main__":
     evaluation_results = generator.evaluate()
     
     # 示例：为特定用户生成个性化标题
-    sample_user_id = generator.test_dataset[0]['user_id']
-    sample_news_id = generator.test_dataset[0]['news_id']
-    
-    personalized_title = generator.generate_personalized_title(sample_user_id, sample_news_id)
-    print("\n个性化标题生成示例:")
-    print(f"用户ID: {personalized_title['user_id']}")
-    print(f"新闻ID: {personalized_title['news_id']}")
-    print(f"原始标题: {personalized_title['original_title']}")
-    print(f"生成标题: {personalized_title['generated_title']}")
-    print(f"用户偏好: {personalized_title['user_preferences']}")    
+    if generator.test_dataset:
+        sample_user_id = generator.test_dataset[0]['user_id']
+        sample_news_id = generator.test_dataset[0]['news_id']
+        
+        personalized_title = generator.generate_personalized_title(sample_user_id, sample_news_id)
+        print("\n个性化标题生成示例:")
+        print(f"用户ID: {personalized_title['user_id']}")
+        print(f"新闻ID: {personalized_title['news_id']}")
+        print(f"原始标题: {personalized_title['original_title']}")
+        print(f"生成标题: {personalized_title['generated_title']}")
+        print(f"用户偏好: {personalized_title['user_preferences']}")
+    else:
+        logger.warning("测试数据集为空，无法展示生成示例")
