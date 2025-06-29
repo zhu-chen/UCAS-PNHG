@@ -1,0 +1,44 @@
+个性化新闻标题生成示例:
+
+整体指标: ROUGE-1=43.32, ROUGE-2=21.46, ROUGE-L=38.87, BLEU=39.02
+
+示例 1:
+用户ID: NT63
+用户偏好: {}
+原始标题: Several Astros set to make Yankee Stadium debuts
+生成标题: Astros host Yankees in opener at Yankee Stadium
+指标: ROUGE-1=43.32, ROUGE-2=21.46, ROUGE-L=38.87, BLEU=48.52
+--------------------------------------------------
+
+示例 2:
+用户ID: NT101
+用户偏好: {}
+原始标题: Can Joe Biden maintain his frontrunner status after first debate?
+生成标题: Joe Biden vs. Hillary Clinton: Who's the frontrunner?
+指标: ROUGE-1=0.00, ROUGE-2=0.00, ROUGE-L=0.00, BLEU=35.61
+--------------------------------------------------
+
+示例 3:
+用户ID: NT63
+用户偏好: {}
+原始标题: NASA gives the Mars 2020 rover its legs and wheels
+生成标题: Mars 2020 rover gets new wheels, wheels and mobility suspension
+指标: ROUGE-1=0.00, ROUGE-2=0.00, ROUGE-L=0.00, BLEU=46.26
+--------------------------------------------------
+
+示例 4:
+用户ID: NT37
+用户偏好: {}
+原始标题: Emotional Japan stun USA in World Cup final
+生成标题: FIFA Women's World Cup Germany 2011 Highlights: Japan - USA, FIFA Women´s Worldcup Germany 2012
+指标: ROUGE-1=0.00, ROUGE-2=0.00, ROUGE-L=0.00, BLEU=21.47
+--------------------------------------------------
+
+示例 5:
+用户ID: NT89
+用户偏好: {}
+原始标题: 16 Brands of Dog Food May Be Linked to Canine Heart Disease, According to the FDA
+生成标题: The FDA is calling out 16 dog food brands linked to heart disease
+指标: ROUGE-1=0.00, ROUGE-2=0.00, ROUGE-L=0.00, BLEU=40.43
+--------------------------------------------------
+
