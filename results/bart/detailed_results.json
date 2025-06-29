@@ -1,0 +1,144 @@
+{
+  "overall_metrics": {
+    "rouge": {
+      "rouge1": 43.322933295057865,
+      "rouge2": 21.456062315363702,
+      "rougeL": 38.87214228711465
+    },
+    "bleu": {
+      "bleu": 39.024116178431356
+    }
+  },
+  "sample_results": [
+    {
+      "user_id": "NT63",
+      "news_id": "N79753",
+      "original_title": "Several Astros set to make Yankee Stadium debuts",
+      "generated_title": "Astros host Yankees in opener at Yankee Stadium",
+      "user_preferences": {},
+      "metrics": {
+        "rouge1": 43.322933295057865,
+        "rouge2": 21.456062315363702,
+        "rougeL": 38.87214228711465,
+        "bleu": 48.52054882467801
+      }
+    },
+    {
+      "user_id": "NT101",
+      "news_id": "N22419",
+      "original_title": "Can Joe Biden maintain his frontrunner status after first debate?",
+      "generated_title": "Joe Biden vs. Hillary Clinton: Who's the frontrunner?",
+      "user_preferences": {},
+      "metrics": {
+        "rouge1": 0,
+        "rouge2": 0,
+        "rougeL": 0,
+        "bleu": 35.61473180257192
+      }
+    },
+    {
+      "user_id": "NT63",
+      "news_id": "N36865",
+      "original_title": "NASA gives the Mars 2020 rover its legs and wheels",
+      "generated_title": "Mars 2020 rover gets new wheels, wheels and mobility suspension",
+      "user_preferences": {},
+      "metrics": {
+        "rouge1": 0,
+        "rouge2": 0,
+        "rougeL": 0,
+        "bleu": 46.26052645581818
+      }
+    },
+    {
+      "user_id": "NT37",
+      "news_id": "N47294",
+      "original_title": "Emotional Japan stun USA in World Cup final",
+      "generated_title": "FIFA Women's World Cup Germany 2011 Highlights: Japan - USA, FIFA Women´s Worldcup Germany 2012",
+      "user_preferences": {},
+      "metrics": {
+        "rouge1": 0,
+        "rouge2": 0,
+        "rougeL": 0,
+        "bleu": 21.466385570533948
+      }
+    },
+    {
+      "user_id": "NT89",
+      "news_id": "N93356",
+      "original_title": "16 Brands of Dog Food May Be Linked to Canine Heart Disease, According to the FDA",
+      "generated_title": "The FDA is calling out 16 dog food brands linked to heart disease",
+      "user_preferences": {},
+      "metrics": {
+        "rouge1": 0,
+        "rouge2": 0,
+        "rougeL": 0,
+        "bleu": 40.427921812342035
+      }
+    },
+    {
+      "user_id": "NT102",
+      "news_id": "N120498",
+      "original_title": "The Latest: Aaron Wise moves into tie for lead at US Open",
+      "generated_title": "The Latest: Aaron Wise leads U.S. Open at Pebble Beach",
+      "user_preferences": {},
+      "metrics": {
+        "rouge1": 0,
+        "rouge2": 0,
+        "rougeL": 0,
+        "bleu": 58.659584470385
+      }
+    },
+    {
+      "user_id": "NT17",
+      "news_id": "N32901",
+      "original_title": "15 insider facts about working at Walt Disney World only cast members know",
+      "generated_title": "Walt Disney World cast members reveal secrets about working in the park",
+      "user_preferences": {},
+      "metrics": {
+        "rouge1": 0,
+        "rouge2": 0,
+        "rougeL": 0,
+        "bleu": 65.99443720104551
+      }
+    },
+    {
+      "user_id": "NT101",
+      "news_id": "N98178",
+      "original_title": "Weird jellyfish-like blobs washing ashore in the Outer Banks",
+      "generated_title": "These tiny blobs are more closely related to humans than jellyfish",
+      "user_preferences": {},
+      "metrics": {
+        "rouge1": 0,
+        "rouge2": 0,
+        "rougeL": 0,
+        "bleu": 35.438829785704655
+      }
+    },
+    {
+      "user_id": "NT45",
+      "news_id": "N35536",
+      "original_title": "One Family Fears Human Remains Found In Franklin County Could Belong To A Loved One",
+      "generated_title": "Family of missing man says remains found in Franklin County may belong to loved one",
+      "user_preferences": {},
+      "metrics": {
+        "rouge1": 0,
+        "rouge2": 0,
+        "rougeL": 0,
+        "bleu": 53.93440328508837
+      }
+    },
+    {
+      "user_id": "NT69",
+      "news_id": "N54137",
+      "original_title": "We ride along in Tesla Mobile Service's customized Model S",
+      "generated_title": "Tesla transforms Model S's into mobile service centers",
+      "user_preferences": {},
+      "metrics": {
+        "rouge1": 0,
+        "rouge2": 0,
+        "rougeL": 0,
+        "bleu": 43.253517122672825
+      }
+    }
+  ]
+}

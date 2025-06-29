@@ -1,0 +1,144 @@
+{
+  "overall_metrics": {
+    "rouge": {
+      "rouge1": 21.513826459099043,
+      "rouge2": 10.124819815905273,
+      "rougeL": 20.350919190928618
+    },
+    "bleu": {
+      "bleu": 15.897958949602753
+    }
+  },
+  "sample_results": [
+    {
+      "user_id": "NT15",
+      "news_id": "N26002",
+      "original_title": "N&N: Mike Clevinger is probably headed back to the IL",
+      "generated_title": "Mike Trout looks like he has a shot at MVP. Here are his AL ranks",
+      "user_preferences": {},
+      "metrics": {
+        "rouge1": 21.513826459099043,
+        "rouge2": 10.124819815905273,
+        "rougeL": 20.350919190928618,
+        "bleu": 13.456578884721695
+      }
+    },
+    {
+      "user_id": "NT16",
+      "news_id": "N67521",
+      "original_title": "If waived by Cavaliers, JR Smith could reunite with LeBron James",
+      "generated_title": "J.R. Smith has long been rumored to be on the trading block , but if the Cavaliers can't move him, he's expected...",
+      "user_preferences": {},
+      "metrics": {
+        "rouge1": 0,
+        "rouge2": 0,
+        "rougeL": 0,
+        "bleu": 20.135592338607953
+      }
+    },
+    {
+      "user_id": "NT98",
+      "news_id": "N101790",
+      "original_title": "Wondering what those smoky skies over Maine are all about?",
+      "generated_title": "Smoke will hang over Maine until later this week when a coldfront sweeps it east and out to sea.",
+      "user_preferences": {},
+      "metrics": {
+        "rouge1": 0,
+        "rouge2": 0,
+        "rougeL": 0,
+        "bleu": 24.714140580709635
+      }
+    },
+    {
+      "user_id": "NT13",
+      "news_id": "N107651",
+      "original_title": "Boeing open to changing name of grounded 737 Max jet",
+      "generated_title": "Boeing is open to dropping the \"Max\" branding for its latest 737 Max jetliner, based on a global study it is conducting of consumer and airline responses to an aircraft name that's been tarnished.",
+      "user_preferences": {},
+      "metrics": {
+        "rouge1": 0,
+        "rouge2": 0,
+        "rougeL": 0,
+        "bleu": 19.017964425630726
+      }
+    },
+    {
+      "user_id": "NT63",
+      "news_id": "N72545",
+      "original_title": "Putin and Xi show a unified front against Trump in St. Petersburg",
+      "generated_title": "China,\" he said.",
+      "user_preferences": {},
+      "metrics": {
+        "rouge1": 0,
+        "rouge2": 0,
+        "rougeL": 0,
+        "bleu": 0.2505982979357348
+      }
+    },
+    {
+      "user_id": "NT32",
+      "news_id": "N61068",
+      "original_title": "U.S. to consider sanctions in case of more Sudan violence",
+      "generated_title": "U.S. officials say is a violation of international law.",
+      "user_preferences": {},
+      "metrics": {
+        "rouge1": 0,
+        "rouge2": 0,
+        "rougeL": 0,
+        "bleu": 28.421925963577927
+      }
+    },
+    {
+      "user_id": "NT15",
+      "news_id": "N92862",
+      "original_title": "Huawei may demand more royalties from US firms that rely on its patented tech",
+      "generated_title": "Huawei may demand more royalties from U.S. firms for technology they're using that's been patented by the Chinese telecom giant, experts say.",
+      "user_preferences": {},
+      "metrics": {
+        "rouge1": 0,
+        "rouge2": 0,
+        "rougeL": 0,
+        "bleu": 44.61104341690333
+      }
+    },
+    {
+      "user_id": "NT14",
+      "news_id": "N86848",
+      "original_title": "The Penguins' salary cap situation after Phil Kessel trade",
+      "generated_title": "Alex Galchenyuk, but the Penguins haven't decided yet.",
+      "user_preferences": {},
+      "metrics": {
+        "rouge1": 0,
+        "rouge2": 0,
+        "rougeL": 0,
+        "bleu": 24.134518806633018
+      }
+    },
+    {
+      "user_id": "NT4",
+      "news_id": "N80718",
+      "original_title": "Boeing 737 makes emergency landing in Tennessee following a 'potential mechanical issue'",
+      "generated_title": "Delta Air Lines flight 1417 landed safely at McGhee Tyson Airport after the crew reported a nose gear issue.",
+      "user_preferences": {},
+      "metrics": {
+        "rouge1": 0,
+        "rouge2": 0,
+        "rougeL": 0,
+        "bleu": 16.677257704028378
+      }
+    },
+    {
+      "user_id": "NT13",
+      "news_id": "N29906",
+      "original_title": "Manhattan Real Estate Sales Are Soaring",
+      "generated_title": "Manahttan real estate sales are soaring this summer, according to Douglass Elliman.",
+      "user_preferences": {},
+      "metrics": {
+        "rouge1": 0,
+        "rouge2": 0,
+        "rougeL": 0,
+        "bleu": 25.281911572928635
+      }
+    }
+  ]
+}
