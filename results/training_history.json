@@ -1,0 +1,22 @@
+{
+  "train_loss": [
+    NaN,
+    NaN,
+    NaN
+  ],
+  "valid_loss": [
+    NaN,
+    NaN,
+    NaN
+  ],
+  "rouge_scores": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "bleu_scores": [
+    0.0,
+    0.0,
+    0.0
+  ]
+}
