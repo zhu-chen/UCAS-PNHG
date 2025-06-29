@@ -209,3 +209,7 @@ src/baseline/papers
 src/ref
 
 *.pth
+
+# local model
+scripts/local_bart_model
+scripts/local_flan_t5_model

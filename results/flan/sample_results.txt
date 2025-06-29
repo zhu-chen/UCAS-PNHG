@@ -1,0 +1,44 @@
+个性化新闻标题生成示例 (FLAN-T5):
+
+整体指标: ROUGE-1=21.51, ROUGE-2=10.12, ROUGE-L=20.35, BLEU=15.90
+
+示例 1:
+用户ID: NT15
+用户偏好: {}
+原始标题: N&N: Mike Clevinger is probably headed back to the IL
+生成标题: Mike Trout looks like he has a shot at MVP. Here are his AL ranks
+指标: ROUGE-1=21.51, ROUGE-2=10.12, ROUGE-L=20.35, BLEU=13.46
+--------------------------------------------------
+
+示例 2:
+用户ID: NT16
+用户偏好: {}
+原始标题: If waived by Cavaliers, JR Smith could reunite with LeBron James
+生成标题: J.R. Smith has long been rumored to be on the trading block , but if the Cavaliers can't move him, he's expected...
+指标: ROUGE-1=0.00, ROUGE-2=0.00, ROUGE-L=0.00, BLEU=20.14
+--------------------------------------------------
+
+示例 3:
+用户ID: NT98
+用户偏好: {}
+原始标题: Wondering what those smoky skies over Maine are all about?
+生成标题: Smoke will hang over Maine until later this week when a coldfront sweeps it east and out to sea.
+指标: ROUGE-1=0.00, ROUGE-2=0.00, ROUGE-L=0.00, BLEU=24.71
+--------------------------------------------------
+
+示例 4:
+用户ID: NT13
+用户偏好: {}
+原始标题: Boeing open to changing name of grounded 737 Max jet
+生成标题: Boeing is open to dropping the "Max" branding for its latest 737 Max jetliner, based on a global study it is conducting of consumer and airline responses to an aircraft name that's been tarnished.
+指标: ROUGE-1=0.00, ROUGE-2=0.00, ROUGE-L=0.00, BLEU=19.02
+--------------------------------------------------
+
+示例 5:
+用户ID: NT63
+用户偏好: {}
+原始标题: Putin and Xi show a unified front against Trump in St. Petersburg
+生成标题: China," he said.
+指标: ROUGE-1=0.00, ROUGE-2=0.00, ROUGE-L=0.00, BLEU=0.25
+--------------------------------------------------
+

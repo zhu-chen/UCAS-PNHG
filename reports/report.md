@@ -483,6 +483,86 @@ def train(self, batch_size=4, num_epochs=3, learning_rate=5e-5):
 
 选择最优模型保存到相应目录下后再跑通测试集得到结果即可。
 
+### 2.3技术路线二训练结果
+
+#### 微调BART模型的训练结果
+
+|性能指标|值|
+|---|---|
+|ROUGE-1|43.32|
+|ROUGE-2|21.46|
+|ROUGE-L|38.87|
+|BLEU|39.02|
+
+微调BART模型的ROUGE-L指标的值（38.87）达到了论文预期范围（22.64），说明通过微调BART模型得到的训练结果是比较优秀的。
+
+以下是部分训练结果示例：
+
+```json
+示例 1:
+
+用户ID: NT63
+
+原始标题: Several Astros set to make Yankee Stadium debuts
+
+生成标题: Astros host Yankees in opener at Yankee Stadium
+
+指标: ROUGE-1=43.32, ROUGE-2=21.46, ROUGE-L=38.87, BLEU=48.52
+```
+
+```json
+示例 2:
+
+用户ID: NT101
+
+原始标题: Can Joe Biden maintain his frontrunner status after first debate?
+
+生成标题: Joe Biden vs. Hillary Clinton: Who's the frontrunner?
+
+指标: ROUGE-1=0.00, ROUGE-2=0.00, ROUGE-L=0.00, BLEU=35.61
+```
+
+#### 微调FLAN-T5模型的训练结果
+
+|性能指标|值|
+|---|---|
+|ROUGE-1|21.25|
+|ROUGE-2|10.12|
+|ROUGE-L|20.35|
+|BLEU|15.90|
+
+微调FLAN-T5模型的ROUGE-L指标的值（20.35）并未达到论文预期范围（22.64），说明通过微调FLAN-T5模型得到的训练结果在个性新闻标题生成任务上表现并不如BART模型。
+
+当然ROUGE指标值较低也有我们只取了很少的一部分数据集（1%）进行训练的原因，这是训练资源导致的必然限制，也最终导致了训练结果并未达到预期。相信如果有充足的训练资源的前提下，使用微调FLAN-T5模型实现这一任务得到的参考指标值应该也能够满足基本要求。
+
+以下是部分训练结果示例：
+
+```json
+示例 1:
+
+用户ID: NT15
+
+原始标题: N&N: Mike Clevinger is probably headed back to the IL
+
+生成标题: Mike Trout looks like he has a shot at MVP. Here are his AL ranks
+
+指标: ROUGE-1=21.51, ROUGE-2=10.12, ROUGE-L=20.35, BLEU=13.46
+
+```
+
+```json
+示例 2:
+
+用户ID: NT16
+
+原始标题: If waived by Cavaliers, JR Smith could reunite with LeBron James
+
+生成标题: J.R. Smith has long been rumored to be on the trading block , but if the Cavaliers can't move him, he's expected...
+
+指标: ROUGE-1=0.00, ROUGE-2=0.00, ROUGE-L=0.00, BLEU=20.14
+```
+
+
 ## 技术路线三：复现PENS中基线方法
 
 ### 技术路线概述
@@ -702,7 +782,7 @@ vs个性化 - ROUGE-L: 0.100, BLEU-4: 0.000
 
 使用提示工程的大模型个性化方法，能够快速生成高质量的个性化标题，适用于对实时性和灵活性要求较高的场景。通过对不同提示策略的比较，我们发现思维链和角色扮演策略在生成质量和用户兴趣匹配度上表现突出。这一方法的实现依赖于外部的api调用，我们在这里并没有花费太多的精力就取得了较好的效果。
 
-____________________________________________________
+通过微调模型实现个性化新闻标题生成的技术路线实现的较为成功，因为有现成的预训练模型，只需要对模型进行微调即可。BART模型和Flan-t5模型对个性化新闻标题生成的任务有较高的适配性。但同时这一方法也因需要大量的训练资源导致需要对数据集进行较多的预处理以及分块等操作，一定程度上加大了实验的实现难度。
 
 复现PENS的技术路线受限于硬件资源，是表现最差的一个技术路线，但它成功实现了PENS论文中提出的核心技术架构，并在有限的数据和资源下进行了训练。尽管生成质量不如预期，但这一过程验证了NAML用户编码器和指针生成网络解码器的有效性，为未来的个性化标题生成研究提供了基础。
 
