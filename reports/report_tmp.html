@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>report.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+<link rel="stylesheet" href="file:///home/zc/2025-ai/C%3A%5CUsers%5C10405%5C.vscode%5Cextensions%5Cyzane.markdown-pdf-1.5.0%5Cmarkdown-pdf.css" type="text/css">
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E5%9F%BA%E7%A1%80%E5%A4%A7%E4%BD%9C%E4%B8%9A%E4%B8%AA%E6%80%A7%E5%8C%96%E6%96%B0%E9%97%BB%E6%A0%87%E9%A2%98%E7%94%9F%E6%88%90">人工智能基础大作业——个性化新闻标题生成</h1>
+<p>朱辰，潘泓锟</p>
+<p>[toc]</p>
+<h2 id="%E9%A1%B9%E7%9B%AE%E7%AE%80%E8%BF%B0">项目简述</h2>
+<p>使用PENS数据集，根据用户的历史点击标题序列，为候选新闻生成属于这个用户的个性化标题。</p>
+<p>本次实验PPT中提到的全部技术路线，即:</p>
+<ol>
+<li>基于提示工程的大模型个性化</li>
+<li>基于预训练语言模型的监督微调</li>
+<li>复现PENS中基线方法</li>
+</ol>
+<p>下面将对每个技术路线进行详细介绍。</p>
+<h2 id="%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E4%B8%80%E5%9F%BA%E4%BA%8E%E6%8F%90%E7%A4%BA%E5%B7%A5%E7%A8%8B%E7%9A%84%E5%A4%A7%E6%A8%A1%E5%9E%8B%E4%B8%AA%E6%80%A7%E5%8C%96">技术路线一：基于提示工程的大模型个性化</h2>
+<h3 id="%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E6%A6%82%E8%BF%B0">技术路线概述</h3>
+<p>本技术路线通过调用来自siliconflow的API，使用DeepSeek-R1-0528-Qwen3-8B模型生成了个性化标题，并对比了不同提示策略的效果。相关代码主要位于 <code>src/prompt_engineering/</code> 目录下。</p>
+<p>该实现采用了模块化设计，支持多种API提供商（实际测试时主要采用SiliconFlow）和多种提示策略，具有良好的扩展性和可维护性。</p>
+<h3 id="%E4%B8%BB%E8%A6%81%E6%A8%A1%E5%9D%97">主要模块</h3>
+<h4 id="%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%A8%A1%E5%9D%97-dataprocessorpy">数据处理模块 (<code>data_processor.py</code>)</h4>
+<p>该模块实现了三个核心类：</p>
+<p><strong>PENSDataLoader 数据加载器类</strong></p>
+<ul>
+<li>支持多种数据格式加载：pickle文件(.pkl)和TSV文件(.tsv)</li>
+<li>能够处理原始PENS数据集的三个分割：train、valid、test</li>
+<li>提供用户历史标题提取功能，支持多种字段格式</li>
+<li>自动检测数据文件位置，优先加载pickle格式以提高加载速度</li>
+</ul>
+<p><strong>DataPreprocessor 数据预处理类</strong></p>
+<ul>
+<li>实现新闻内容清洗，去除多余空白字符并限制长度</li>
+<li>提供标题预处理功能，确保生成标题格式规范</li>
+<li>用户历史过滤，去除过短或重复的历史标题</li>
+<li>为模型输入准备统一格式的数据</li>
+</ul>
+<p><strong>DataSampler 数据采样器</strong></p>
+<ul>
+<li>支持按用户历史长度筛选有效样本</li>
+<li>提供实验数据采样功能，可指定样本数量和最小历史长度</li>
+<li>为缺少新闻内容的样本生成模拟内容</li>
+<li>避免重复用户，确保实验数据的多样性</li>
+</ul>
+<h4 id="llm-api%E8%B0%83%E7%94%A8%E5%AE%A2%E6%88%B7%E7%AB%AF-llmclientpy">LLM API调用客户端 (<code>llm_client.py</code>)</h4>
+<p>该模块采用工厂模式设计，支持多个API提供商：</p>
+<p><strong>BaseLLMClient 基础客户端类</strong></p>
+<ul>
+<li>定义统一的API调用接口规范</li>
+<li>支持同步和流式两种调用方式</li>
+<li>提供基础的配置管理功能</li>
+</ul>
+<p><strong>OpenAICompatibleClient OpenAI兼容客户端</strong></p>
+<ul>
+<li>支持SiliconFlow、OpenAI等使用OpenAI格式API的服务商</li>
+<li>实现了完整的聊天完成接口，支持temperature、max_tokens等参数配置</li>
+<li>内置重试机制，采用指数退避策略处理网络异常</li>
+<li>支持异步并发调用，提高生成效率</li>
+</ul>
+<p><strong>ZhipuClient 智谱AI专用客户端(实际未使用)</strong></p>
+<ul>
+<li>针对智谱AI的API特点进行优化适配</li>
+<li>支持GLM-4等智谱AI模型</li>
+<li>实现了流式和非流式两种调用方式</li>
+</ul>
+<p><strong>LLMClientFactory 客户端工厂</strong></p>
+<ul>
+<li>管理多个API提供商的客户端实例</li>
+<li>根据配置自动选择合适的客户端实现</li>
+<li>提供统一的客户端获取和管理接口</li>
+</ul>
+<h4 id="%E4%B8%AA%E6%80%A7%E5%8C%96%E6%A0%87%E9%A2%98%E7%94%9F%E6%88%90%E5%99%A8-generatorpy">个性化标题生成器 (<code>generator.py</code>)</h4>
+<p><strong>PersonalizedTitleGenerator 核心生成器类</strong></p>
+<ul>
+<li>整合数据预处理、提示模板和API调用功能</li>
+<li>支持多种生成策略：基础策略、思维链、角色扮演、少样本学习</li>
+<li>提供批量生成功能，支持异步并发处理</li>
+<li>内置生成统计功能，记录成功率、平均耗时等指标</li>
+<li>实现策略比较功能，可同时测试多种提示策略的效果</li>
+</ul>
+<p>主要功能包括：</p>
+<ul>
+<li><code>generate_title()</code>: 单个标题生成，支持策略选择</li>
+<li><code>generate_batch()</code>: 批量标题生成，支持并发控制</li>
+<li><code>compare_strategies()</code>: 多策略对比生成</li>
+<li><code>get_statistics()</code>: 获取生成统计信息</li>
+</ul>
+<h4 id="%E6%8F%90%E7%A4%BA%E6%A8%A1%E6%9D%BF%E7%AE%A1%E7%90%86%E5%99%A8-templatespy">提示模板管理器 (<code>templates.py</code>)</h4>
+<p>该模块定义了四种不同的提示策略：(以下各个模板及特点均由AI生成)</p>
+<p><strong>BasicPromptTemplate 基础提示模板</strong></p>
+<ul>
+<li>直接基于用户历史和新闻内容生成个性化标题</li>
+<li>提示简洁明了，适合快速生成</li>
+<li>强调个性化要求和标题质量标准</li>
+</ul>
+<p><strong>ChainOfThoughtPromptTemplate 思维链提示模板</strong></p>
+<ul>
+<li>引导模型进行step-by-step的推理过程</li>
+<li>要求模型分析用户偏好、新闻主题、个性化角度等</li>
+<li>通过结构化思考提高生成质量</li>
+</ul>
+<p><strong>RolePlayingPromptTemplate 角色扮演提示模板</strong></p>
+<ul>
+<li>让模型扮演资深编辑的角色</li>
+<li>强调专业性和用户导向的标题生成</li>
+<li>结合角色背景提升生成的专业水准</li>
+</ul>
+<p><strong>FewShotPromptTemplate 少样本学习提示模板</strong></p>
+<ul>
+<li>提供具体的生成示例供模型学习</li>
+<li>包含多个领域的示例：科技、经济、体育等</li>
+<li>通过示例展示个性化生成的具体方式</li>
+</ul>
+<p><strong>PromptTemplateManager 模板管理器</strong></p>
+<ul>
+<li>统一管理所有提示模板</li>
+<li>提供策略选择和模板获取接口</li>
+<li>支持动态添加新的提示策略</li>
+</ul>
+<h4 id="%E5%AE%9E%E9%AA%8C%E8%BF%90%E8%A1%8C%E5%99%A8-runnerpy">实验运行器 (<code>runner.py</code>)</h4>
+<p><strong>ExperimentRunner 实验管理类</strong></p>
+<ul>
+<li>提供完整的实验流程管理</li>
+<li>支持单策略和多策略对比实验</li>
+<li>自动保存实验结果和统计数据</li>
+<li>生成详细的实验报告</li>
+</ul>
+<h3 id="%E5%AE%9E%E9%AA%8C%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E6%96%BD">实验设计与实施</h3>
+<p>我们设计了多组对比实验来验证不同提示策略的效果：</p>
+<p><strong>实验配置</strong></p>
+<ul>
+<li>数据集：PENS个性化新闻标题数据集</li>
+<li>模型：DeepSeek-R1-0528-Qwen3-8B (via SiliconFlow API)</li>
+<li>评估指标：生成成功率、平均生成时间、标题质量</li>
+<li>样本规模：分别进行3样本、50样本的小规模和中规模测试</li>
+</ul>
+<p><strong>实验策略对比</strong></p>
+<ol>
+<li>基础个性化策略：直接要求根据用户历史生成个性化标题</li>
+<li>思维链策略：要求模型进行分步推理和分析</li>
+<li>角色扮演策略：让模型扮演专业编辑角色</li>
+<li>少样本学习策略：提供示例引导模型学习</li>
+</ol>
+<h3 id="%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C">实验结果</h3>
+<p>通过在<code>results/prompt_engineering/</code>目录下的实验结果分析，我们观察到：</p>
+<p><strong>生成成功率</strong></p>
+<ul>
+<li>所有策略都能成功生成标题，成功率接近100%</li>
+<li>思维链策略在复杂个性化需求下表现更稳定</li>
+</ul>
+<p><strong>生成质量</strong></p>
+<ul>
+<li>基础策略生成速度最快，但个性化程度相对较低</li>
+<li>思维链策略生成的标题更具针对性，能更好地结合用户历史偏好</li>
+<li>角色扮演策略在标题的专业性和吸引力方面表现突出</li>
+<li>少样本学习策略在特定领域的个性化效果最佳</li>
+</ul>
+<p><strong>性能表现</strong></p>
+<ul>
+<li>平均生成时间在2-5秒之间，符合实际应用需求</li>
+<li>思维链策略由于推理步骤较多，耗时相对较长</li>
+<li>并发调用能够有效提升批量生成效率</li>
+</ul>
+<p><strong>个性化效果</strong></p>
+<ul>
+<li>系统能够根据用户历史标题的主题偏好调整生成风格</li>
+<li>对科技、财经、体育等不同领域都能产生相应的个性化标题</li>
+<li>用户历史越丰富，个性化效果越明显</li>
+</ul>
+<p>以下是实验结果的可视化分析：</p>
+<p><img src="file:///home/zc/2025-ai/reports/performance_comparison.png" alt="alt text"></p>
+<p><img src="file:///home/zc/2025-ai/reports/strategy_radar.png" alt="alt text"></p>
+<p><img src="file:///home/zc/2025-ai/reports/time_distribution.png" alt="alt text"></p>
+<h4 id="%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90">案例分析</h4>
+<p>新闻内容</p>
+<pre class="hljs"><code><div>What You Need to Know About GMOs 
+据最新报道，what you need to know about gmos成为近期关注的焦点。
+相关专家表示，这一事件/发展具有重要意义。 
+详细信息显示，该事件涉及多个方面的因素。
+业内人士认为，这将对相关领域产生深远影响。 
+进一步的发展情况值得持续关注。相关部门表示将密切跟踪后续进展。
+</div></code></pre>
+<p>用户历史点击标题(部分)</p>
+<pre class="hljs"><code><div>          <span class="hljs-string">"Find out what it's like being a guest director"</span>,
+          <span class="hljs-string">"Federal officials refuse to try woman involved in"</span>,
+          <span class="hljs-string">"Thieves trying to use earthquakes to commit crimes"</span>,
+          <span class="hljs-string">"What you need to know about NBA free agency"</span>,
+          <span class="hljs-string">"Who is Jony Ive?"</span>,
+          <span class="hljs-string">"What's happening in Seattle?"</span>,
+          <span class="hljs-string">"What to do in East Isles"</span>,
+          <span class="hljs-string">"Most Popular Baby names 2019"</span>,
+          <span class="hljs-string">"Bill Cosby files appeal regarding sexual assault c"</span>,
+          <span class="hljs-string">"This Week in Stocks"</span>,
+          <span class="hljs-string">"How to save for retirement"</span>,
+          <span class="hljs-string">"Sounders fans: what to expect"</span>,
+          <span class="hljs-string">"Saudi society relaxes on dating conventions"</span>,
+          <span class="hljs-string">"The Most Chic Hotels"</span>,
+          <span class="hljs-string">"Latest on the Detroit Grand Prix"</span>,
+          <span class="hljs-string">"Where will Neymar end up?"</span>,
+          <span class="hljs-string">"New gunfire detector in the works"</span>,
+          <span class="hljs-string">"Thinking about early retirement? Check these place"</span>,
+          <span class="hljs-string">"Foods you need to be eating as you age"</span>,
+          <span class="hljs-string">"New cryptocurrency? Here's what you should know ab"</span>
+
+</div></code></pre>
+<p>原标题</p>
+<pre class="hljs"><code><div>What You Need to Know About GMOs
+</div></code></pre>
+<p>生成标题</p>
+<table>
+<thead>
+<tr>
+<th>提示词策略</th>
+<th>生成标题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>basic</td>
+<td>GMOs最新进展：专家解读其深远影响</td>
+</tr>
+<tr>
+<td>chain_of_thought</td>
+<td>GMOs：你需要知道什么？专家解读背后的深远影响</td>
+</tr>
+<tr>
+<td>few_shot</td>
+<td>GMO焦点：重要事件多因素驱动深远变革！</td>
+</tr>
+<tr>
+<td>role_playing</td>
+<td>GMOs最新动态：专家深度解析这一事件的重要性</td>
+</tr>
+</tbody>
+</table>
+<p>可以发现，所有的策略生成的标题都能够准确地反映新闻内容，相对来说，few_shot策略生成的标题更具吸引力,chain_of_thought策略生成的标题较为冗长</p>
+<p>使用大模型(gemini 2.5 Flash)从生成质量和用户兴趣两个维度进行评估并进行排序，结果如下：</p>
+<pre class="hljs"><code><div>
+
+<span class="hljs-section">### 标题生成策略评析与排序</span>
+
+您的新闻标题生成器表现出色，以下是根据<span class="hljs-strong">**生成质量**</span>和<span class="hljs-strong">**符合用户兴趣**</span>两个维度进行的评析与排序：
+
+<span class="hljs-section">#### **1. Chain of Thought 策略** (最佳)</span>
+<span class="hljs-bullet">
+* </span><span class="hljs-strong">**生成标题：**</span> <span class="hljs-code">`GMOs：你需要知道什么？专家解读背后的深远影响`</span>
+<span class="hljs-bullet">* </span><span class="hljs-strong">**核心差异：**</span> <span class="hljs-strong">**精准匹配用户模式，通过疑问句直接切入用户对“需要了解什么”的强烈兴趣。**</span> 标题巧妙地结合了新闻内容的核心信息（专家解读、深远影响）和用户历史点击中最常见的“What you need to know about...”模式，引发强烈好奇心和点击欲望。
+
+---
+
+<span class="hljs-section">#### **2. Basic 策略** (优秀)</span>
+<span class="hljs-bullet">
+* </span><span class="hljs-strong">**生成标题：**</span> <span class="hljs-code">`GMOs最新进展：专家解读其深远影响`</span>
+<span class="hljs-bullet">* </span><span class="hljs-strong">**核心差异：**</span> <span class="hljs-strong">**直接明了地传达核心信息，通用性强，符合用户对时效性和权威性的需求。**</span> 该策略生成的标题简洁有效，准确提炼了新闻内容中的“最新进展”和“专家解读”，是新闻标题的经典且稳妥的生成方式，能吸引关注热点和专业分析的用户。
+
+---
+
+<span class="hljs-section">#### **3. Role-playing 策略** (良好)</span>
+<span class="hljs-bullet">
+* </span><span class="hljs-strong">**生成标题：**</span> <span class="hljs-code">`GMOs最新动态：专家深度解析这一事件的重要性`</span>
+<span class="hljs-bullet">* </span><span class="hljs-strong">**核心差异：**</span> <span class="hljs-strong">**强调深度和专业性，通过“深度解析”满足用户对更详尽、权威信息的求知欲。**</span> 与Basic策略类似，但更侧重于信息的深度挖掘和专业解读，吸引追求全面和权威视角的读者。
+
+---
+
+<span class="hljs-section">#### **4. Few-shot 策略** (尚可)</span>
+<span class="hljs-bullet">
+* </span><span class="hljs-strong">**生成标题：**</span> <span class="hljs-code">`GMO焦点：重要事件多因素驱动深远变革！`</span>
+<span class="hljs-bullet">* </span><span class="hljs-strong">**核心差异：**</span> <span class="hljs-strong">**概括性强，但信息相对抽象，未能精准捕捉用户特定偏好。**</span> 标题使用了冲击性的词汇和感叹号，但缺乏具体信息点（如“专家”），也没有匹配到用户对“你需要知道什么”的明确偏好，吸引力相对通用。
+
+---
+
+<span class="hljs-strong">**总结：**</span>
+
+<span class="hljs-strong">**Chain of Thought 策略**</span>以其对用户历史点击模式的<span class="hljs-strong">**高度适应性**</span>和<span class="hljs-strong">**疑问句式**</span>带来的强烈吸引力而脱颖而出，是本次评测中的最佳策略。它表明在标题生成中，深入分析用户偏好并灵活运用特定句式，能显著提升标题的点击率和用户满意度。
+</div></code></pre>
+<p>对于few_shot策略，生成的标题信息抽象，缺乏具体性，这可能是由于给出的例子导致</p>
+<p>而对于Role Playing策略，生成的标题虽然专业性较强，但缺乏用户兴趣的直接切入点，导致吸引力不如Chain of Thought策略。并且大模型并没有体现出角色扮演的差别。</p>
+<h2 id="%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E4%BA%8C%E5%9F%BA%E4%BA%8E%E9%A2%84%E8%AE%AD%E7%BB%83%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%E7%9A%84%E7%9B%91%E7%9D%A3%E5%BE%AE%E8%B0%83">技术路线二：基于预训练语言模型的监督微调</h2>
+<h3 id="21-%E5%9F%BA%E4%BA%8Ebart%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%BE%AE%E8%B0%83">2.1 基于BART模型的微调</h3>
+<h4 id="211-bart-%E6%A8%A1%E5%9E%8B%E7%AE%80%E4%BB%8B">2.1.1 BART 模型简介</h4>
+<p>BART（Bidirectional and Auto-Regressive Transformers）由 Facebook AI Research 提出 ，采用了标准的序列到序列结构，其编码器类似 BERT，为双向结构，能够充分捕捉输入文本的上下文信息；解码器类似 GPT，是从左到右的单向自回归结构 。</p>
+<p>BART 通过对带有噪声的输入文本进行去噪重构来完成预训练，比如对输入文本执行句子乱序、文本填充等操作，然后让模型恢复原始文本。在预训练时，BART 考虑了多种噪声引入方式，包括单词掩码等。</p>
+<p>与 BERT 独立预测掩码位置词不同，BART 以自回归的方式顺序生成。这一特性使得 BART 在处理自然语言生成任务时具备优势。预训练的 BART 模型同时具备文本表示与生成能力，适用于语言理解、文本生成等不同类型的下游任务。</p>
+<h4 id="212-%E9%80%82%E9%85%8D%E6%80%A7%E5%88%86%E6%9E%90">2.1.2 适配性分析</h4>
+<p>个性化新闻标题生成任务，需要模型根据新闻内容以及用户的个性化信息（如兴趣偏好等）生成准确且吸引人的标题。BART 模型由于其强大的文本生成能力，能够很好地适应这一任务。</p>
+<p>一方面，BART 的双向编码器可以对新闻内容进行全面理解，捕捉其中的关键信息；另一方面，通过在预训练基础上微调，可以将用户个性化信息融入到模型的输入中，引导模型生成符合用户兴趣的标题。例如，在输入中添加用户兴趣标签与新闻内容进行拼接，模型能够在生成标题时考虑这些额外信息，从而生成更具针对性的标题。</p>
+<h4 id="213-%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%B1%95%E7%A4%BA">2.1.3 核心代码展示</h4>
+<p>首先通过数据集构建用户画像：</p>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_user_profiles</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-string">"""创建用户兴趣画像，优化内存使用"""</span>
+        logger.info(<span class="hljs-string">"开始构建用户兴趣画像..."</span>)
+        
+        <span class="hljs-comment"># 为每个用户收集点击过的新闻类别</span>
+        self.user_profiles = defaultdict(<span class="hljs-keyword">lambda</span>: defaultdict(int))
+        
+        <span class="hljs-comment"># 从训练集构建用户画像 - 使用迭代器减少内存</span>
+        <span class="hljs-keyword">for</span> _, row <span class="hljs-keyword">in</span> tqdm.tqdm(self.train_df.iterrows(), total=len(self.train_df), desc=<span class="hljs-string">"构建用户画像"</span>):
+            user_id = row.get(<span class="hljs-string">'UserID'</span>)
+            <span class="hljs-keyword">if</span> pd.notna(user_id):
+                clicked_news_ids = str(row.get(<span class="hljs-string">'ClicknewsID'</span>, <span class="hljs-string">''</span>)).split(<span class="hljs-string">' '</span>)
+                <span class="hljs-keyword">for</span> news_id <span class="hljs-keyword">in</span> clicked_news_ids:
+                    <span class="hljs-keyword">if</span> news_id <span class="hljs-keyword">and</span> news_id <span class="hljs-keyword">in</span> self.news_id_to_content:
+                        category = self.news_id_to_content[news_id][<span class="hljs-string">'category'</span>]
+                        self.user_profiles[user_id][category] += <span class="hljs-number">1</span>
+</div></code></pre>
+<p>然后对数据进行简单预处理，以降低其无效内存占用，并设置格式使其和Pytorch兼容</p>
+<p>然后微调BART模型并进行训练:</p>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">train</span><span class="hljs-params">(self, batch_size=<span class="hljs-number">1</span>, num_epochs=<span class="hljs-number">3</span>, learning_rate=<span class="hljs-number">5e-5</span>)</span>:</span>
+        <span class="hljs-string">"""微调BART模型，深度优化内存使用"""</span>
+        logger.info(<span class="hljs-string">f"开始微调BART模型，参数配置: batch_size=<span class="hljs-subst">{batch_size}</span>, epochs=<span class="hljs-subst">{num_epochs}</span>, lr=<span class="hljs-subst">{learning_rate}</span>"</span>)
+        
+        <span class="hljs-comment"># 定义训练参数</span>
+        training_args = TrainingArguments(
+            output_dir=self.output_dir,
+            learning_rate=learning_rate,
+            per_device_train_batch_size=batch_size,
+            per_device_eval_batch_size=batch_size,
+            num_train_epochs=num_epochs,
+            weight_decay=<span class="hljs-number">0.01</span>,
+            evaluation_strategy=<span class="hljs-string">"epoch"</span>,
+            save_strategy=<span class="hljs-string">"epoch"</span>,
+            logging_dir=<span class="hljs-string">f"<span class="hljs-subst">{self.output_dir}</span>/logs"</span>,
+            save_total_limit=<span class="hljs-number">2</span>,  <span class="hljs-comment"># 只保存2个最佳模型</span>
+            load_best_model_at_end=<span class="hljs-literal">True</span>,
+            metric_for_best_model=<span class="hljs-string">"rouge1"</span>,
+            greater_is_better=<span class="hljs-literal">True</span>,
+            fp16=torch.cuda.is_available(),  <span class="hljs-comment"># 启用混合精度训练</span>
+            gradient_accumulation_steps=<span class="hljs-number">4</span>,  <span class="hljs-comment"># 梯度累积，模拟更大batch_size</span>
+            dataloader_num_workers=<span class="hljs-number">0</span>,  <span class="hljs-comment"># 不使用多线程加载数据</span>
+            report_to=<span class="hljs-string">"none"</span>,  <span class="hljs-comment"># 不向TensorBoard等报告，减少开销</span>
+        )
+
+        trainer.train()
+</div></code></pre>
+<p>在实际训练过程中，我们发现PENS数据集过于大，导致在本机跑数据集的过程中会出现显存不足的问题，因此我们尝试了对训练样本进行采样的方法，即只使用数据集的一部分进行训练，从而降低显存的使用，具体代码如下：</p>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">prepare_datasets</span><span class="hljs-params">(self, train_ratio=<span class="hljs-number">0.01</span>, val_ratio=<span class="hljs-number">0.01</span>, test_ratio=<span class="hljs-number">0.01</span>)</span>:</span>
+        <span class="hljs-string">"""准备训练、验证和测试数据集，使用比例进行采样"""</span>
+        logger.info(<span class="hljs-string">f"开始准备数据集，采样比例: 训练集=<span class="hljs-subst">{train_ratio*<span class="hljs-number">100</span>:<span class="hljs-number">.1</span>f}</span>%, 验证集=<span class="hljs-subst">{val_ratio*<span class="hljs-number">100</span>:<span class="hljs-number">.1</span>f}</span>%, 测试集=<span class="hljs-subst">{test_ratio*<span class="hljs-number">100</span>:<span class="hljs-number">.1</span>f}</span>%"</span>)
+        
+        <span class="hljs-comment"># 构建训练样本</span>
+        train_samples = []
+        <span class="hljs-keyword">for</span> _, row <span class="hljs-keyword">in</span> tqdm.tqdm(self.val_df.iterrows(), total=len(self.val_df), desc=<span class="hljs-string">"准备训练数据"</span>):
+            user_id = row.get(<span class="hljs-string">'UserID'</span>)
+            <span class="hljs-keyword">if</span> pd.notna(user_id):
+                user_profile = self.user_profiles.get(user_id, {})
+                clicked_news_ids = str(row.get(<span class="hljs-string">'ClicknewsID'</span>, <span class="hljs-string">''</span>)).split(<span class="hljs-string">' '</span>)
+                <span class="hljs-keyword">for</span> news_id <span class="hljs-keyword">in</span> clicked_news_ids:
+                    <span class="hljs-keyword">if</span> news_id <span class="hljs-keyword">and</span> news_id <span class="hljs-keyword">in</span> self.news_id_to_content:
+                        news = self.news_id_to_content[news_id]
+                        user_pref_text = self._build_user_preference_text(user_profile)
+                        input_text = <span class="hljs-string">f"<span class="hljs-subst">{user_pref_text}</span> <span class="hljs-subst">{self.user_token}</span> <span class="hljs-subst">{news[<span class="hljs-string">'body'</span>]}</span>"</span>
+                        target_text = news[<span class="hljs-string">'title'</span>]
+                        train_samples.append({
+                            <span class="hljs-string">'user_id'</span>: user_id,
+                            <span class="hljs-string">'news_id'</span>: news_id,
+                            <span class="hljs-string">'input_text'</span>: input_text,
+                            <span class="hljs-string">'target_text'</span>: target_text
+                        })
+</div></code></pre>
+<h3 id="22-%E5%9F%BA%E4%BA%8Eflat-t5%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%BE%AE%E8%B0%83">2.2 基于FLAT-T5模型的微调</h3>
+<h4 id="221-flan-t5-%E6%A8%A1%E5%9E%8B%E7%AE%80%E4%BB%8B">2.2.1 FLAN-T5 模型简介</h4>
+<p>FLAN-T5 是基于 Google 的 T5（Text-To-Text Transfer Transformer）架构进一步开发的预训练语言模型。T5 将所有的自然语言处理任务统一为文本到文本的转换任务，通过大规模的文本数据预训练，在多个下游任务中表现出色。</p>
+<p>FLAN-T5 在此基础上，通过指令调优（instruction tuning）等改进方法，增强了模型在各种任务上的性能。它在训练过程中使用了大量不同类型和领域的任务数据，包括多种语言、领域和任务类型，使模型具备了更强的泛化能力，能够根据给定的指令更好地理解和执行任务。</p>
+<h4 id="222-%E9%80%82%E9%85%8D%E6%80%A7%E5%88%86%E6%9E%90">2.2.2 适配性分析</h4>
+<p>对于个性化新闻标题生成任务，FLAN-T5 的指令调优特性使其具有独特优势。通过在大量不同任务上的训练，FLAN-T5 能够更好地理解自然语言指令。</p>
+<p>在个性化新闻标题生成中，可以将用户个性化信息和新闻内容以指令的形式组合输入给模型，例如 “根据用户对科技领域的兴趣，为以下新闻内容生成一个吸引人的标题：[新闻内容]”，模型能够理解这种指令并生成符合要求的标题。而且其在多语言、多任务上的良好表现，意味着它能够处理多样化的新闻数据和用户需求，生成高质量的个性化标题。</p>
+<h4 id="223-%E6%A0%B8%E5%BF%83%E4%BB%A3%E7%A0%81%E5%B1%95%E7%A4%BA">2.2.3 核心代码展示</h4>
+<p>类似地，首先通过数据集构建用户画像：</p>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_user_profiles</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-string">"""创建用户兴趣画像"""</span>
+        logger.info(<span class="hljs-string">"构建用户兴趣画像..."</span>)
+        
+        <span class="hljs-comment"># 为每个用户收集点击过的新闻类别</span>
+        self.user_profiles = defaultdict(<span class="hljs-keyword">lambda</span>: defaultdict(int))
+        
+        <span class="hljs-comment"># 从训练集构建用户画像</span>
+        <span class="hljs-keyword">for</span> _, row <span class="hljs-keyword">in</span> tqdm(self.train_df.iterrows(), total=len(self.train_df), desc=<span class="hljs-string">"构建用户画像"</span>):
+            user_id = row.get(<span class="hljs-string">'UserID'</span>)
+            <span class="hljs-keyword">if</span> pd.notna(user_id):
+                clicked_news_ids = str(row.get(<span class="hljs-string">'ClicknewsID'</span>, <span class="hljs-string">''</span>)).split(<span class="hljs-string">' '</span>)
+                <span class="hljs-keyword">for</span> news_id <span class="hljs-keyword">in</span> clicked_news_ids:
+                    <span class="hljs-keyword">if</span> news_id <span class="hljs-keyword">and</span> news_id <span class="hljs-keyword">in</span> self.news_id_to_content:
+                        category = self.news_id_to_content[news_id][<span class="hljs-string">'category'</span>]
+                        self.user_profiles[user_id][category] += <span class="hljs-number">1</span>
+</div></code></pre>
+<p>后续也是类似地首先对数据进行预处理以及采样;</p>
+<p>然后通过微调Flan-t5模型进行训练；</p>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">train</span><span class="hljs-params">(self, batch_size=<span class="hljs-number">4</span>, num_epochs=<span class="hljs-number">3</span>, learning_rate=<span class="hljs-number">5e-5</span>)</span>:</span>
+        <span class="hljs-string">"""微调FLAN-T5模型，结果保存到UCAS指定目录"""</span>
+        logger.info(<span class="hljs-string">f"开始微调FLAN-T5模型，batch_size=<span class="hljs-subst">{batch_size}</span>, epochs=<span class="hljs-subst">{num_epochs}</span>, lr=<span class="hljs-subst">{learning_rate}</span>"</span>)
+        
+        <span class="hljs-comment"># 定义训练参数，输出到UCAS结果目录</span>
+        training_args = TrainingArguments(
+            output_dir=self.output_dir,
+            learning_rate=learning_rate,
+            per_device_train_batch_size=batch_size,
+            per_device_eval_batch_size=batch_size,
+            num_train_epochs=num_epochs,
+            weight_decay=<span class="hljs-number">0.01</span>,
+            evaluation_strategy=<span class="hljs-string">"epoch"</span>,
+            save_strategy=<span class="hljs-string">"epoch"</span>,
+            logging_dir=<span class="hljs-string">f"<span class="hljs-subst">{self.output_dir}</span>/logs"</span>,
+            save_total_limit=<span class="hljs-number">3</span>,
+            load_best_model_at_end=<span class="hljs-literal">True</span>,
+            metric_for_best_model=<span class="hljs-string">"rouge1"</span>,
+            greater_is_better=<span class="hljs-literal">True</span>,
+            fp16=torch.cuda.is_available()  <span class="hljs-comment"># 使用混合精度训练加速</span>
+        )
+        
+        <span class="hljs-comment"># 数据收集器</span>
+        data_collator = DataCollatorForSeq2Seq(self.tokenizer, model=self.model)
+        
+        <span class="hljs-comment"># 定义评估指标</span>
+        <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">compute_metrics</span><span class="hljs-params">(eval_pred)</span>:</span>
+            predictions, labels = eval_pred
+            <span class="hljs-comment"># 解码预测结果</span>
+            decoded_preds = self.tokenizer.batch_decode(predictions, skip_special_tokens=<span class="hljs-literal">True</span>)
+            <span class="hljs-comment"># 解码目标文本</span>
+            labels = np.where(labels != <span class="hljs-number">-100</span>, labels, self.tokenizer.pad_token_id)
+            decoded_labels = self.tokenizer.batch_decode(labels, skip_special_tokens=<span class="hljs-literal">True</span>)
+            
+            <span class="hljs-comment"># 计算ROUGE分数</span>
+            result = self.rouge_metric.compute(
+                predictions=decoded_preds, 
+                references=decoded_labels, 
+                use_stemmer=<span class="hljs-literal">True</span>
+            )
+            
+            <span class="hljs-comment"># 提取ROUGE-1, ROUGE-2, ROUGE-L的f1分数</span>
+            result = {key: value.mid.fmeasure * <span class="hljs-number">100</span> <span class="hljs-keyword">for</span> key, value <span class="hljs-keyword">in</span> result.items()}
+            
+            <span class="hljs-comment"># 添加生成的平均长度</span>
+            prediction_lens = [np.count_nonzero(pred != self.tokenizer.pad_token_id) <span class="hljs-keyword">for</span> pred <span class="hljs-keyword">in</span> predictions]
+            result[<span class="hljs-string">"gen_len"</span>] = np.mean(prediction_lens)
+            
+            <span class="hljs-keyword">return</span> {k: round(v, <span class="hljs-number">4</span>) <span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> result.items()}
+        
+        <span class="hljs-comment"># 创建训练器</span>
+        trainer = Trainer(
+            model=self.model,
+            args=training_args,
+            train_dataset=self.train_dataset,
+            eval_dataset=self.val_dataset,
+            data_collator=data_collator,
+            compute_metrics=compute_metrics,
+            callbacks=[EarlyStoppingCallback(early_stopping_patience=<span class="hljs-number">2</span>)]
+        )
+        
+        <span class="hljs-comment"># 开始训练</span>
+        trainer.train()
+</div></code></pre>
+<p>选择最优模型保存到相应目录下后再跑通测试集得到结果即可。</p>
+<h3 id="23%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E4%BA%8C%E8%AE%AD%E7%BB%83%E7%BB%93%E6%9E%9C">2.3技术路线二训练结果</h3>
+<h4 id="%E5%BE%AE%E8%B0%83bart%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%AE%AD%E7%BB%83%E7%BB%93%E6%9E%9C">微调BART模型的训练结果</h4>
+<table>
+<thead>
+<tr>
+<th>性能指标</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ROUGE-1</td>
+<td>43.32</td>
+</tr>
+<tr>
+<td>ROUGE-2</td>
+<td>21.46</td>
+</tr>
+<tr>
+<td>ROUGE-L</td>
+<td>38.87</td>
+</tr>
+<tr>
+<td>BLEU</td>
+<td>39.02</td>
+</tr>
+</tbody>
+</table>
+<p>微调BART模型的ROUGE-L指标的值（38.87）达到了论文预期范围（22.64），说明通过微调BART模型得到的训练结果是比较优秀的。</p>
+<p>以下是部分训练结果示例：</p>
+<pre class="hljs"><code><div>示例 <span class="hljs-number">1</span>:
+
+用户ID: NT63
+
+原始标题: Several Astros set to make Yankee Stadium debuts
+
+生成标题: Astros host Yankees in opener at Yankee Stadium
+
+指标: ROUGE<span class="hljs-number">-1</span>=<span class="hljs-number">43.32</span>, ROUGE<span class="hljs-number">-2</span>=<span class="hljs-number">21.46</span>, ROUGE-L=<span class="hljs-number">38.87</span>, BLEU=<span class="hljs-number">48.52</span>
+</div></code></pre>
+<pre class="hljs"><code><div>示例 <span class="hljs-number">2</span>:
+
+用户ID: NT101
+
+原始标题: Can Joe Biden maintain his frontrunner status after first debate?
+
+生成标题: Joe Biden vs. Hillary Clinton: Who's the frontrunner?
+
+指标: ROUGE<span class="hljs-number">-1</span>=<span class="hljs-number">0.00</span>, ROUGE<span class="hljs-number">-2</span>=<span class="hljs-number">0.00</span>, ROUGE-L=<span class="hljs-number">0.00</span>, BLEU=<span class="hljs-number">35.61</span>
+</div></code></pre>
+<h4 id="%E5%BE%AE%E8%B0%83flan-t5%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%AE%AD%E7%BB%83%E7%BB%93%E6%9E%9C">微调FLAN-T5模型的训练结果</h4>
+<table>
+<thead>
+<tr>
+<th>性能指标</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ROUGE-1</td>
+<td>21.25</td>
+</tr>
+<tr>
+<td>ROUGE-2</td>
+<td>10.12</td>
+</tr>
+<tr>
+<td>ROUGE-L</td>
+<td>20.35</td>
+</tr>
+<tr>
+<td>BLEU</td>
+<td>15.90</td>
+</tr>
+</tbody>
+</table>
+<p>微调FLAN-T5模型的ROUGE-L指标的值（20.35）并未达到论文预期范围（22.64），说明通过微调FLAN-T5模型得到的训练结果在个性新闻标题生成任务上表现并不如BART模型。</p>
+<p>当然ROUGE指标值较低也有我们只取了很少的一部分数据集（1%）进行训练的原因，这是训练资源导致的必然限制，也最终导致了训练结果并未达到预期。相信如果有充足的训练资源的前提下，使用微调FLAN-T5模型实现这一任务得到的参考指标值应该也能够满足基本要求。</p>
+<p>以下是部分训练结果示例：</p>
+<pre class="hljs"><code><div>示例 <span class="hljs-number">1</span>:
+
+用户ID: NT15
+
+原始标题: N&amp;N: Mike Clevinger is probably headed back to the IL
+
+生成标题: Mike Trout looks like he has a shot at MVP. Here are his AL ranks
+
+指标: ROUGE<span class="hljs-number">-1</span>=<span class="hljs-number">21.51</span>, ROUGE<span class="hljs-number">-2</span>=<span class="hljs-number">10.12</span>, ROUGE-L=<span class="hljs-number">20.35</span>, BLEU=<span class="hljs-number">13.46</span>
+
+</div></code></pre>
+<pre class="hljs"><code><div>示例 <span class="hljs-number">2</span>:
+
+用户ID: NT16
+
+原始标题: If waived by Cavaliers, JR Smith could reunite with LeBron James
+
+生成标题: J.R. Smith has long been rumored to be on the trading block , but if the Cavaliers can't move him, he's expected...
+
+指标: ROUGE<span class="hljs-number">-1</span>=<span class="hljs-number">0.00</span>, ROUGE<span class="hljs-number">-2</span>=<span class="hljs-number">0.00</span>, ROUGE-L=<span class="hljs-number">0.00</span>, BLEU=<span class="hljs-number">20.14</span>
+</div></code></pre>
+<h2 id="%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E4%B8%89%E5%A4%8D%E7%8E%B0pens%E4%B8%AD%E5%9F%BA%E7%BA%BF%E6%96%B9%E6%B3%95">技术路线三：复现PENS中基线方法</h2>
+<h3 id="%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E6%A6%82%E8%BF%B0">技术路线概述</h3>
+<p>本技术路线严格按照论文《PENS: A Dataset and Generic Framework for Personalized News Headline Generation》的技术方案，复现了PENS中的最佳基线组合：NAML+F2。该实现基于深度学习框架PyTorch，采用模块化设计，确保了代码的可维护性和扩展性。</p>
+<h3 id="%E9%99%90%E5%88%B6%E4%B8%8E%E5%A3%B0%E6%98%8E">限制与声明</h3>
+<p>这一路线原计划是完整复现PENS论文中提到的方法，并与论文中数据进行比较，然而，实际运行时才发现原始数据集过于庞大，硬件设备的要求过高，使得基于完整数据的训练是不可能的(事实上，光是把完整的数据加载到内存里就是不可能的)，因此我们只能在对原始数据采样1%的情况下进行实验。同时对词汇表的大小做出了严格的限制，才能勉强正常进行训练。</p>
+<p>然而，在这样的限制下，尽管我们成功复现了PENS论文中提到的核心技术架构，但由于数据和训练时间的严重不足，所得到的模型性能与论文中的结果存在较大差距，难以进行比较，因此我们将重点放在技术实现和架构设计上，而非性能对比。</p>
+<h3 id="%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84">核心技术架构</h3>
+<p>PENS基线方法采用编码器-解码器架构，主要由四个核心组件构成：</p>
+<h4 id="1-naml%E7%94%A8%E6%88%B7%E7%BC%96%E7%A0%81%E5%99%A8user-encoder">1. NAML用户编码器（User Encoder）</h4>
+<p>NAML（Neural Attentive Multi-View Learning）用户编码器是整个系统的核心组件之一，负责从用户历史点击序列中学习用户偏好表示。将用户点击历史编码成用户嵌入</p>
+<p><strong>多视图新闻表示学习</strong></p>
+<ul>
+<li><strong>标题编码器</strong>：使用News Encoder对新闻标题进行编码，捕获标题中的关键词汇和语义信息</li>
+<li><strong>类别嵌入</strong>：将新闻类别映射为稠密向量表示，补充标题信息</li>
+<li><strong>多视图融合</strong>：通过注意力机制融合标题表示和类别表示，形成完整的新闻表示</li>
+</ul>
+<p><strong>用户历史聚合</strong></p>
+<ul>
+<li>对用户历史中的每条新闻进行编码，得到新闻表示序列</li>
+<li>使用注意力池化机制聚合历史序列，自动学习不同历史新闻的重要性权重</li>
+<li>生成最终的用户偏好向量</li>
+</ul>
+<h4 id="2-transformer%E6%96%B0%E9%97%BB%E7%BC%96%E7%A0%81%E5%99%A8">2. Transformer新闻编码器</h4>
+<p>新闻编码器采用改进的Transformer架构，专门针对新闻文本的结构特点进行了优化。</p>
+<p><strong>双层位置编码设计</strong></p>
+<ul>
+<li><strong>词级别位置编码</strong>：标准的正弦位置编码，捕获词汇在文本中的绝对位置信息</li>
+<li><strong>句子级别位置编码</strong>：额外的句子位置嵌入，建模句子在文章中的层次结构</li>
+<li><strong>位置信息融合</strong>：将两种位置信息与词嵌入相加，提供丰富的位置感知能力</li>
+</ul>
+<p><strong>多头自注意力机制</strong></p>
+<ul>
+<li>使用PyTorch内置的<code>nn.MultiheadAttention</code>实现标准的多头注意力</li>
+<li>通过层归一化和残差连接确保训练稳定性</li>
+<li>支持最大500个词的新闻文本处理</li>
+</ul>
+<h4 id="3-%E7%94%A8%E6%88%B7%E5%85%B4%E8%B6%A3%E6%B3%A8%E5%85%A5%E6%A8%A1%E5%9D%97">3. 用户兴趣注入模块</h4>
+<p>F2策略是PENS论文中提出的最有效的个性化注入方法，在解码阶段动态调整注意力分布。</p>
+<p><strong>个性化注意力计算</strong></p>
+<ul>
+<li>基于用户表示和新闻表示计算个性化权重</li>
+<li>动态调整解码器对源文本不同部分的关注度</li>
+<li>确保生成的标题符合用户的个性化偏好</li>
+</ul>
+<p><strong>注意力分布重加权</strong></p>
+<ul>
+<li>在每个解码步骤中，根据用户偏好重新分配注意力权重</li>
+<li>平衡原始注意力分布和个性化调整，避免过度个性化</li>
+</ul>
+<h4 id="4-%E6%8C%87%E9%92%88%E7%94%9F%E6%88%90%E7%BD%91%E7%BB%9C%E8%A7%A3%E7%A0%81%E5%99%A8">4. 指针生成网络解码器</h4>
+<p>解码器采用指针生成网络（Pointer-Generator Network），支持从词汇表生成和从源文本复制两种机制。</p>
+<p><strong>LSTM解码器架构</strong></p>
+<ul>
+<li>双层LSTM解码器</li>
+<li>支持教师强制训练和自回归生成两种模式</li>
+<li>最大解码长度限制为30个词</li>
+</ul>
+<p><strong>指针生成机制</strong></p>
+<ul>
+<li><strong>生成概率</strong>：从预定义词汇表中生成词汇的概率分布</li>
+<li><strong>复制概率</strong>：从源文本中复制词汇的概率分布</li>
+<li><strong>门控机制</strong>：动态决定生成和复制的权重分配</li>
+</ul>
+<h3 id="%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86">数据处理与预处理</h3>
+<p>由于设备的内存严重受限，因此在数据处理和预处理阶段采取了多种优化策略，例如分批处理、分块加载等，以确保能够在有限的内存下高效地处理大规模数据集。</p>
+<h3 id="%E8%AE%AD%E7%BB%83%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1">训练系统设计</h3>
+<h4 id="%E8%AE%AD%E7%BB%83%E5%99%A8%E6%9E%B6%E6%9E%84-srcbaselinetrainingtrainerpy">训练器架构 (<code>src/baseline/training/trainer.py</code>)</h4>
+<p>实现了完整的PENS模型训练流水线，支持多组件协同训练：</p>
+<p><strong>训练环境初始化</strong></p>
+<ul>
+<li>随机种子设置确保实验可重复性</li>
+<li>词汇表构建和加载，支持缓存机制提高效率</li>
+<li>数据加载器创建，支持多线程并行加载</li>
+<li>模型、优化器、评估器的统一管理</li>
+</ul>
+<p><strong>多组件协同训练</strong></p>
+<ul>
+<li><strong>NAML用户编码器</strong>：使用较小学习率（1e-5）进行微调</li>
+<li><strong>其他组件</strong>：标准学习率（1e-4）进行训练</li>
+<li><strong>梯度裁剪</strong>：限制梯度范数在0.5以内，避免梯度爆炸</li>
+</ul>
+<h4 id="%E6%97%A9%E5%81%9C%E4%B8%8E%E6%A3%80%E6%9F%A5%E7%82%B9%E7%AE%A1%E7%90%86">早停与检查点管理</h4>
+<p><strong>早停机制</strong></p>
+<ul>
+<li>基于验证集ROUGE-L分数进行早停判断</li>
+<li>连续3个epoch无改善则提前终止训练</li>
+<li>避免过拟合，提高模型泛化能力</li>
+</ul>
+<p><strong>检查点管理</strong></p>
+<ul>
+<li>每5个epoch保存一次模型检查点</li>
+<li>自动保存最佳性能模型</li>
+<li>支持训练中断后的恢复机制</li>
+<li>最多保留3个历史检查点，节省存储空间</li>
+</ul>
+<h3 id="%E8%AF%84%E4%BC%B0%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0">评估系统实现</h3>
+<h4 id="%E6%A0%B8%E5%BF%83%E8%AF%84%E4%BC%B0%E6%8C%87%E6%A0%87-srcbaselineevaluationmetricspy">核心评估指标 (<code>src/baseline/evaluation/metrics.py</code>)</h4>
+<p>实现了全面的评估指标体系，涵盖生成质量、语义相似性和词汇多样性：</p>
+<p><strong>ROUGE评估指标</strong></p>
+<ul>
+<li><strong>ROUGE-1</strong>：单词级别的召回率，衡量词汇重叠度</li>
+<li><strong>ROUGE-2</strong>：双词组合的召回率，评估局部连贯性</li>
+<li><strong>ROUGE-L</strong>：基于最长公共子序列的F1分数，综合考虑词序和内容</li>
+</ul>
+<p><strong>BLEU评估指标</strong></p>
+<ul>
+<li><strong>BLEU-1到BLEU-4</strong>：不同n-gram精度的几何平均</li>
+<li>重点关注BLEU-4分数，评估整体生成质量</li>
+<li>支持多参考答案的评估</li>
+</ul>
+<p><strong>METEOR评估指标</strong></p>
+<ul>
+<li>简化版METEOR实现，考虑精确匹配</li>
+<li>综合precision和recall，提供平衡的评估视角</li>
+</ul>
+<p><strong>词汇多样性指标</strong></p>
+<ul>
+<li><strong>Distinct-1</strong>：不重复单词占比，衡量词汇丰富度</li>
+<li><strong>Distinct-2</strong>：不重复双词组合占比，评估表达多样性</li>
+</ul>
+<h3 id="%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C%E4%B8%8E%E5%88%86%E6%9E%90">实验结果与分析</h3>
+<h4 id="%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B%E7%9B%91%E6%8E%A7">训练过程监控</h4>
+<p>通过对训练日志的分析，我们观察到：</p>
+<p><strong>收敛特征</strong></p>
+<ul>
+<li>训练损失在前10个epoch快速下降</li>
+<li>验证损失趋于稳定，避免了过拟合现象</li>
+<li>ROUGE-L分数在第14-19个epoch达到最佳水平</li>
+<li>在第20个epoch后，训练的loss趋于稳定，模型训练提前停止</li>
+</ul>
+<p><strong>性能指标</strong></p>
+<ul>
+<li>模型参数总数：约2.1M，其中可训练参数1.8M</li>
+<li>训练时间：在单GPU环境下约需要1小时</li>
+<li>内存占用：峰值约6GB GPU显存</li>
+</ul>
+<h4 id="%E5%AE%9A%E9%87%8F%E8%AF%84%E4%BC%B0%E7%BB%93%E6%9E%9C">定量评估结果</h4>
+<p>基于模型生成分析，我们的复现结果为：</p>
+<table>
+<thead>
+<tr>
+<th>性能指标</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ROUGE-1</td>
+<td>0.156</td>
+</tr>
+<tr>
+<td>ROUGE-2</td>
+<td>0.025</td>
+</tr>
+<tr>
+<td>ROUGE-L</td>
+<td>0.156</td>
+</tr>
+<tr>
+<td>BLEU-1</td>
+<td>0.205</td>
+</tr>
+<tr>
+<td>BLEU-2</td>
+<td>0.032</td>
+</tr>
+<tr>
+<td>meteor</td>
+<td>0.197</td>
+</tr>
+<tr>
+<td>avg_pred_length</td>
+<td>8.69</td>
+</tr>
+<tr>
+<td>distinct-1</td>
+<td>0.063</td>
+</tr>
+<tr>
+<td>distinct-2</td>
+<td>0.214</td>
+</tr>
+</tbody>
+</table>
+<p>很遗憾的是，这个结果与预期结果差异极大，对训练所用参数进行大幅度限制尽管使得模型能够在有限的资源下运行，但也导致了生成质量的严重下降。</p>
+<h4 id="%E4%B8%8E%E8%AE%BA%E6%96%87%E5%9F%BA%E7%BA%BF%E5%AF%B9%E6%AF%94">与论文基线对比</h4>
+<p><strong>性能差距分析</strong></p>
+<ul>
+<li>我们的ROUGE-L分数（0.156）低于论文预期范围（22.64）</li>
+<li>主要原因：
+<ol>
+<li>训练数据采样比例较低（1%），限制了模型学习能力</li>
+<li>词汇表大小（5,000）相对较小，影响生成多样性</li>
+</ol>
+</li>
+</ul>
+<p>由于设备的不足只能达成这样的结果，这一对比缺乏可比性，但仍然可以看出整个模型架构和技术路线的实现是成功的。</p>
+<h4 id="%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90">案例分析</h4>
+<p>下面是一个生成标题的案例分析：</p>
+<pre class="hljs"><code><div>=== 案例 12: tv - NT6 ===
+类别: tv
+新闻内容: Wendy Williams says she was kept in the dark about her business affairs by her ex-husband, but has n...
+用户历史: ['American Airlines flight attendant fined after reportedly showing up drunk', 'The risk of traveling to every country in Africa, according to the US State Department']
+原始标题: Wendy Williams Says She s Now In Charge After Ex-Husband Kept Her In the Dark About Business
+个性化标题: How a women entrepreneur got control of her life and business
+模型生成: the back williams and was also also she williams
+vs原始 - ROUGE-L: 0.154, BLEU-4: 0.000
+vs个性化 - ROUGE-L: 0.100, BLEU-4: 0.000
+</div></code></pre>
+<p>首先看到的是由于上下文窗口过小，导致模型常见的生成重复字句的现象，其次是生成的标题与原始标题和个性化标题都存在较大差距，说明模型在个性化生成方面仍有很大提升空间。</p>
+<p>但可以看到，尽管模型的参数收到了限制，但仍然能捕捉到&quot;williams&quot;这一新闻的主要人物，并且正确认识到了主角的性别(she)，这表明模型在一定程度上理解了新闻内容和用户历史。可以预测，当模型参数和数据量进一步增加时，生成质量会有显著提升。</p>
+<h4 id="%E6%94%B9%E8%BF%9B%E7%9A%84%E5%B0%9D%E8%AF%95">改进的尝试</h4>
+<p>在得到这个并不满意的结果后，我们尝试了以下改进措施：</p>
+<ol>
+<li>增加epoch数量：将训练epoch增加到100个，但发现模型在第20个epoch就触发了早停机制，说明模型已经收敛，进一步增加epoch并未带来性能提升。</li>
+<li>调整学习率：尝试将学习率从1e-4降低到1e-5，未发现明显改进</li>
+<li>增加参数：尝试将隐藏层维度等参数增加，但由于设备内存限制，无法成功运行</li>
+</ol>
+<h2 id="%E6%80%BB%E7%BB%93%E4%B8%8E%E5%8F%8D%E6%80%9D">总结与反思</h2>
+<p>本次实验完整实现了个性化新闻标题生成的三种技术路线，分别是基于提示工程的大模型个性化、基于预训练语言模型的监督微调和复现PENS中的基线方法。每种技术路线都具有独特的实现方式和应用场景。</p>
+<p>使用提示工程的大模型个性化方法，能够快速生成高质量的个性化标题，适用于对实时性和灵活性要求较高的场景。通过对不同提示策略的比较，我们发现思维链和角色扮演策略在生成质量和用户兴趣匹配度上表现突出。这一方法的实现依赖于外部的api调用，我们在这里并没有花费太多的精力就取得了较好的效果。</p>
+<p>通过微调模型实现个性化新闻标题生成的技术路线实现的较为成功，因为有现成的预训练模型，只需要对模型进行微调即可。BART模型和Flan-t5模型对个性化新闻标题生成的任务有较高的适配性。但同时这一方法也因需要大量的训练资源导致需要对数据集进行较多的预处理以及分块等操作，一定程度上加大了实验的实现难度。</p>
+<p>复现PENS的技术路线受限于硬件资源，是表现最差的一个技术路线，但它成功实现了PENS论文中提出的核心技术架构，并在有限的数据和资源下进行了训练。尽管生成质量不如预期，但这一过程验证了NAML用户编码器和指针生成网络解码器的有效性，为未来的个性化标题生成研究提供了基础。</p>
+<p>本次实验得到了AI工具的帮助，部分代码由AI生成，但核心的技术实现和架构设计仍然是手动完成的。AI工具在数据处理、模型训练和评估等方面提供了很大的便利，尤其是在一些工具代码生成和调试方面。</p>
+<h3 id="%E4%B8%8D%E8%B6%B3%E4%B8%8E%E9%81%97%E6%86%BE">不足与遗憾</h3>
+<p>在本次实验中，刚开始的规划是希望实现完三种技术路线后使用统一的指标进行对比，然后设计一个选择器来选择最优的个性化标题生成方法。然而，这一过程低估了数据集的复杂性和模型训练的资源需求，路线三的生成结果与预期相差甚远，无法进行有效对比。因此最后只能将三种技术路线分开进行分析。</p>
+<p>同时，不得不说的是，作为一个课程的大作业，个性化标题生成这一任务并不是一个特别适合的选择，尽管有现成的论文可供参考，但就算只是复现论文中的基线方法，也需要大量的计算资源和时间投入。</p>
+<p>数据集的大小和复杂性也使得实验过程变得异常繁琐，尤其是在硬件资源有限的情况下，数据预处理和模型训练都面临着巨大的挑战。对于正常的家用设备来说，甚至光是把数据加载到内存中就是一个不可能完成的任务。想要得到完美的训练结果所需要的计算资源和时间投入远远超过了个人的承受范围，结果的好坏更多是取决于硬件设备的性能而非模型本身的设计。</p>
+<h2 id="%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE">参考文献</h2>
+<blockquote>
+<p>Lewis, M., Liu, Y., Goyal, N., Ghazvininejad, M., Mohamed, A., Levy, O., Stoyanov, V., &amp; Zettlemoyer, L. (2019). BART: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension. arXiv preprint arXiv:1910.13461.</p>
+</blockquote>
+<blockquote>
+<p>Chung, S., Hou, D., Longpre, S., Zoph, B., Tay, Y., Fedus, W., ... &amp; Le, Q. V. (2022). Scaling Instruction-Finetuned Language Models. arXiv preprint arXiv:2210.11416.</p>
+</blockquote>
+<h2 id="%E9%99%84%E5%BD%95">附录</h2>
+<h3 id="a-%E6%95%B0%E6%8D%AE%E9%9B%86">A. 数据集</h3>
+<p>https://huggingface.co/datasets/THEATLAS/PENS</p>
+<h3 id="b-bart%E4%BB%93%E5%BA%93%E9%93%BE%E6%8E%A5">B. BART仓库链接</h3>
+<p>https://huggingface.co/facebook/bart-base</p>
+<h3 id="c-flan-t5%E4%BB%93%E5%BA%93%E9%93%BE%E6%8E%A5">C. FLAN-T5仓库链接</h3>
+<p>https://huggingface.co/google/flan-t5-base</p>
+
+</body>
+</html>

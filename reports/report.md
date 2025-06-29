@@ -165,11 +165,13 @@
 - 对科技、财经、体育等不同领域都能产生相应的个性化标题
 - 用户历史越丰富，个性化效果越明显
 
-![alt text](../results/prompt_engineering/analysis/performance_comparison.png)
+以下是实验结果的可视化分析：
 
-![alt text](../results/prompt_engineering/analysis/strategy_radar.png)
+![alt text](./performance_comparison.png)
 
-![alt text](../results/prompt_engineering/analysis/time_distribution.png)
+![alt text](./strategy_radar.png)
+
+![alt text](./time_distribution.png)
 
 #### 案例分析
 
@@ -785,6 +787,8 @@ vs个性化 - ROUGE-L: 0.100, BLEU-4: 0.000
 通过微调模型实现个性化新闻标题生成的技术路线实现的较为成功，因为有现成的预训练模型，只需要对模型进行微调即可。BART模型和Flan-t5模型对个性化新闻标题生成的任务有较高的适配性。但同时这一方法也因需要大量的训练资源导致需要对数据集进行较多的预处理以及分块等操作，一定程度上加大了实验的实现难度。
 
 复现PENS的技术路线受限于硬件资源，是表现最差的一个技术路线，但它成功实现了PENS论文中提出的核心技术架构，并在有限的数据和资源下进行了训练。尽管生成质量不如预期，但这一过程验证了NAML用户编码器和指针生成网络解码器的有效性，为未来的个性化标题生成研究提供了基础。
+
+本次实验得到了AI工具的帮助，部分代码由AI生成，但核心的技术实现和架构设计仍然是手动完成的。AI工具在数据处理、模型训练和评估等方面提供了很大的便利，尤其是在一些工具代码生成和调试方面。
 
 ### 不足与遗憾
 
