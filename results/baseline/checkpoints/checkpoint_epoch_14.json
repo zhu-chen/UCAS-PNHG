@@ -1,7 +1,7 @@
 {
   "epoch": 14,
-  "best_score": 0.1531581365212144,
-  "save_time": "2025-06-28T20:47:40.964387",
+  "best_score": 0.15348537784531655,
+  "save_time": "2025-06-29T12:27:41.690673",
   "file_path": "results/baseline/checkpoints/checkpoint_epoch_14.pth",
   "file_size": 230154537
 }

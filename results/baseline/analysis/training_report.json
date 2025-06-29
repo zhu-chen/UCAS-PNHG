@@ -1,0 +1,26 @@
+{
+  "training_summary": {
+    "total_epochs": 0,
+    "total_checkpoints": 3,
+    "training_records": 0
+  },
+  "loss_analysis": {},
+  "checkpoint_analysis": {
+    "available_epochs": [
+      9,
+      14,
+      19
+    ],
+    "best_checkpoint": 19,
+    "checkpoint_metrics": {
+      "epoch": 19,
+      "best_score": 0.15534459399523828,
+      "save_time": "2025-06-28T21:14:05.414968",
+      "file_path": "results/baseline/checkpoints/checkpoint_epoch_19.pth",
+      "file_size": 230154537
+    }
+  },
+  "recommendations": [
+    "已保存 3 个检查点，可用于模型恢复"
+  ]
+}

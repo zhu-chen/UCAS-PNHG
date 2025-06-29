@@ -1,0 +1,36 @@
+{
+  "summary": {
+    "total_strategies": 4,
+    "avg_success_rate": 1.0,
+    "avg_generation_time": 16.863809243440627,
+    "best_strategy": "basic",
+    "worst_strategy": "few_shot"
+  },
+  "performance_ranking": [
+    {
+      "strategy": "basic",
+      "success_rate": 1.0,
+      "avg_time": 13.560057902336121,
+      "total_samples": 50
+    },
+    {
+      "strategy": "chain_of_thought",
+      "success_rate": 1.0,
+      "avg_time": 20.958346982002258,
+      "total_samples": 50
+    },
+    {
+      "strategy": "role_playing",
+      "success_rate": 1.0,
+      "avg_time": 13.894701614379883,
+      "total_samples": 50
+    },
+    {
+      "strategy": "few_shot",
+      "success_rate": 1.0,
+      "avg_time": 19.04213047504425,
+      "total_samples": 50
+    }
+  ],
+  "detailed_analysis": {}
+}

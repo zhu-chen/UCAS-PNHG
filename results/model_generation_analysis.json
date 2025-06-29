@@ -1,35 +1,35 @@
 {
   "overall_metrics": {
     "vs_original": {
-      "rouge_1": 0.04857142857142857,
+      "rouge_1": 0.038084988412000795,
       "rouge_2": 0.0,
-      "rouge_l": 0.040920716112531966,
-      "bleu_1": 0.03538461538461539,
+      "rouge_l": 0.04558271114850062,
+      "bleu_1": 0.11755952380952381,
       "bleu_2": 0.0,
       "bleu_3": 0.0,
       "bleu_4": 0.0,
-      "meteor": 0.05576923076923077,
-      "avg_pred_length": 6.8,
-      "avg_ref_length": 9.6,
-      "distinct_1": 0.4411764705882353,
-      "distinct_2": 0.8275862068965517,
-      "rouge": 0.040920716112531966,
+      "meteor": 0.054469788114474484,
+      "avg_pred_length": 3.825,
+      "avg_ref_length": 10.675,
+      "distinct_1": 0.39869281045751637,
+      "distinct_2": 0.7350427350427351,
+      "rouge": 0.04558271114850062,
       "bleu": 0.0
     },
     "vs_personalized": {
-      "rouge_1": 0.11190476190476191,
-      "rouge_2": 0.02857142857142857,
-      "rouge_l": 0.12088888888888889,
-      "bleu_1": 0.17076923076923076,
-      "bleu_2": 0.02222222222222222,
+      "rouge_1": 0.04209262959262959,
+      "rouge_2": 0.0035714285714285713,
+      "rouge_l": 0.048063389497213026,
+      "bleu_1": 0.109375,
+      "bleu_2": 0.005,
       "bleu_3": 0.0,
       "bleu_4": 0.0,
-      "meteor": 0.14864612511671335,
-      "avg_pred_length": 6.8,
-      "avg_ref_length": 9.2,
-      "distinct_1": 0.4411764705882353,
-      "distinct_2": 0.8275862068965517,
-      "rouge": 0.12088888888888889,
+      "meteor": 0.05499710450368346,
+      "avg_pred_length": 3.825,
+      "avg_ref_length": 9.225,
+      "distinct_1": 0.39869281045751637,
+      "distinct_2": 0.7350427350427351,
+      "rouge": 0.048063389497213026,
       "bleu": 0.0
     }
   },
@@ -83,7 +83,7 @@
       ],
       "original_title": "Is It Cheaper To Buy A 1967 Ford Mustang Fastback From Britain?",
       "personalized_title": "Can You Buy A Classic American Car Cheaper in Britian? The Answer is Yes.",
-      "model_generated_title": "the all in the",
+      "model_generated_title": "the",
       "metrics": {
         "vs_original": {
           "rouge_1": 0.0,
@@ -92,18 +92,18 @@
           "bleu_4": 0.0
         },
         "vs_personalized": {
-          "rouge_1": 0.14285714285714285,
+          "rouge_1": 0.07142857142857142,
           "rouge_2": 0.0,
-          "rouge_l": 0.22222222222222224,
+          "rouge_l": 0.13333333333333333,
           "bleu_4": 0.0
         }
       },
       "analysis": {
-        "generated_length": 4,
+        "generated_length": 1,
         "original_length": 12,
         "personalized_length": 14,
         "word_overlap_original": 0.0,
-        "word_overlap_personalized": 0.13333333333333333
+        "word_overlap_personalized": 0.07142857142857142
       }
     },
     {
@@ -155,23 +155,23 @@
       ],
       "original_title": "Kyrie Irving reportedly didn t like Boston",
       "personalized_title": "Multiple fallouts caused Irving to sour on Celtics",
-      "model_generated_title": "irving and irving chicken of irving for irving to irving",
+      "model_generated_title": "irving and irving and irving connection of the to",
       "metrics": {
         "vs_original": {
           "rouge_1": 0.14285714285714285,
           "rouge_2": 0.0,
-          "rouge_l": 0.11764705882352941,
+          "rouge_l": 0.125,
           "bleu_4": 0.0
         },
         "vs_personalized": {
           "rouge_1": 0.25,
-          "rouge_2": 0.14285714285714285,
-          "rouge_l": 0.22222222222222224,
+          "rouge_2": 0.0,
+          "rouge_l": 0.23529411764705882,
           "bleu_4": 0.0
         }
       },
       "analysis": {
-        "generated_length": 10,
+        "generated_length": 9,
         "original_length": 7,
         "personalized_length": 8,
         "word_overlap_original": 0.08333333333333333,
@@ -191,43 +191,1309 @@
       ],
       "original_title": "1 Top-Tier, High-Yield Dividend Stock to Consider Buying This June",
       "personalized_title": "Exxon securing natural gaz projects, and high yeild dividend stocks to consider.",
-      "model_generated_title": "an and an and an to income income to master master to driving",
+      "model_generated_title": "an and an been excellent income to own to own to own",
       "metrics": {
         "vs_original": {
           "rouge_1": 0.1,
           "rouge_2": 0.0,
-          "rouge_l": 0.08695652173913043,
+          "rouge_l": 0.0909090909090909,
           "bleu_4": 0.0
         },
         "vs_personalized": {
           "rouge_1": 0.16666666666666666,
           "rouge_2": 0.0,
-          "rouge_l": 0.16,
+          "rouge_l": 0.16666666666666666,
           "bleu_4": 0.0
         }
       },
       "analysis": {
-        "generated_length": 13,
+        "generated_length": 12,
         "original_length": 10,
         "personalized_length": 12,
+        "word_overlap_original": 0.0625,
+        "word_overlap_personalized": 0.11764705882352941
+      }
+    },
+    {
+      "case_id": 6,
+      "case_name": "sports - NT23",
+      "user_id": "NT23",
+      "news_id": "N12452",
+      "category": "sports",
+      "news_body_preview": "If Sunday was a dud that even the glass-half-full manager labeled a disappointment, Monday represented an inelegant sequel for the Red Sox. The team spent virtually an entire game playing from behind,...",
+      "user_history": [
+        "O.J. Simpson Joins Twitter and Trump Kicks Out His Chief of Staff for Coughing",
+        "Trump not concerned about speed of North Korea nuclear talks"
+      ],
+      "original_title": "Persistent Red Sox beat back, walk off Chicago",
+      "personalized_title": "Chicago walk off Persistent red sox",
+      "model_generated_title": "if",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 1,
+        "original_length": 8,
+        "personalized_length": 6,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 7,
+      "case_name": "news - NT17",
+      "user_id": "NT17",
+      "news_id": "N38645",
+      "category": "news",
+      "news_body_preview": "A Virginia woman filed a lawsuit on Wednesday against President Donald Trump s Washington, DC, hotel and the US government, seeking 1 million over an injury she claims she suffered while staying at th...",
+      "user_history": [
+        "This U.S. Pot Stock Megamerger Clears a Hurdle but Hits a Snag",
+        "Judge sentences St. Paul man to 15 years for beating child to death in case she calls stunning"
+      ],
+      "original_title": "Virginia woman sues Trump s DC hotel for 1 million in injury lawsuit",
+      "personalized_title": "Another private lawsuit against Trump with a claim of 1 million, and this time its off the rails",
+      "model_generated_title": "the injury president president in president in former its",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.15384615384615385,
+          "rouge_2": 0.0,
+          "rouge_l": 0.09090909090909093,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.1111111111111111,
+          "rouge_2": 0.0,
+          "rouge_l": 0.07407407407407407,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 9,
+        "original_length": 13,
+        "personalized_length": 18,
+        "word_overlap_original": 0.11764705882352941,
+        "word_overlap_personalized": 0.09090909090909091
+      }
+    },
+    {
+      "case_id": 8,
+      "case_name": "news - NT90",
+      "user_id": "NT90",
+      "news_id": "N103382",
+      "category": "news",
+      "news_body_preview": "The Los Angeles City Ethics Commission on Tuesday fined a former city building inspector 100,795 for working on a Hollywood construction project while also providing plumbing services for it through h...",
+      "user_history": [
+        "Violence Against American Indian and Alaska Native Women and Men",
+        "Nearly Two Million LGBTQ Teens in US Consider Suicide Each Year"
+      ],
+      "original_title": "Former L.A. building inspector fined 100,00 for moonlighting on city project he oversaw",
+      "personalized_title": "Former City Building Inspector Fined 100,795 forworking on a Hollywood construction project while also providing plumbing services for it through his own company.",
+      "model_generated_title": "the all",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 2,
+        "original_length": 13,
+        "personalized_length": 23,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 9,
+      "case_name": "health - NT15",
+      "user_id": "NT15",
+      "news_id": "N109387",
+      "category": "health",
+      "news_body_preview": "Why suffer if you don t have to? Intermittent fasting is all the rage these days, with celebs singing its praises-most notably the Wolverine himself, Hugh Jackman. The diet, which consists of crushing...",
+      "user_history": [
+        "2 suspects in custody for Mansfield arson that killed 3-year-old",
+        "Worker tried to warn others FIU bridge was unsafe. The collapse left him in a coma"
+      ],
+      "original_title": "The 14 Easiest Ways to Stick to Intermittent Fasting",
+      "personalized_title": "14 Ways To Make Intermittent Fasting Work For You",
+      "model_generated_title": "why",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 1,
+        "original_length": 9,
+        "personalized_length": 9,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 10,
+      "case_name": "sports - NT97",
+      "user_id": "NT97",
+      "news_id": "N113553",
+      "category": "sports",
+      "news_body_preview": "Here s some ideas for Bill O Brien. Now that Bill O Brien is kind of sort of the general manager, he has the chance to make up for Brian Gaine s previous sins to improve the roster this year. Free age...",
+      "user_history": [
+        "Can Japan challenge the United States again at Women s World Cup?",
+        "Which Joe Flacco will the Broncos get in 2019?"
+      ],
+      "original_title": "Houston Texans Blockbuster Trade Ideas",
+      "personalized_title": "Catching up with the Houston Texans",
+      "model_generated_title": "bill and bill of now",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 5,
+        "original_length": 5,
+        "personalized_length": 6,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 11,
+      "case_name": "autos - NT70",
+      "user_id": "NT70",
+      "news_id": "N41715",
+      "category": "autos",
+      "news_body_preview": "The 2019 Automobile All-Stars winners will be revealed on Saturday, March 9 at 11:00 am Eastern, but first we re introducing in no particular order a few of the contenders each day this week. Head her...",
+      "user_history": [
+        "Pete Buttigieg faces leadership test after fatal police shooting in South Bend, Indiana",
+        "Jalen Rose takes funny shot at Paul Pierce over wheelchair admission"
+      ],
+      "original_title": "The 2019 Infiniti QX50 Represents the Future of Its Brand",
+      "personalized_title": "Future of the brand is represented by 2019 Infiniti QX50",
+      "model_generated_title": "the particular",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.1,
+          "rouge_2": 0.0,
+          "rouge_l": 0.16666666666666669,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.1,
+          "rouge_2": 0.0,
+          "rouge_l": 0.16666666666666669,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 2,
+        "original_length": 10,
+        "personalized_length": 10,
+        "word_overlap_original": 0.1,
+        "word_overlap_personalized": 0.09090909090909091
+      }
+    },
+    {
+      "case_id": 12,
+      "case_name": "tv - NT6",
+      "user_id": "NT6",
+      "news_id": "N113442",
+      "category": "tv",
+      "news_body_preview": "Wendy Williams says she was kept in the dark about her business affairs by her ex-husband, but has now fully taken back control of her career. Willams was speaking at the FWD conference in Charlotte, ...",
+      "user_history": [
+        "American Airlines flight attendant fined after reportedly showing up drunk",
+        "The risk of traveling to every country in Africa, according to the US State Department"
+      ],
+      "original_title": "Wendy Williams Says She s Now In Charge After Ex-Husband Kept Her In the Dark About Business",
+      "personalized_title": "How a women entrepreneur got control of her life and business",
+      "model_generated_title": "the back williams and was also also she williams",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.17647058823529413,
+          "rouge_2": 0.0,
+          "rouge_l": 0.15384615384615383,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.09090909090909091,
+          "rouge_2": 0.0,
+          "rouge_l": 0.09999999999999999,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 9,
+        "original_length": 17,
+        "personalized_length": 11,
+        "word_overlap_original": 0.15,
+        "word_overlap_personalized": 0.058823529411764705
+      }
+    },
+    {
+      "case_id": 13,
+      "case_name": "news - NT5",
+      "user_id": "NT5",
+      "news_id": "N85037",
+      "category": "news",
+      "news_body_preview": "President Trump s increasingly urgent push to construct a massive wall on the border with Mexico has created a nightmare scenario for congressional Republicans as they race to avert a partial shutdown...",
+      "user_history": [
+        "Chael Sonnen explains retirement after Bellator 222: I feel like I used all of my toughness up",
+        "Hang Up! The US Marshal s Office Will Never Call You For Money"
+      ],
+      "original_title": "Trump s ultimatum on border wall boxes in fellow Republicans",
+      "personalized_title": "Trump s Border Wall Ultimatum Divides Republican Lawmakers",
+      "model_generated_title": "president",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 1,
+        "original_length": 10,
+        "personalized_length": 8,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 14,
+      "case_name": "lifestyle - NT16",
+      "user_id": "NT16",
+      "news_id": "N33076",
+      "category": "lifestyle",
+      "news_body_preview": "You ve always got to be aware of what a gas station is charging you to fill up. Just today, 2 people alerted us to issues with pumps overcharging in Greensboro. One viewer said he tried to buy gas and...",
+      "user_history": [
+        "Zion Williamson s Debut and the Best NBA Summer League Storylines to Watch",
+        "Texas responds to Terry Bradshaw s negative comments about QB Sam Ehlinger"
+      ],
+      "original_title": "Take These Steps To Avoid Skimmers",
+      "personalized_title": "Avoid Skimmers with these steps",
+      "model_generated_title": "ve always and what of a what is you is what is what is what is what is",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 18,
+        "original_length": 6,
+        "personalized_length": 5,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 15,
+      "case_name": "finance - NT36",
+      "user_id": "NT36",
+      "news_id": "N49871",
+      "category": "finance",
+      "news_body_preview": "Canopy Growth (NYSE: CGC ) stock has continued to slide in recent weeks. I warned previously that technical resistance threatened to sink CGC stock, and that s what has has happened. However, not all ...",
+      "user_history": [
+        "Air India plane escorted by fighters to land in London after bomb threat",
+        "More rain in store for Orlando"
+      ],
+      "original_title": "Canopy Growth Faces More of the Wrong Kinds of Headlines",
+      "personalized_title": "Canopy stock continues to slide as predicted",
+      "model_generated_title": "",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 0,
+        "original_length": 10,
+        "personalized_length": 7,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 16,
+      "case_name": "sports - NT39",
+      "user_id": "NT39",
+      "news_id": "N79613",
+      "category": "sports",
+      "news_body_preview": "Second-half rallies have become the norm for a Haitian team that made history by winning its Gold Cup group for the first time in the nation s history. On Saturday, the team made history again by scor...",
+      "user_history": [
+        "Scientists say dinosaur fossils found at Colorado construction site belonged to a triceratops.",
+        "The Latest: Strong aftershock follows California earthquake"
+      ],
+      "original_title": "Haiti rallies past Canada in Gold Cup",
+      "personalized_title": "Haiti takes Gold Cup from Canada",
+      "model_generated_title": "",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 0,
+        "original_length": 7,
+        "personalized_length": 6,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 17,
+      "case_name": "finance - NT83",
+      "user_id": "NT83",
+      "news_id": "N47910",
+      "category": "finance",
+      "news_body_preview": "Considering how volatile the oil industry has been in recent years, it wouldn t be surprising if brokers were handing out airsickness bags with each oil stock purchase. Every time the market gets a wh...",
+      "user_history": [
+        "I Did Say It : Trump Weighs In On His Election Meddling Comment To Putin",
+        "Iowa weather: New record for wettest 12 months in state history"
+      ],
+      "original_title": "3 Top Oil Stocks to Buy Right Now",
+      "personalized_title": "Here are three oil stocks to purchase right now",
+      "model_generated_title": "",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 0,
+        "original_length": 8,
+        "personalized_length": 9,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 18,
+      "case_name": "music - NT99",
+      "user_id": "NT99",
+      "news_id": "N121123",
+      "category": "music",
+      "news_body_preview": "In Tuesday s final audition episode of America s Got Talent , get ready to meet Robert Finley , 65-year-old Vietnam War veteran who started going blind about four years ago due to glaucoma. As the Win...",
+      "user_history": [
+        "Tributes to Michael Jackson flow on 10th death anniversary",
+        "Sen. Paul: I m proud of Trump for showing restraint with Iran"
+      ],
+      "original_title": "America s Got Talent sneak peek video: Blind Vietnam War veteran Robert Finley will have you smiling ear-to-ear WATCH",
+      "personalized_title": "AGT has special talent in Vietnam War veteran",
+      "model_generated_title": "the all talent in former its",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.05263157894736842,
+          "rouge_2": 0.0,
+          "rouge_l": 0.08,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.25,
+          "rouge_2": 0.14285714285714285,
+          "rouge_l": 0.28571428571428575,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 6,
+        "original_length": 19,
+        "personalized_length": 8,
+        "word_overlap_original": 0.041666666666666664,
+        "word_overlap_personalized": 0.16666666666666666
+      }
+    },
+    {
+      "case_id": 19,
+      "case_name": "entertainment - NT5",
+      "user_id": "NT5",
+      "news_id": "N114614",
+      "category": "entertainment",
+      "news_body_preview": "From Kaley Cuoco and Ryan Sweeting to Katy Perry and Russell Brand, find out which stars called it quits not long after their weddings. Blink and you missed it! Hollywood stars are known for falling i...",
+      "user_history": [
+        "Chael Sonnen explains retirement after Bellator 222: I feel like I used all of my toughness up",
+        "Hang Up! The US Marshal s Office Will Never Call You For Money"
+      ],
+      "original_title": "Shortest celebrity marriages",
+      "personalized_title": "The Shortest Lived Marriages Between Celebrities",
+      "model_generated_title": "russell",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 1,
+        "original_length": 3,
+        "personalized_length": 6,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 20,
+      "case_name": "sports - NT92",
+      "user_id": "NT92",
+      "news_id": "N113717",
+      "category": "sports",
+      "news_body_preview": "More than 12 years after being called up for the 2007 Women s World Cup, Carly Telford played her first match at a major tournament on Friday night keeping a clean sheet in England s 1-0 win over Arge...",
+      "user_history": [
+        "NASA Spots Electric Soccer Balls In Space",
+        "Carrie Underwood loves this cheese sculpture of her face but the internet is terrified"
+      ],
+      "original_title": "Carly Telford Explains Emotional Scenes With Fran Kirby After Making First World Cup Appearance",
+      "personalized_title": "After making first world cup appearance, Carly Telford tells all about emotional scenes with Fran Kirby",
+      "model_generated_title": "women 12",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 2,
+        "original_length": 14,
+        "personalized_length": 16,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 21,
+      "case_name": "sports - NT33",
+      "user_id": "NT33",
+      "news_id": "N95394",
+      "category": "sports",
+      "news_body_preview": "Luke Rockhold has teased a potential move up to light heavyweight for years. Next week at UFC 239, however, he will finally make the change in weight class. The former UFC and Strikeforce middleweight...",
+      "user_history": [
+        "The Story Behind the Sweetest Watermelon in the South",
+        "What will 2,400 rent you in Atlantic Station, this month?"
+      ],
+      "original_title": "Video: See how Luke Rockhold is preparing for light heavyweight debut at UFC 239",
+      "personalized_title": "Rockhold set to move to light heavyweight at UFC 239",
+      "model_generated_title": "luke",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.07142857142857142,
+          "rouge_2": 0.0,
+          "rouge_l": 0.13333333333333333,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 1,
+        "original_length": 14,
+        "personalized_length": 10,
+        "word_overlap_original": 0.07142857142857142,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 22,
+      "case_name": "weather - NT90",
+      "user_id": "NT90",
+      "news_id": "N115390",
+      "category": "weather",
+      "news_body_preview": "LOS ANGELES (CBSLA) Los Angeles Department of Water and Power got off to a rocky start this morning after a pair of early morning water main breaks. The first happened in Sherman Oaks around midnight ...",
+      "user_history": [
+        "Violence Against American Indian and Alaska Native Women and Men",
+        "Nearly Two Million LGBTQ Teens in US Consider Suicide Each Year"
+      ],
+      "original_title": "LADWP Has Busy Morning With Pair Of Water Main Breaks",
+      "personalized_title": "Rocky Morning Start for Los Angeles Department of Water and Power after a pair of early morning water main breaks.",
+      "model_generated_title": "the all in the its",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 5,
+        "original_length": 10,
+        "personalized_length": 20,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 23,
+      "case_name": "news - NT69",
+      "user_id": "NT69",
+      "news_id": "N30305",
+      "category": "news",
+      "news_body_preview": "A New Albany lead clerk is set to be honored on July 2 after authorities said she spotted a fraudulent money order. On Tuesday, July 2, at 8:30 a.m. the US Postal Service will host an honorary ceremon...",
+      "user_history": [
+        "Former NFL QB Anthony Wright s alleged shooter in domestic dispute arrested",
+        "Steve Harvey s Dominican Republic jazz festival is moving out of the country amid concerns about recent US tourist deaths"
+      ],
+      "original_title": "Post office to present hero award to New Albany, Ind. woman",
+      "personalized_title": "New Albany Ind Woman will get hero award from Post Office",
+      "model_generated_title": "the all in former",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 4,
+        "original_length": 11,
+        "personalized_length": 11,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 24,
+      "case_name": "news - NT37",
+      "user_id": "NT37",
+      "news_id": "N68541",
+      "category": "news",
+      "news_body_preview": "Hundreds of thousands of taxpayer dollars were spent at the Trump International Hotel in Washington to cover Secret Service expenses during President Trump s first year in office, NBC News reports . A...",
+      "user_history": [
+        "Is It Kawhi Leonard or Bust for Lakers?",
+        "Skip Bayless falls for fake Twitter report, Chris Paul saying James Harden has manboobs"
+      ],
+      "original_title": "More than 200K in taxpayer money spent at Trump hotel for Secret Service in his first year: report",
+      "personalized_title": "Taxpayer and the secret service",
+      "model_generated_title": "dollars washington and cover to dollars cover and cover",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.2,
+          "rouge_2": 0.0,
+          "rouge_l": 0.14285714285714285,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 9,
+        "original_length": 18,
+        "personalized_length": 5,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.1111111111111111
+      }
+    },
+    {
+      "case_id": 25,
+      "case_name": "news - NT74",
+      "user_id": "NT74",
+      "news_id": "N115563",
+      "category": "news",
+      "news_body_preview": "PORTLAND, OR (KPTV) It s the talk of the country: Oregon Republican lawmakers in hiding to thwart a controversial bill aimed at dramatically reducing the state s carbon emissions over time. House Bill...",
+      "user_history": [
+        "Texans not backing off pursuit of Patriots Nick Caserio despite tampering accusation",
+        "Check out the 3 top spots in Milwaukee s Bluemound Heights neighborhood"
+      ],
+      "original_title": "A closer look at House Bill 2020, Oregon s cap-and-trade bill",
+      "personalized_title": "Oregon cap and trade bill take a closer look at House bill 2020",
+      "model_generated_title": "the all oregon",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.09090909090909091,
+          "rouge_2": 0.0,
+          "rouge_l": 0.14285714285714288,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.07692307692307693,
+          "rouge_2": 0.0,
+          "rouge_l": 0.125,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 3,
+        "original_length": 11,
+        "personalized_length": 13,
+        "word_overlap_original": 0.08333333333333333,
+        "word_overlap_personalized": 0.07142857142857142
+      }
+    },
+    {
+      "case_id": 26,
+      "case_name": "sports - NT97",
+      "user_id": "NT97",
+      "news_id": "N106727",
+      "category": "sports",
+      "news_body_preview": "Could the multiyear legal fight between U.S. women s national team players and the U.S. Soccer Federation over pay equity and workplace dignity be nearing an end? As first reported by the Wall Street ...",
+      "user_history": [
+        "Can Japan challenge the United States again at Women s World Cup?",
+        "Which Joe Flacco will the Broncos get in 2019?"
+      ],
+      "original_title": "What Mediation Means for U.S. Soccer, USWNT in Gender Discrimination Lawsuit",
+      "personalized_title": "USWNT to seek mediation in Gender Discrimination Lawsuit",
+      "model_generated_title": "could and women",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 3,
+        "original_length": 11,
+        "personalized_length": 8,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 27,
+      "case_name": "sports - NT46",
+      "user_id": "NT46",
+      "news_id": "N88446",
+      "category": "sports",
+      "news_body_preview": "Amir Garrett has yielded a 1.70 ERA in a team-high 42 relief appearances. Among pitchers with at least 37 innings, his ERA leads the National League. Cincinnati Reds Milwaukee Brewers 59 Cincinnati Re...",
+      "user_history": [
+        "Dodgers starter Rich Hill expected to miss more than a month with forearm strain",
+        "Judge approves PSL settlement; Rams owe up to 24M"
+      ],
+      "original_title": "GALLERY: Milwaukee Brewers at Cincinnati Reds, July 3",
+      "personalized_title": "Garett Continues to Excel",
+      "model_generated_title": "",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 0,
+        "original_length": 8,
+        "personalized_length": 4,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 28,
+      "case_name": "health - NT2",
+      "user_id": "NT2",
+      "news_id": "N27572",
+      "category": "health",
+      "news_body_preview": "West Nile virus has sickened the first Iowan of the summer, state officials said Friday. A western Iowa man recently became ill from the mosquito-borne virus, the Iowa Department of Public Health said...",
+      "user_history": [
+        "Boeing Paying Out After Deadly 737 Max Jet Crashes",
+        "CEO pay grows in Texas"
+      ],
+      "original_title": "West Nile virus in Iowa: First sickness of summer reported. Here are tips to avoid it.",
+      "personalized_title": "First Case of West Nile Virus this Summer",
+      "model_generated_title": "western",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 1,
+        "original_length": 16,
+        "personalized_length": 8,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 29,
+      "case_name": "health - NT27",
+      "user_id": "NT27",
+      "news_id": "N65492",
+      "category": "health",
+      "news_body_preview": "There s a lot of misleading fitness and exercise advice out there. Here s what we know about the real best ways to get fit, according to science. Regular exercise is essential for health , but there s...",
+      "user_history": [
+        "We tried KFC s new Cinnabon Dessert Biscuit, and this is how it tastes",
+        "Bourdain Day honors Anthony Bourdain on what would have been chef s 63rd birthday"
+      ],
+      "original_title": "15 fitness tips that are doing more harm than good",
+      "personalized_title": "The top exercise and weight loss myths",
+      "model_generated_title": "fitness fitness lot there. in there.",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.1,
+          "rouge_2": 0.0,
+          "rouge_l": 0.125,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 6,
+        "original_length": 10,
+        "personalized_length": 7,
+        "word_overlap_original": 0.07692307692307693,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 30,
+      "case_name": "lifestyle - NT70",
+      "user_id": "NT70",
+      "news_id": "N43681",
+      "category": "lifestyle",
+      "news_body_preview": "From your credit score to your socioeconomic status, find out all the surprising secrets your mailman knows about you. 23 Secrets Your Mailman Knows About You Your mailman and Gretchen Wieners hair ha...",
+      "user_history": [
+        "Pete Buttigieg faces leadership test after fatal police shooting in South Bend, Indiana",
+        "Jalen Rose takes funny shot at Paul Pierce over wheelchair admission"
+      ],
+      "original_title": "23 Secrets Your Mailman Knows About You",
+      "personalized_title": "Find out what 23 secrets your mailman knows about you",
+      "model_generated_title": "find and find to find surprising in you.",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.1,
+          "rouge_2": 0.0,
+          "rouge_l": 0.11111111111111112,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 8,
+        "original_length": 7,
+        "personalized_length": 10,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.06666666666666667
+      }
+    },
+    {
+      "case_id": 31,
+      "case_name": "sports - NT56",
+      "user_id": "NT56",
+      "news_id": "N24661",
+      "category": "sports",
+      "news_body_preview": "How do you view Justin Haley s victory at Daytona? Dustin Long: Every team running at that point had the same opportunity so congrats to Haley and his team for pulling it off. It s understandable how ...",
+      "user_history": [
+        "Why the US is experiencing a widespread worker shortage",
+        "Kevin Costner drops Whitney Houston bombshell about Bodyguard poster"
+      ],
+      "original_title": "Bump and run: How to view Justin Haley s Daytona win",
+      "personalized_title": "Time machines and breaking of traditions",
+      "model_generated_title": "point",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 1,
+        "original_length": 11,
+        "personalized_length": 6,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 32,
+      "case_name": "sports - NT46",
+      "user_id": "NT46",
+      "news_id": "N32617",
+      "category": "sports",
+      "news_body_preview": "The Phillies have made another trade. Philadelphia has acquired infielder Brad Miller from the Yankees for cash considerations, according to multiple reports. The Phillies have acquired INF Brad Mille...",
+      "user_history": [
+        "Dodgers starter Rich Hill expected to miss more than a month with forearm strain",
+        "Judge approves PSL settlement; Rams owe up to 24M"
+      ],
+      "original_title": "MLB trade rumors: Yankees send Brad Miller to Phillies for cash considerations",
+      "personalized_title": "Phillies Trade UP",
+      "model_generated_title": "the all miller miller in the miller",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.08333333333333333,
+          "rouge_2": 0.0,
+          "rouge_l": 0.10526315789473685,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 7,
+        "original_length": 12,
+        "personalized_length": 3,
         "word_overlap_original": 0.06666666666666667,
-        "word_overlap_personalized": 0.125
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 33,
+      "case_name": "foodanddrink - NT26",
+      "user_id": "NT26",
+      "news_id": "N73273",
+      "category": "foodanddrink",
+      "news_body_preview": "If you ve ever ordered a Coke at McDonald s and thought it tasted better than any other soda in your life, you re not alone. And the taste difference isn t in your head. McDonald s takes better care o...",
+      "user_history": [
+        "Slade switches to wildcard chassis for Townsville",
+        "Briscoe, Reddick crash in Stage 2 at Daytona"
+      ],
+      "original_title": "This Is Why Coke Tastes Better at McDonald s Than Anywhere Else",
+      "personalized_title": "That s why McDonald s Cola is more delicious than anywhere else",
+      "model_generated_title": "if of thought",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 3,
+        "original_length": 12,
+        "personalized_length": 12,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 34,
+      "case_name": "lifestyle - NT36",
+      "user_id": "NT36",
+      "news_id": "N20703",
+      "category": "lifestyle",
+      "news_body_preview": "Forget coffee. These homeowners in Montana experienced a morning jolt that d be hard to beat. Last week, they were stirred from slumber at around 5 a.m. by the sound of an intruder. The uninvited visi...",
+      "user_history": [
+        "Air India plane escorted by fighters to land in London after bomb threat",
+        "More rain in store for Orlando"
+      ],
+      "original_title": "Sleepy Bear Decides Homeowners Closet Is Just Right For A Nap",
+      "personalized_title": "Bear finds just right closet in homeowners house and takes a nap",
+      "model_generated_title": "forget",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 1,
+        "original_length": 11,
+        "personalized_length": 12,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 35,
+      "case_name": "sports - NT56",
+      "user_id": "NT56",
+      "news_id": "N12006",
+      "category": "sports",
+      "news_body_preview": "Show them the money, seriously Last weekend in Miami, the 40 Yards of Gold competition took place in an effort to (unofficially) determine the fastest man in the National Football League. The races we...",
+      "user_history": [
+        "Why the US is experiencing a widespread worker shortage",
+        "Kevin Costner drops Whitney Houston bombshell about Bodyguard poster"
+      ],
+      "original_title": "Badet, other 40 Yards of Gold participants have not been paid yet",
+      "personalized_title": "40 yards of farce",
+      "model_generated_title": "show",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 1,
+        "original_length": 12,
+        "personalized_length": 4,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 36,
+      "case_name": "news - NT17",
+      "user_id": "NT17",
+      "news_id": "N11370",
+      "category": "news",
+      "news_body_preview": "For decades, many Americans learned what was happening in the world after their newspaper landed in their driveway. One former paperboy kept nearly a century s worth of historic headlines and now, he ...",
+      "user_history": [
+        "This U.S. Pot Stock Megamerger Clears a Hurdle but Hits a Snag",
+        "Judge sentences St. Paul man to 15 years for beating child to death in case she calls stunning"
+      ],
+      "original_title": "Former paperboy gives away decades of historic headlines",
+      "personalized_title": "A paperboy brings century-old newspapers to life",
+      "model_generated_title": "learned learned what was of long in",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.125,
+          "rouge_2": 0.0,
+          "rouge_l": 0.13333333333333333,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 7,
+        "original_length": 8,
+        "personalized_length": 7,
+        "word_overlap_original": 0.07692307692307693,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 37,
+      "case_name": "lifestyle - NT16",
+      "user_id": "NT16",
+      "news_id": "N77323",
+      "category": "lifestyle",
+      "news_body_preview": "Talk about a floofy puppers. When choosing what breed of dog you want, it s important to consider things like coat type. Do you want a dog with low maintenance short hair? Do you want a dog that doesn...",
+      "user_history": [
+        "Zion Williamson s Debut and the Best NBA Summer League Storylines to Watch",
+        "Texas responds to Terry Bradshaw s negative comments about QB Sam Ehlinger"
+      ],
+      "original_title": "These Long-Haired Dogs Make For the Best Super Shaggy Friend",
+      "personalized_title": "Super Shaggy Long-Haired Dogs make the best of friends",
+      "model_generated_title": "talk",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 1,
+        "original_length": 10,
+        "personalized_length": 9,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
+      }
+    },
+    {
+      "case_id": 38,
+      "case_name": "news - NT63",
+      "user_id": "NT63",
+      "news_id": "N88131",
+      "category": "news",
+      "news_body_preview": "Need a budget-friendly new spot? Though apartment hunting can be challenging, don t despair just yet there are deals to be had. So what does the low-end rent on a rental in Johnston Rd.-McAlpine look ...",
+      "user_history": [
+        "France laments painful World Cup loss to U.S. on its home soil",
+        "Alabama Father of 2 Dies After Being Bit By Copperhead Snake: He Just Couldn t Recover"
+      ],
+      "original_title": "The cheapest apartment rentals in Johnston Rd.-McAlpine, Charlotte",
+      "personalized_title": "Apartements For Rent In Johnston Rd.-McAlpine",
+      "model_generated_title": "the all in former",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.25,
+          "rouge_2": 0.0,
+          "rouge_l": 0.3333333333333333,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.16666666666666666,
+          "rouge_2": 0.0,
+          "rouge_l": 0.2,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 4,
+        "original_length": 8,
+        "personalized_length": 6,
+        "word_overlap_original": 0.2,
+        "word_overlap_personalized": 0.1111111111111111
+      }
+    },
+    {
+      "case_id": 39,
+      "case_name": "sports - NT16",
+      "user_id": "NT16",
+      "news_id": "N37394",
+      "category": "sports",
+      "news_body_preview": "Rumors swirl as we get closer to July 1st. The Bolts The biggest news around the Lightning continues to be the possibility of free agent forward Joe Pavelski signing in free agency. While we didn t ge...",
+      "user_history": [
+        "Zion Williamson s Debut and the Best NBA Summer League Storylines to Watch",
+        "Texas responds to Terry Bradshaw s negative comments about QB Sam Ehlinger"
+      ],
+      "original_title": "Quick Strikes: Countdown to free agency with Joe Pavelski rumors and more trades",
+      "personalized_title": "Free agency countdown rumors and more trades with Joe Pavelski",
+      "model_generated_title": "rumors",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.07692307692307693,
+          "rouge_2": 0.0,
+          "rouge_l": 0.14285714285714288,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.1,
+          "rouge_2": 0.0,
+          "rouge_l": 0.18181818181818182,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 1,
+        "original_length": 13,
+        "personalized_length": 10,
+        "word_overlap_original": 0.07692307692307693,
+        "word_overlap_personalized": 0.1
+      }
+    },
+    {
+      "case_id": 40,
+      "case_name": "sports - NT59",
+      "user_id": "NT59",
+      "news_id": "N34000",
+      "category": "sports",
+      "news_body_preview": "Well, things got a little wet, but the Boston Red Sox came away with the win Friday night at Comerica Park. The Sox and the Detroit Tigers waited out a two-hour, four minute rain delay before the begi...",
+      "user_history": [
+        "Justice Department backs decision to not release Trump s tax returns",
+        "House Judiciary Committee Holds Hearing on Reparations for Slavery"
+      ],
+      "original_title": "Red Sox Wrap: Bats Carry Boston To 9-6 Win Vs. Tigers After Rain Delay",
+      "personalized_title": "Red Sox come away with Friday Night win despite delays",
+      "model_generated_title": "well,",
+      "metrics": {
+        "vs_original": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        },
+        "vs_personalized": {
+          "rouge_1": 0.0,
+          "rouge_2": 0.0,
+          "rouge_l": 0.0,
+          "bleu_4": 0.0
+        }
+      },
+      "analysis": {
+        "generated_length": 1,
+        "original_length": 14,
+        "personalized_length": 10,
+        "word_overlap_original": 0.0,
+        "word_overlap_personalized": 0.0
       }
     }
   ],
   "summary": {
-    "total_cases": 5,
-    "avg_rouge_l_original": 0.040920716112531966,
-    "avg_rouge_l_personalized": 0.12088888888888889,
+    "total_cases": 40,
+    "avg_rouge_l_original": 0.04558271114850062,
+    "avg_rouge_l_personalized": 0.048063389497213026,
     "avg_bleu_4_original": 0.0,
     "avg_bleu_4_personalized": 0.0,
-    "avg_generated_length": 6.8,
+    "avg_generated_length": 3.825,
     "category_distribution": {
-      "news": 1,
-      "autos": 1,
-      "health": 1,
-      "sports": 1,
-      "finance": 1
+      "news": 9,
+      "autos": 2,
+      "health": 4,
+      "sports": 13,
+      "finance": 3,
+      "tv": 1,
+      "lifestyle": 4,
+      "music": 1,
+      "entertainment": 1,
+      "weather": 1,
+      "foodanddrink": 1
     }
   }
 }

@@ -1,0 +1,43 @@
+{
+  "analysis_summary": {
+    "total_experiments": 2,
+    "total_strategies": 4,
+    "overall_metrics": {
+      "avg_success_rate": 1.0,
+      "avg_generation_time": 24.494715224107107,
+      "time_std": 17.932567423830992
+    }
+  },
+  "strategy_analysis": {
+    "basic": {
+      "appearances": 2,
+      "avg_success_rate": 1.0,
+      "avg_time": 14.46478793223699,
+      "performance_rank": []
+    },
+    "chain_of_thought": {
+      "appearances": 2,
+      "avg_success_rate": 1.0,
+      "avg_time": 42.55094169537226,
+      "performance_rank": []
+    },
+    "role_playing": {
+      "appearances": 1,
+      "avg_success_rate": 1.0,
+      "avg_time": 13.894701614379883,
+      "performance_rank": []
+    },
+    "few_shot": {
+      "appearances": 1,
+      "avg_success_rate": 1.0,
+      "avg_time": 19.04213047504425,
+      "performance_rank": []
+    }
+  },
+  "recommendations": [
+    "最佳综合性能策略: role_playing",
+    "最快生成策略: role_playing",
+    "所有策略都表现出极高的成功率(接近100%)",
+    "平均生成时间为 24.49 秒"
+  ]
+}

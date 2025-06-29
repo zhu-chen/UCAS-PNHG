@@ -106,13 +106,13 @@ python scripts/run_baseline.py \
     --mode train
 ```
 
-### 4. 模型测试
+### 4. 模型评估
 
 ```bash
 # 测试训练好的模型
 python scripts/run_baseline.py \
     --config configs/baseline/pens_config.yaml \
-    --mode test
+    --mode eval
 ```
 
 ### 5. 完整流程
@@ -133,27 +133,46 @@ python scripts/run_baseline.py \
 ### 关键参数
 
 ```yaml
-# 模型架构
 model:
+  # NAML用户编码器配置
   user_encoder:
-    hidden_dim: 256           # 用户嵌入维度
-    max_history_length: 50    # 最大用户历史长度
+    embedding_dim: 300      
+    hidden_dim: 400         
+    max_history_length: 50  
+    num_categories: 15      
+    dropout: 0.2            
   
+  # Transformer编码器配置
   transformer:
-    d_model: 512              # Transformer隐藏维度
-    num_heads: 8              # 注意力头数
-    num_layers: 6             # Transformer层数
+    embedding_dim: 300    
+    d_model: 300          
+    sentence_pos_dim: 100 
+    dropout: 0.2          
+    max_length: 500       
   
+  # 指针网络解码器配置
   decoder:
-    hidden_dim: 512           # 解码器隐藏维度
-    max_decode_length: 30     # 最大生成长度
+    embedding_dim: 300      # 词嵌入维度
+    hidden_dim: 400         # 隐藏层维度（与Transformer输出匹配）
+    num_layers: 2           # LSTM层数
+    dropout: 0.2            # Dropout率
+    max_decode_length: 30   # 最大解码长度
+    decoder_type: 2         # F2策略
+    user_size: 64           # NAML输出维度
+  
+  # 极简生成器配置
+  generator:
+    embedding_dim: 64
+    hidden_dim: 128     
+    num_layers: 1      
+    dropout: 0.3
+    max_decode_length: 15  
+  
+  # 词嵌入配置
+  word_embedding:
+    dim: 128            
+    pretrained: false
 
-# 训练参数
-num_epochs: 20
-batch_size: 32
-optimizer:
-  lr: 1e-4                   # 主学习率
-  user_encoder_lr: 1e-5      # 用户编码器学习率
 ```
 
 ## 实验结果
@@ -167,64 +186,12 @@ optimizer:
 | ROUGE-L | 0.20-0.30 | 最长公共子序列 |
 | BLEU-4 | 0.10-0.20 | 4-gram精确匹配 |
 
-## 技术特点
-
-1. **模块化设计**：各组件独立实现，便于扩展和修改
-2. **高效实现**：使用PyTorch内置API，性能优化
-3. **完整流程**：从数据预处理到模型评估的完整pipeline
-4. **论文复现**：严格按照PENS论文实现最佳方法组合
 
 ## 代码优化
 
 相比原始实现，本项目有以下优化：
 
-1. **使用PyTorch内置多头注意力**：`nn.MultiheadAttention`替代自定义实现
-2. **统一的检查点管理**：支持训练恢复和最佳模型保存
-3. **详细的评估指标**：多维度性能评估
-4. **灵活的配置系统**：YAML配置文件管理所有参数
+1. **统一的检查点管理**：支持训练恢复和最佳模型保存
+2. **灵活的配置系统**：YAML配置文件管理所有参数
 
-## 扩展方向
-
-1. **其他个性化策略**：实现F1和F3策略的对比实验
-2. **用户编码器变体**：尝试其他用户建模方法
-3. **解码器改进**：集成更先进的生成模型
-4. **评估增强**：添加人工评估和个性化效果分析
-
-## 参考文献
-
-```
-@inproceedings{luo-etal-2021-pens,
-    title = "PENS: A Dataset and Generic Framework for Personalized News Headline Generation",
-    author = "Luo, Luling and Ao, Xiang and Pan, Feiyang and Song, Yanling and He, Qing",
-    booktitle = "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing (Volume 1: Long Papers)",
-    year = "2021",
-    pages = "82--92"
-}
-```
-
-## 故障排除
-
-### 常见问题
-
-1. **内存不足**：减小`batch_size`或`max_body_length`
-2. **CUDA错误**：检查GPU兼容性，或设置`device: "cpu"`
-3. **数据路径错误**：确保数据文件存在于指定路径
-4. **依赖缺失**：安装requirements.txt中的所有依赖
-
-### 性能调优
-
-1. **训练速度**：增加`num_workers`，使用混合精度训练
-2. **内存优化**：使用梯度检查点，调整序列长度
-3. **收敛改进**：调整学习率，使用预训练词嵌入
-
-## 项目状态
-
-- ✅ 核心模型实现完成
-- ✅ 训练系统完成
-- ✅ 评估系统完成
-- ✅ 数据处理完成
-- ✅ 配置和脚本完成
-- ⏳ 实验验证进行中
-
-本实现为PENS基线方法的完整复现，可直接用于个性化新闻标题生成的研究和应用。
 
